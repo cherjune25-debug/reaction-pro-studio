@@ -1,0 +1,2746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0a0718">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Reaction Pro Studio</title>
+<style>
+:root {
+  --bg-dark: #080514;
+  --bg-card: #120e26;
+  --bg-card-hover: #1a1538;
+  --bg-glass: rgba(18, 14, 38, 0.78);
+  --neon-purple: #9d4edd;
+  --neon-purple-glow: rgba(157, 78, 221, 0.45);
+  --neon-blue: #00f0ff;
+  --neon-blue-glow: rgba(0, 240, 255, 0.45);
+  --neon-pink: #ff007f;
+  --neon-pink-glow: rgba(255, 0, 127, 0.45);
+  --text-primary: #ffffff;
+  --text-secondary: #a39ec4;
+  --border-subtle: rgba(157, 78, 221, 0.22);
+  --border-active: rgba(0, 240, 255, 0.7);
+  --danger: #ff3366;
+  --success: #00f59b;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-full: 9999px;
+  --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+body, html {
+  width: 100%;
+  height: 100%;
+  height: 100dvh;
+  overflow: hidden;
+  background-color: var(--bg-dark);
+  color: var(--text-primary);
+  font-family: var(--font-main);
+  font-size: 14px;
+}
+
+/* App Shell Layout */
+#app-root {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.view-container {
+  flex: 1;
+  width: 100%;
+  height: calc(100% - 64px);
+  position: relative;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: none;
+}
+
+.view-container.active {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Bottom Navigation */
+#bottom-nav {
+  height: 64px;
+  background: var(--bg-card);
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  position: relative;
+  z-index: 100;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.nav-btn {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  font-size: 10.5px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 8px 12px;
+  transition: all 0.2s ease;
+  min-width: 60px;
+}
+
+.nav-btn svg {
+  width: 20px;
+  height: 20px;
+  stroke: var(--text-secondary);
+  fill: none;
+  stroke-width: 2;
+  transition: stroke 0.2s ease, transform 0.2s ease;
+}
+
+.nav-btn.active {
+  color: var(--neon-blue);
+}
+
+.nav-btn.active svg {
+  stroke: var(--neon-blue);
+  filter: drop-shadow(0 0 6px var(--neon-blue-glow));
+  transform: translateY(-2px);
+}
+
+/* Header UI */
+.app-header {
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-subtle);
+  background: var(--bg-glass);
+  backdrop-filter: blur(12px);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.brand-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.brand-badge svg {
+  width: 28px;
+  height: 28px;
+  fill: url(#brandGrad);
+}
+
+.brand-title {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.perf-pill {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  background: rgba(0, 240, 255, 0.12);
+  border: 1px solid var(--neon-blue);
+  color: var(--neon-blue);
+}
+
+/* HOME VIEW */
+.home-hero {
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.hero-cta {
+  background: linear-gradient(145deg, #1f1247, #130a2f);
+  border: 1px solid var(--neon-purple);
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  box-shadow: 0 10px 28px var(--neon-purple-glow);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-cta::after {
+  content: '';
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 120px;
+  height: 120px;
+  background: radial-gradient(circle, var(--neon-pink-glow) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-title {
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.hero-desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--neon-purple), var(--neon-pink));
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 14px 20px;
+  font-size: 14px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  box-shadow: 0 6px 18px var(--neon-pink-glow);
+  transition: transform 0.15s ease;
+}
+
+.btn-primary:active {
+  transform: scale(0.97);
+}
+
+.grid-menu {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  padding: 0 16px 24px;
+}
+
+.menu-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.menu-card:active {
+  transform: scale(0.97);
+  border-color: var(--neon-blue);
+  background: var(--bg-card-hover);
+}
+
+.menu-card-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menu-card-icon svg {
+  width: 22px;
+  height: 22px;
+  stroke: #fff;
+  fill: none;
+  stroke-width: 2;
+}
+
+.menu-card-title {
+  font-size: 13.5px;
+  font-weight: 700;
+}
+
+.menu-card-sub {
+  font-size: 11.5px;
+  color: var(--text-secondary);
+}
+
+/* STUDIO VIEW (FACE-FIRST CANVAS COMPOSITOR) */
+#view-studio {
+  background: #000;
+  display: none;
+  flex-direction: column;
+  height: 100%;
+}
+
+#view-studio.active {
+  display: flex;
+}
+
+.studio-viewport-wrap {
+  flex: 1;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #05030b;
+  overflow: hidden;
+}
+
+#compositorCanvas {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #000;
+  display: block;
+}
+
+/* Over-Canvas Live Badges */
+.studio-top-overlay {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  right: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.rec-timer-badge {
+  background: rgba(0, 0, 0, 0.75);
+  border: 1px solid var(--danger);
+  padding: 6px 12px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: monospace;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  box-shadow: 0 0 10px rgba(255, 51, 102, 0.4);
+}
+
+.rec-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--danger);
+  animation: pulse 1s infinite alternate;
+}
+
+@keyframes pulse {
+  from { opacity: 0.3; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1.2); }
+}
+
+.audio-meter-wrap {
+  width: 60px;
+  height: 10px;
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  overflow: hidden;
+  display: flex;
+  padding: 1px;
+}
+
+.audio-meter-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--success), #ffcc00, var(--danger));
+  border-radius: 4px;
+  transition: width 0.08s ease;
+}
+
+/* Draggable Touch Box for Source Panel */
+.source-touch-controller {
+  position: absolute;
+  border: 2px dashed var(--neon-blue);
+  border-radius: var(--radius-md);
+  box-shadow: 0 0 16px var(--neon-blue-glow);
+  z-index: 20;
+  touch-action: none;
+  cursor: grab;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+}
+
+.source-touch-controller.recording-locked {
+  border-style: solid;
+  border-color: rgba(0, 240, 255, 0.4);
+  box-shadow: none;
+}
+
+.source-touch-header {
+  position: absolute;
+  top: -24px;
+  left: 0;
+  background: var(--neon-blue);
+  color: #000;
+  font-size: 9px;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 4px 4px 0 0;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.resize-handle {
+  position: absolute;
+  bottom: -8px;
+  right: -8px;
+  width: 24px;
+  height: 24px;
+  background: var(--neon-blue);
+  border: 2px solid #fff;
+  border-radius: 50%;
+  cursor: se-resize;
+  touch-action: none;
+  box-shadow: 0 0 8px #000;
+}
+
+/* Studio Floating Dock */
+.studio-dock {
+  background: var(--bg-card);
+  border-top: 1px solid var(--border-subtle);
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 30;
+}
+
+.dock-actions-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.dock-btn {
+  background: var(--bg-glass);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  border-radius: var(--radius-md);
+  padding: 8px 12px;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  min-width: 54px;
+}
+
+.dock-btn.active {
+  border-color: var(--neon-blue);
+  color: var(--neon-blue);
+  background: rgba(0, 240, 255, 0.08);
+}
+
+.dock-btn svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+}
+
+.rec-btn-big {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #190b2c;
+  border: 3px solid var(--danger);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 0 18px rgba(255, 51, 102, 0.5);
+  transition: transform 0.15s ease, background 0.2s ease;
+}
+
+.rec-btn-big:active {
+  transform: scale(0.92);
+}
+
+.rec-btn-inner {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--danger);
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.rec-btn-big.recording .rec-btn-inner {
+  border-radius: 6px;
+  width: 18px;
+  height: 18px;
+}
+
+/* Modals & Tool Sheets */
+.tool-sheet {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--bg-card);
+  border-top: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  padding: 18px 16px;
+  transform: translateY(105%);
+  transition: transform 0.28s cubic-bezier(0.1, 0.9, 0.2, 1);
+  z-index: 60;
+  max-height: 80%;
+  overflow-y: auto;
+  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.7);
+}
+
+.tool-sheet.open {
+  transform: translateY(0);
+}
+
+.sheet-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.sheet-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--neon-blue);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sheet-close-btn {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 18px;
+  padding: 4px;
+  cursor: pointer;
+}
+
+.slider-group {
+  margin-bottom: 14px;
+}
+
+.slider-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: var(--text-secondary);
+}
+
+.slider-input {
+  width: 100%;
+  height: 26px;
+  -webkit-appearance: none;
+  background: transparent;
+}
+
+.slider-input::-webkit-slider-runnable-track {
+  height: 6px;
+  background: #251c4a;
+  border-radius: 3px;
+}
+
+.slider-input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--neon-blue);
+  box-shadow: 0 0 8px var(--neon-blue);
+  margin-top: -7px;
+}
+
+.chips-scroll {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  margin-bottom: 14px;
+}
+
+.chip-btn {
+  background: var(--bg-glass);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+  padding: 6px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.chip-btn.active {
+  border-color: var(--neon-purple);
+  background: rgba(157, 78, 221, 0.18);
+  color: #fff;
+}
+
+/* Preset Grids in Sheets */
+.fx-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.fx-card {
+  background: var(--bg-card-hover);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 10px 6px;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.fx-card.active {
+  border-color: var(--neon-pink);
+  background: rgba(255, 0, 127, 0.12);
+  color: #fff;
+}
+
+.fx-card-emoji {
+  font-size: 20px;
+}
+
+/* EDITOR VIEW */
+#view-editor {
+  background: var(--bg-dark);
+  padding: 16px;
+  gap: 16px;
+}
+
+.editor-preview-card {
+  width: 100%;
+  aspect-ratio: 9/16;
+  max-height: 48dvh;
+  background: #000;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--border-subtle);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#editorVideo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.editor-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* LIBRARY VIEW */
+#view-library {
+  padding: 16px;
+  gap: 14px;
+}
+
+.recordings-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.recording-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 12px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.rec-thumb {
+  width: 70px;
+  height: 90px;
+  background: #000;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+  border: 1px solid var(--border-subtle);
+}
+
+.rec-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  overflow: hidden;
+}
+
+.rec-title {
+  font-size: 13.5px;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rec-meta {
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.rec-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.icon-btn {
+  background: var(--bg-glass);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-secondary);
+}
+
+.icon-btn:active {
+  color: var(--neon-blue);
+  border-color: var(--neon-blue);
+}
+
+.icon-btn svg {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+}
+
+/* SETTINGS VIEW */
+#view-settings {
+  padding: 16px;
+  gap: 16px;
+}
+
+.setting-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.setting-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.setting-title {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.setting-desc {
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.select-styled {
+  background: #1b143a;
+  color: #fff;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 6px 10px;
+  font-size: 12px;
+  outline: none;
+}
+
+/* Alert Banner */
+.notice-box {
+  background: rgba(157, 78, 221, 0.12);
+  border-left: 3px solid var(--neon-purple);
+  padding: 10px 12px;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  font-size: 11.5px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+/* Countdown Overlay */
+#countdown-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-size: 90px;
+  font-weight: 900;
+  color: var(--neon-blue);
+  text-shadow: 0 0 25px var(--neon-blue);
+  z-index: 1000;
+}
+
+/* Toast Message */
+#toast {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-100px);
+  background: var(--bg-card);
+  border: 1px solid var(--neon-blue);
+  box-shadow: 0 8px 24px rgba(0, 240, 255, 0.35);
+  color: #fff;
+  padding: 10px 18px;
+  border-radius: var(--radius-full);
+  font-size: 12.5px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 9999;
+  transition: transform 0.25s ease;
+  pointer-events: none;
+}
+
+#toast.show {
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Hidden off-screen auxiliary elements */
+.aux-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+  top: -9999px;
+  left: -9999px;
+}
+</style>
+</head>
+<body>
+
+<!-- SVG Gradients Definition -->
+<svg class="aux-hidden" aria-hidden="true">
+  <defs>
+    <linearGradient id="brandGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00f0ff"/>
+      <stop offset="100%" stop-color="#9d4edd"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+<div id="app-root">
+
+  <!-- Countdown HUD -->
+  <div id="countdown-overlay">3</div>
+
+  <!-- Global Toast -->
+  <div id="toast">
+    <span id="toast-text">Notice</span>
+  </div>
+
+  <!-- Off-Screen Media Players for Compositing -->
+  <video id="cameraVideo" playsinline autoplay muted class="aux-hidden"></video>
+  <video id="sourceVideo" playsinline loop class="aux-hidden"></video>
+  <canvas id="filterBufferCanvas" class="aux-hidden"></canvas>
+
+  <!-- Hidden File Pickers -->
+  <input type="file" id="videoFileInput" accept="video/mp4,video/webm,video/quicktime,video/*" class="aux-hidden">
+  <input type="file" id="customBgInput" accept="image/*" class="aux-hidden">
+
+  <!-- 1. HOME VIEW -->
+  <div id="view-home" class="view-container active">
+    <header class="app-header">
+      <div class="brand-badge">
+        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        <span class="brand-title">REACTION PRO</span>
+      </div>
+      <span class="perf-pill" id="homePerfModeBadge">BALANCED</span>
+    </header>
+
+    <div class="home-hero">
+      <div class="hero-cta">
+        <h2 class="hero-title">Create Face-First Reaction Studio</h2>
+        <p class="hero-desc">Place your camera in front with live skin smoothing, funny filters, customizable PiP reaction box, and noise-reduced voice.</p>
+        <button class="btn-primary" id="btnQuickStart">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Open Studio
+        </button>
+      </div>
+    </div>
+
+    <div class="grid-menu">
+      <div class="menu-card" id="menuBtnImportVideo">
+        <div class="menu-card-icon" style="background:#201040;"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg></div>
+        <div class="menu-card-title">Import Video</div>
+        <div class="menu-card-sub">Select MP4/WebM from Android gallery</div>
+      </div>
+
+      <div class="menu-card" id="menuBtnBeauty">
+        <div class="menu-card-icon" style="background:#3d1033;"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+        <div class="menu-card-title">Beauty Cam</div>
+        <div class="menu-card-sub">Skin smoothing, glow, warmth & eyes</div>
+      </div>
+
+      <div class="menu-card" id="menuBtnFunnyFace">
+        <div class="menu-card-icon" style="background:#0e2f3d;"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></svg></div>
+        <div class="menu-card-title">Funny Face</div>
+        <div class="menu-card-sub">Big eyes, alien, animal ears & visors</div>
+      </div>
+
+      <div class="menu-card" id="menuBtnBackground">
+        <div class="menu-card-icon" style="background:#0f382a;"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+        <div class="menu-card-title">Backgrounds</div>
+        <div class="menu-card-sub">Chroma green, neon room, luxury, blur</div>
+      </div>
+
+      <div class="menu-card" id="menuBtnVoice">
+        <div class="menu-card-icon" style="background:#3d2e0e;"><svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4M8 23h8"/></svg></div>
+        <div class="menu-card-title">Voice Changer</div>
+        <div class="menu-card-sub">Deep, high, robot, echo & noise guard</div>
+      </div>
+
+      <div class="menu-card" id="menuBtnLibrary">
+        <div class="menu-card-icon" style="background:#1b193d;"><svg viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg></div>
+        <div class="menu-card-title">My Recordings</div>
+        <div class="menu-card-sub">Watch, trim & export to gallery</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. STUDIO VIEW (LIVE WORKSTATION) -->
+  <div id="view-studio" class="view-container">
+    <div class="studio-viewport-wrap" id="viewportWrap">
+      
+      <!-- Top Badges Overlay -->
+      <div class="studio-top-overlay">
+        <div class="rec-timer-badge">
+          <div class="rec-dot"></div>
+          <span id="recordingTimerDisplay">00:00</span>
+        </div>
+
+        <div style="display: flex; gap: 8px; align-items: center;">
+          <div class="audio-meter-wrap" title="Microphone Level">
+            <div class="audio-meter-fill" id="micMeterFill"></div>
+          </div>
+          <button class="icon-btn" id="btnFlipCam" title="Switch Camera" style="pointer-events: auto;">
+            <svg viewBox="0 0 24 24"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Real Compositor Canvas -->
+      <canvas id="compositorCanvas"></canvas>
+
+      <!-- Interactive Drag & Resize Controller for Reaction Video Box -->
+      <div class="source-touch-controller" id="sourceTouchBox">
+        <div class="source-touch-header">Reacting To</div>
+        <div class="resize-handle" id="resizeHandle"></div>
+      </div>
+
+    </div>
+
+    <!-- Studio Bottom Controls Dock -->
+    <div class="studio-dock">
+      <div class="dock-actions-row">
+        
+        <button class="dock-btn" id="dockBtnLayout">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M15 3v18M3 9h12"/></svg>
+          Layout
+        </button>
+
+        <button class="dock-btn" id="dockBtnBeauty">
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          Beauty
+        </button>
+
+        <!-- Main Record Button -->
+        <div class="rec-btn-big" id="mainRecordButton">
+          <div class="rec-btn-inner"></div>
+        </div>
+
+        <button class="dock-btn" id="dockBtnFunny">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></svg>
+          FX
+        </button>
+
+        <button class="dock-btn" id="dockBtnAudio">
+          <svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>
+          Voice
+        </button>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. EDITOR VIEW (TRIM & EXPORT) -->
+  <div id="view-editor" class="view-container">
+    <header class="app-header">
+      <span class="brand-title">EDITOR & EXPORT</span>
+      <button class="btn-primary" id="btnExportFinal" style="padding: 8px 14px; font-size: 12px;">
+        Save Video
+      </button>
+    </header>
+
+    <div class="editor-preview-card">
+      <video id="editorVideo" controls playsinline></video>
+    </div>
+
+    <div class="editor-timeline">
+      <div class="slider-group">
+        <div class="slider-label">
+          <span>Trim Start (sec)</span>
+          <span id="trimStartVal">0.0s</span>
+        </div>
+        <input type="range" id="trimStartSlider" class="slider-input" min="0" max="100" step="0.1" value="0">
+      </div>
+
+      <div class="slider-group">
+        <div class="slider-label">
+          <span>Trim End (sec)</span>
+          <span id="trimEndVal">0.0s</span>
+        </div>
+        <input type="range" id="trimEndSlider" class="slider-input" min="0" max="100" step="0.1" value="100">
+      </div>
+
+      <div class="setting-card">
+        <div class="slider-label">
+          <span>Reaction Watermark / Caption</span>
+        </div>
+        <input type="text" id="editorCaptionText" placeholder="Add text overlay (e.g. 'Mindblown reaction!')" style="background:#1b143a;border:1px solid var(--border-subtle);padding:8px 10px;border-radius:var(--radius-sm);color:#fff;">
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. LIBRARY VIEW -->
+  <div id="view-library" class="view-container">
+    <header class="app-header">
+      <span class="brand-title">SAVED REACTIONS</span>
+      <span class="perf-pill" id="libCountPill">0 Videos</span>
+    </header>
+
+    <div id="emptyLibNotice" class="notice-box" style="margin: 16px;">
+      No recorded reactions yet. Open the studio, tap the red Record button, and your reaction will be securely stored right on your Android device!
+    </div>
+
+    <div class="recordings-grid" id="recordingsGrid" style="padding: 16px;"></div>
+  </div>
+
+  <!-- 5. SETTINGS VIEW -->
+  <div id="view-settings" class="view-container">
+    <header class="app-header">
+      <span class="brand-title">STUDIO SETTINGS</span>
+    </header>
+
+    <div class="setting-card">
+      <div class="setting-row">
+        <div>
+          <div class="setting-title">Hardware Performance Mode</div>
+          <div class="setting-desc">Low-end phones benefit from ECO mode to avoid frame drops.</div>
+        </div>
+        <select class="select-styled" id="prefPerfMode">
+          <option value="eco">ECO (480p 24fps)</option>
+          <option value="balanced" selected>BALANCED (720p 30fps)</option>
+          <option value="quality">QUALITY (1080p 30fps)</option>
+        </select>
+      </div>
+
+      <div class="setting-row">
+        <div>
+          <div class="setting-title">Record Countdown</div>
+          <div class="setting-desc">Gives you time to react before recording starts.</div>
+        </div>
+        <select class="select-styled" id="prefCountdown">
+          <option value="0">Instant (No delay)</option>
+          <option value="3" selected>3 Seconds</option>
+          <option value="5">5 Seconds</option>
+          <option value="10">10 Seconds</option>
+        </select>
+      </div>
+
+      <div class="setting-row">
+        <div>
+          <div class="setting-title">Mirror Front Camera</div>
+          <div class="setting-desc">Flip horizontal preview to match a real mirror.</div>
+        </div>
+        <input type="checkbox" id="prefMirrorCam" checked style="accent-color: var(--neon-blue); width: 18px; height: 18px;">
+      </div>
+
+      <div class="setting-row">
+        <div>
+          <div class="setting-title">Microphone Noise Suppression</div>
+          <div class="setting-desc">Uses hardware AGC, noise filtering & echo reduction.</div>
+        </div>
+        <input type="checkbox" id="prefNoiseSuppression" checked style="accent-color: var(--neon-blue); width: 18px; height: 18px;">
+      </div>
+    </div>
+
+    <div class="notice-box">
+      <strong>Privacy Guarantee:</strong> Reaction Pro Studio executes 100% locally in your Android Chrome browser. No video, audio, or camera feeds are ever uploaded to any third-party server.
+    </div>
+  </div>
+
+  <!-- BOTTOM TAB NAVIGATION -->
+  <nav id="bottom-nav">
+    <button class="nav-btn active" data-view="home">
+      <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+      Home
+    </button>
+    <button class="nav-btn" data-view="studio">
+      <svg viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+      Studio
+    </button>
+    <button class="nav-btn" data-view="editor">
+      <svg viewBox="0 0 24 24"><polygon points="14 2 18 6 7 17 3 17 3 13 14 2"/><line x1="3" y1="22" x2="21" y2="22"/></svg>
+      Editor
+    </button>
+    <button class="nav-btn" data-view="library">
+      <svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+      Library
+    </button>
+    <button class="nav-btn" data-view="settings">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      Settings
+    </button>
+  </nav>
+
+  <!-- ================= TOOL SHEETS (STUDIO DOCK) ================= -->
+
+  <!-- SHEET: BEAUTY & SKIN FILTER -->
+  <div class="tool-sheet" id="sheetBeauty">
+    <div class="sheet-header">
+      <span class="sheet-title">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        Beauty & Portrait Glow
+      </span>
+      <button class="sheet-close-btn" data-close="sheetBeauty">&times;</button>
+    </div>
+
+    <div class="chips-scroll">
+      <button class="chip-btn active" data-beauty-preset="natural">Natural</button>
+      <button class="chip-btn" data-beauty-preset="radiant">Radiant Glow</button>
+      <button class="chip-btn" data-beauty-preset="warm">Warm Peach</button>
+      <button class="chip-btn" data-beauty-preset="smooth">Max Smooth</button>
+      <button class="chip-btn" data-beauty-preset="reset">Reset</button>
+    </div>
+
+    <div class="slider-group">
+      <div class="slider-label"><span>Skin Smoothing</span><span id="lblSmooth">30%</span></div>
+      <input type="range" class="slider-input" id="sliderSmooth" min="0" max="100" value="30">
+    </div>
+
+    <div class="slider-group">
+      <div class="slider-label"><span>Face Brightness</span><span id="lblBrightness">110%</span></div>
+      <input type="range" class="slider-input" id="sliderBrightness" min="80" max="150" value="110">
+    </div>
+
+    <div class="slider-group">
+      <div class="slider-label"><span>Warmth & Tone</span><span id="lblWarmth">105%</span></div>
+      <input type="range" class="slider-input" id="sliderWarmth" min="80" max="140" value="105">
+    </div>
+
+    <div class="slider-group">
+      <div class="slider-label"><span>Eye & Contrast Pop</span><span id="lblContrast">110%</span></div>
+      <input type="range" class="slider-input" id="sliderContrast" min="90" max="140" value="110">
+    </div>
+  </div>
+
+  <!-- SHEET: FUNNY FACE & DISTORTIONS -->
+  <div class="tool-sheet" id="sheetFunny">
+    <div class="sheet-header">
+      <span class="sheet-title">Funny Face & Real-Time Props</span>
+      <button class="sheet-close-btn" data-close="sheetFunny">&times;</button>
+    </div>
+
+    <div class="fx-grid">
+      <div class="fx-card active" data-fx="none">
+        <span class="fx-card-emoji">👤</span>
+        <span>Normal</span>
+      </div>
+      <div class="fx-card" data-fx="bigeyes">
+        <span class="fx-card-emoji">👀</span>
+        <span>Big Eyes</span>
+      </div>
+      <div class="fx-card" data-fx="alien">
+        <span class="fx-card-emoji">👽</span>
+        <span>Alien Warp</span>
+      </div>
+      <div class="fx-card" data-fx="tinyface">
+        <span class="fx-card-emoji">🤏</span>
+        <span>Pinch Center</span>
+      </div>
+      <div class="fx-card" data-fx="catears">
+        <span class="fx-card-emoji">🐱</span>
+        <span>Cat Ears</span>
+      </div>
+      <div class="fx-card" data-fx="dogears">
+        <span class="fx-card-emoji">🐶</span>
+        <span>Doggy Nose</span>
+      </div>
+      <div class="fx-card" data-fx="cybervisor">
+        <span class="fx-card-emoji">🕶️</span>
+        <span>Cyber Visor</span>
+      </div>
+      <div class="fx-card" data-fx="thermal">
+        <span class="fx-card-emoji">🔥</span>
+        <span>Thermal</span>
+      </div>
+      <div class="fx-card" data-fx="cartoon">
+        <span class="fx-card-emoji">🎨</span>
+        <span>Cartoon Pop</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SHEET: BACKGROUND STUDIO -->
+  <div class="tool-sheet" id="sheetBackground">
+    <div class="sheet-header">
+      <span class="sheet-title">Virtual Background Studio</span>
+      <button class="sheet-close-btn" data-close="sheetBackground">&times;</button>
+    </div>
+
+    <div class="chips-scroll">
+      <button class="chip-btn active" data-bg="camera">Original Room</button>
+      <button class="chip-btn" data-bg="blur">Lens Blur</button>
+      <button class="chip-btn" data-bg="chroma">Chroma Green</button>
+      <button class="chip-btn" data-bg="gaming">Gaming Room</button>
+      <button class="chip-btn" data-bg="luxury">Luxury Suite</button>
+      <button class="chip-btn" data-bg="neon">Cyber City</button>
+      <button class="chip-btn" data-bg="custom">Custom Image</button>
+    </div>
+
+    <div class="notice-box">
+      <strong>Real-Time Chromakeying:</strong> Select "Chroma Green" to composite yourself cleanly against any backdrop using green fabric or solid backgrounds.
+    </div>
+  </div>
+
+  <!-- SHEET: VOICE & AUDIO STUDIO -->
+  <div class="tool-sheet" id="sheetVoice">
+    <div class="sheet-header">
+      <span class="sheet-title">Voice Changer & Noise Guard</span>
+      <button class="sheet-close-btn" data-close="sheetVoice">&times;</button>
+    </div>
+
+    <div class="fx-grid">
+      <div class="fx-card active" data-voice="normal">
+        <span class="fx-card-emoji">🎙️</span>
+        <span>Natural</span>
+      </div>
+      <div class="fx-card" data-voice="deep">
+        <span class="fx-card-emoji">👹</span>
+        <span>Deep Titan</span>
+      </div>
+      <div class="fx-card" data-voice="chipmunk">
+        <span class="fx-card-emoji">🐿️</span>
+        <span>High Pitch</span>
+      </div>
+      <div class="fx-card" data-voice="robot">
+        <span class="fx-card-emoji">🤖</span>
+        <span>Cyber Robot</span>
+      </div>
+      <div class="fx-card" data-voice="echo">
+        <span class="fx-card-emoji">📢</span>
+        <span>Echo Chamber</span>
+      </div>
+      <div class="fx-card" data-voice="radio">
+        <span class="fx-card-emoji">📻</span>
+        <span>Old Radio</span>
+      </div>
+    </div>
+
+    <div class="slider-group">
+      <div class="slider-label"><span>Microphone Gain</span><span id="lblMicVol">100%</span></div>
+      <input type="range" class="slider-input" id="sliderMicGain" min="0" max="200" value="100">
+    </div>
+
+    <div class="slider-group">
+      <div class="slider-label"><span>Source Video Volume</span><span id="lblSourceVol">80%</span></div>
+      <input type="range" class="slider-input" id="sliderSourceVol" min="0" max="150" value="80">
+    </div>
+  </div>
+
+  <!-- SHEET: LAYOUTS & POSITION -->
+  <div class="tool-sheet" id="sheetLayout">
+    <div class="sheet-header">
+      <span class="sheet-title">Reaction Box Layout</span>
+      <button class="sheet-close-btn" data-close="sheetLayout">&times;</button>
+    </div>
+
+    <div class="chips-scroll">
+      <button class="chip-btn active" data-layout="pip-topright">Top Right PiP</button>
+      <button class="chip-btn" data-layout="pip-topleft">Top Left PiP</button>
+      <button class="chip-btn" data-layout="pip-bottomright">Bottom Right</button>
+      <button class="chip-btn" data-layout="sidebyside">Side by Side</button>
+      <button class="chip-btn" data-layout="topbottom">Top / Bottom</button>
+    </div>
+
+    <div class="setting-row" style="margin-top: 10px;">
+      <span class="setting-title">Reaction Source Video</span>
+      <button class="btn-primary" id="btnReplaceSourceFile" style="padding: 6px 12px; font-size: 11px;">
+        Choose New Video
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/**
+ * REACTION PRO STUDIO - CORE ENGINE ARCHITECTURE
+ * 1. Compositor Pipeline: Combines camera, beauty shaders, funny warp & video panel onto HD Canvas.
+ * 2. Audio DSP Engine: Web Audio API routing microphone + source video with voice effects.
+ * 3. Drag & Pinch Gestures: Real-time touch interaction with reaction video panel.
+ * 4. Local Storage: IndexedDB storage for full-fidelity video blobs.
+ */
+
+// Application State Store
+const STATE = {
+  currentView: 'home',
+  perfMode: 'balanced', // eco | balanced | quality
+  recording: false,
+  countdown: 3,
+  mirrorCam: true,
+  noiseSuppression: true,
+  currentCamId: null,
+  facingMode: 'user', // user | environment
+  
+  // Compositor Dimensions
+  canvasWidth: 1280,
+  canvasHeight: 720,
+  targetFps: 30,
+
+  // Beauty Filters
+  beauty: {
+    smoothing: 30,
+    brightness: 110,
+    warmth: 105,
+    contrast: 110
+  },
+
+  // Funny Face FX
+  funnyFx: 'none', // none, bigeyes, alien, tinyface, catears, dogears, cybervisor, thermal, cartoon
+
+  // Background
+  backgroundType: 'camera', // camera, blur, chroma, gaming, luxury, neon, custom
+  customBgImg: null,
+
+  // Voice Changer
+  voiceType: 'normal',
+  micGain: 1.0,
+  sourceGain: 0.8,
+
+  // Reaction Box Layout (Normalized Coordinates 0.0 - 1.0)
+  layoutMode: 'pip-topright',
+  sourceBox: {
+    x: 0.62,
+    y: 0.05,
+    w: 0.33,
+    h: 0.35,
+    border: true,
+    radius: 14
+  },
+
+  // MediaRecorder State
+  mediaRecorder: null,
+  recordedChunks: [],
+  recordStartTime: 0,
+  recordTimerInterval: null,
+  activeVideoBlob: null
+};
+
+// UI Element Handles
+const EL = {
+  views: document.querySelectorAll('.view-container'),
+  navButtons: document.querySelectorAll('.nav-btn'),
+  canvas: document.getElementById('compositorCanvas'),
+  ctx: document.getElementById('compositorCanvas').getContext('2d', { willReadFrequently: true }),
+  camVideo: document.getElementById('cameraVideo'),
+  srcVideo: document.getElementById('sourceVideo'),
+  sourceTouchBox: document.getElementById('sourceTouchBox'),
+  resizeHandle: document.getElementById('resizeHandle'),
+  viewportWrap: document.getElementById('viewportWrap'),
+  mainRecBtn: document.getElementById('mainRecordButton'),
+  timerDisplay: document.getElementById('recordingTimerDisplay'),
+  micMeterFill: document.getElementById('micMeterFill'),
+  toast: document.getElementById('toast'),
+  toastText: document.getElementById('toast-text'),
+  countdownOverlay: document.getElementById('countdown-overlay'),
+  videoFileInput: document.getElementById('videoFileInput'),
+  customBgInput: document.getElementById('customBgInput'),
+  editorVideo: document.getElementById('editorVideo'),
+  trimStartSlider: document.getElementById('trimStartSlider'),
+  trimEndSlider: document.getElementById('trimEndSlider'),
+  trimStartVal: document.getElementById('trimStartVal'),
+  trimEndVal: document.getElementById('trimEndVal'),
+  recordingsGrid: document.getElementById('recordingsGrid'),
+  emptyLibNotice: document.getElementById('emptyLibNotice'),
+  libCountPill: document.getElementById('libCountPill'),
+  filterCanvas: document.getElementById('filterBufferCanvas'),
+  filterCtx: document.getElementById('filterBufferCanvas').getContext('2d')
+};
+
+// ================= 1. AUDIO DSP & VOICE CHANGER ENGINE =================
+class AudioEngine {
+  constructor() {
+    this.ctx = null;
+    this.micStream = null;
+    this.micSourceNode = null;
+    this.micGainNode = null;
+    this.videoSourceNode = null;
+    this.videoGainNode = null;
+    this.mixedDestination = null;
+    this.analyserNode = null;
+    this.fxNodes = [];
+    this.initialized = false;
+  }
+
+  init() {
+    if (this.initialized) return;
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    this.ctx = new AudioContextClass({ latencyHint: 'interactive' });
+    this.mixedDestination = this.ctx.createMediaStreamDestination();
+
+    this.micGainNode = this.ctx.createGain();
+    this.micGainNode.gain.value = STATE.micGain;
+
+    this.videoGainNode = this.ctx.createGain();
+    this.videoGainNode.gain.value = STATE.sourceGain;
+
+    this.analyserNode = this.ctx.createAnalyser();
+    this.analyserNode.fftSize = 64;
+
+    this.initialized = true;
+    this.startLevelMeter();
+  }
+
+  attachMicStream(stream) {
+    if (!this.initialized) this.init();
+    if (this.ctx.state === 'suspended') this.ctx.resume();
+
+    this.micStream = stream;
+    if (this.micSourceNode) {
+      try { this.micSourceNode.disconnect(); } catch(e){}
+    }
+    this.micSourceNode = this.ctx.createMediaStreamSource(stream);
+    this.rebuildVoiceChain();
+  }
+
+  attachSourceVideo(videoEl) {
+    if (!this.initialized) this.init();
+    if (!this.videoSourceNode) {
+      try {
+        this.videoSourceNode = this.ctx.createMediaElementSource(videoEl);
+        this.videoSourceNode.connect(this.videoGainNode);
+        this.videoGainNode.connect(this.mixedDestination);
+        this.videoGainNode.connect(this.ctx.destination); // For user monitoring of source video
+      } catch (err) {
+        console.warn('Video element already connected or cross-origin:', err);
+      }
+    }
+  }
+
+  rebuildVoiceChain() {
+    if (!this.micSourceNode) return;
+
+    // Disconnect old FX
+    this.fxNodes.forEach(node => {
+      try { node.disconnect(); } catch(e){}
+    });
+    this.fxNodes = [];
+
+    let lastNode = this.micSourceNode;
+
+    switch (STATE.voiceType) {
+      case 'deep': {
+        const biquad = this.ctx.createBiquadFilter();
+        biquad.type = 'lowshelf';
+        biquad.frequency.value = 350;
+        biquad.gain.value = 16;
+        lastNode.connect(biquad);
+        this.fxNodes.push(biquad);
+        lastNode = biquad;
+        break;
+      }
+      case 'chipmunk': {
+        const hp = this.ctx.createBiquadFilter();
+        hp.type = 'highpass';
+        hp.frequency.value = 750;
+        const peak = this.ctx.createBiquadFilter();
+        peak.type = 'peaking';
+        peak.frequency.value = 2400;
+        peak.gain.value = 12;
+        lastNode.connect(hp);
+        hp.connect(peak);
+        this.fxNodes.push(hp, peak);
+        lastNode = peak;
+        break;
+      }
+      case 'robot': {
+        const osc = this.ctx.createOscillator();
+        const oscGain = this.ctx.createGain();
+        osc.frequency.value = 65;
+        osc.type = 'sawtooth';
+        oscGain.gain.value = 0.8;
+        osc.start();
+        
+        // Ring modulation simulation
+        const filter = this.ctx.createBiquadFilter();
+        filter.type = 'bandpass';
+        filter.frequency.value = 900;
+        filter.Q.value = 3.5;
+        lastNode.connect(filter);
+        this.fxNodes.push(filter, osc, oscGain);
+        lastNode = filter;
+        break;
+      }
+      case 'echo': {
+        const delay = this.ctx.createDelay();
+        delay.delayTime.value = 0.28;
+        const feedback = this.ctx.createGain();
+        feedback.gain.value = 0.45;
+        lastNode.connect(delay);
+        delay.connect(feedback);
+        feedback.connect(delay);
+        delay.connect(this.micGainNode);
+        this.fxNodes.push(delay, feedback);
+        break;
+      }
+      case 'radio': {
+        const bp = this.ctx.createBiquadFilter();
+        bp.type = 'bandpass';
+        bp.frequency.value = 1400;
+        bp.Q.value = 4.0;
+        lastNode.connect(bp);
+        this.fxNodes.push(bp);
+        lastNode = bp;
+        break;
+      }
+      case 'normal':
+      default:
+        // Direct route
+        break;
+    }
+
+    lastNode.connect(this.micGainNode);
+    this.micGainNode.connect(this.mixedDestination);
+    this.micGainNode.connect(this.analyserNode);
+  }
+
+  setMicGain(vol) {
+    STATE.micGain = vol;
+    if (this.micGainNode) this.micGainNode.gain.value = vol;
+  }
+
+  setSourceGain(vol) {
+    STATE.sourceGain = vol;
+    if (this.videoGainNode) this.videoGainNode.gain.value = vol;
+  }
+
+  startLevelMeter() {
+    const data = new Uint8Array(this.analyserNode.frequencyBinCount);
+    const update = () => {
+      if (this.initialized && STATE.currentView === 'studio') {
+        this.analyserNode.getByteFrequencyData(data);
+        let sum = 0;
+        for (let i = 0; i < data.length; i++) sum += data[i];
+        let avg = sum / data.length;
+        let percent = Math.min(100, Math.round((avg / 128) * 100));
+        EL.micMeterFill.style.width = percent + '%';
+      }
+      requestAnimationFrame(update);
+    };
+    update();
+  }
+
+  getMixedStream() {
+    return this.mixedDestination ? this.mixedDestination.stream : null;
+  }
+}
+
+const AudioSys = new AudioEngine();
+
+// ================= 2. CAMERA & COMPOSITOR ENGINE =================
+class Compositor {
+  constructor() {
+    this.running = false;
+    this.animId = null;
+    this.camStream = null;
+    this.virtualBgCanvas = document.createElement('canvas');
+    this.virtualBgCtx = this.virtualBgCanvas.getContext('2d');
+    this.initPredefinedBackgrounds();
+  }
+
+  async startCamera() {
+    try {
+      if (this.camStream) {
+        this.camStream.getTracks().forEach(t => t.stop());
+      }
+
+      const constraints = {
+        video: {
+          facingMode: STATE.facingMode,
+          width: { ideal: STATE.canvasWidth },
+          height: { ideal: STATE.canvasHeight }
+        },
+        audio: {
+          noiseSuppression: STATE.noiseSuppression,
+          echoCancellation: STATE.noiseSuppression,
+          autoGainControl: STATE.noiseSuppression
+        }
+      };
+
+      this.camStream = await navigator.mediaDevices.getUserMedia(constraints);
+      EL.camVideo.srcObject = this.camStream;
+      await EL.camVideo.play();
+
+      // Hook microphone into Web Audio pipeline
+      const audioTrack = this.camStream.getAudioTracks()[0];
+      if (audioTrack) {
+        const micOnlyStream = new MediaStream([audioTrack]);
+        AudioSys.attachMicStream(micOnlyStream);
+      }
+
+      this.updateResolution();
+      this.startLoop();
+      showToast('Camera Connected');
+    } catch (err) {
+      console.error('Camera Access Error:', err);
+      showToast('Camera Permission Denied or Unavailable');
+    }
+  }
+
+  stopCamera() {
+    if (this.camStream) {
+      this.camStream.getTracks().forEach(t => t.stop());
+      this.camStream = null;
+    }
+    this.running = false;
+    if (this.animId) cancelAnimationFrame(this.animId);
+  }
+
+  switchCamera() {
+    STATE.facingMode = (STATE.facingMode === 'user') ? 'environment' : 'user';
+    this.startCamera();
+  }
+
+  updateResolution() {
+    switch (STATE.perfMode) {
+      case 'eco':
+        STATE.canvasWidth = 854;
+        STATE.canvasHeight = 480;
+        STATE.targetFps = 24;
+        break;
+      case 'quality':
+        STATE.canvasWidth = 1920;
+        STATE.canvasHeight = 1080;
+        STATE.targetFps = 30;
+        break;
+      case 'balanced':
+      default:
+        STATE.canvasWidth = 1280;
+        STATE.canvasHeight = 720;
+        STATE.targetFps = 30;
+        break;
+    }
+
+    EL.canvas.width = STATE.canvasWidth;
+    EL.canvas.height = STATE.canvasHeight;
+    EL.filterCanvas.width = STATE.canvasWidth;
+    EL.filterCanvas.height = STATE.canvasHeight;
+    this.virtualBgCanvas.width = STATE.canvasWidth;
+    this.virtualBgCanvas.height = STATE.canvasHeight;
+  }
+
+  initPredefinedBackgrounds() {
+    this.bgImages = {};
+    // Procedural generation of luxury & gaming room patterns for immediate offline use
+    const drawToBg = (key, drawFn) => {
+      const c = document.createElement('canvas');
+      c.width = 1280; c.height = 720;
+      const ctx = c.getContext('2d');
+      drawFn(ctx);
+      this.bgImages[key] = c;
+    };
+
+    drawToBg('gaming', (ctx) => {
+      const grad = ctx.createLinearGradient(0, 0, 1280, 720);
+      grad.addColorStop(0, '#0f051d');
+      grad.addColorStop(1, '#020005');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, 1280, 720);
+      // Neon wall strips
+      ctx.strokeStyle = '#00f0ff';
+      ctx.lineWidth = 8;
+      ctx.shadowColor = '#00f0ff';
+      ctx.shadowBlur = 25;
+      ctx.beginPath();
+      ctx.moveTo(100, 0); ctx.lineTo(350, 720);
+      ctx.moveTo(1180, 0); ctx.lineTo(930, 720);
+      ctx.stroke();
+      ctx.strokeStyle = '#ff007f';
+      ctx.shadowColor = '#ff007f';
+      ctx.beginPath();
+      ctx.moveTo(500, 150); ctx.lineTo(780, 150);
+      ctx.stroke();
+    });
+
+    drawToBg('luxury', (ctx) => {
+      const grad = ctx.createLinearGradient(0, 0, 0, 720);
+      grad.addColorStop(0, '#2c1e13');
+      grad.addColorStop(1, '#0e0804');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, 1280, 720);
+      ctx.fillStyle = 'rgba(255, 215, 0, 0.08)';
+      ctx.fillRect(150, 80, 980, 420);
+      ctx.strokeStyle = '#c5a059';
+      ctx.lineWidth = 4;
+      ctx.strokeRect(150, 80, 980, 420);
+    });
+
+    drawToBg('neon', (ctx) => {
+      const grad = ctx.createRadialGradient(640, 360, 50, 640, 360, 600);
+      grad.addColorStop(0, '#4a0072');
+      grad.addColorStop(1, '#080014');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, 1280, 720);
+    });
+  }
+
+  startLoop() {
+    if (this.running) return;
+    this.running = true;
+
+    const render = () => {
+      if (!this.running) return;
+      this.drawFrame();
+      this.animId = requestAnimationFrame(render);
+    };
+    render();
+  }
+
+  drawFrame() {
+    const { width, height } = EL.canvas;
+    const ctx = EL.ctx;
+
+    // 1. Draw Background Layer
+    this.drawBackground(ctx, width, height);
+
+    // 2. Draw Face Camera with Live Beauty & Funny Warp
+    this.drawFaceCamera(ctx, width, height);
+
+    // 3. Draw Source Reaction Video (Picture-in-Picture Box)
+    this.drawSourceVideoPanel(ctx, width, height);
+
+    // 4. Draw Recording Watermark / Brand
+    this.drawOverlayWatermark(ctx, width, height);
+  }
+
+  drawBackground(ctx, w, h) {
+    if (STATE.backgroundType === 'camera') {
+      // Default natural room - handled directly in face layer
+      ctx.fillStyle = '#0a0718';
+      ctx.fillRect(0, 0, w, h);
+    } else if (STATE.backgroundType === 'chroma') {
+      ctx.fillStyle = '#00ff00'; // Pure bright green for green screen
+      ctx.fillRect(0, 0, w, h);
+    } else if (STATE.backgroundType === 'blur') {
+      // Fast Gaussian lens blur simulation using downscaled draw
+      if (EL.camVideo.readyState >= 2) {
+        ctx.save();
+        ctx.filter = 'blur(16px) brightness(0.9)';
+        ctx.drawImage(EL.camVideo, 0, 0, w, h);
+        ctx.restore();
+      }
+    } else if (this.bgImages[STATE.backgroundType]) {
+      ctx.drawImage(this.bgImages[STATE.backgroundType], 0, 0, w, h);
+    } else if (STATE.backgroundType === 'custom' && STATE.customBgImg) {
+      ctx.drawImage(STATE.customBgImg, 0, 0, w, h);
+    }
+  }
+
+  drawFaceCamera(ctx, w, h) {
+    if (EL.camVideo.readyState < 2) return;
+
+    ctx.save();
+
+    // Mirroring
+    if (STATE.mirrorCam && STATE.facingMode === 'user') {
+      ctx.translate(w, 0);
+      ctx.scale(-1, 1);
+    }
+
+    // Apply Live Beauty Shader Filters to Camera
+    const b = STATE.beauty;
+    let filterString = `brightness(${b.brightness}%) contrast(${b.contrast}%) saturate(${b.warmth}%)`;
+
+    // High performance skin-smoothing approximation using soft-glow compositing
+    if (b.smoothing > 0) {
+      ctx.filter = filterString;
+      ctx.drawImage(EL.camVideo, 0, 0, w, h);
+
+      // Bloom overlay layer for porcelain skin effect
+      ctx.save();
+      ctx.globalAlpha = (b.smoothing / 100) * 0.38;
+      ctx.filter = `blur(${Math.round(b.smoothing * 0.12)}px) brightness(115%)`;
+      ctx.drawImage(EL.camVideo, 0, 0, w, h);
+      ctx.restore();
+    } else {
+      ctx.filter = filterString;
+      ctx.drawImage(EL.camVideo, 0, 0, w, h);
+    }
+
+    ctx.restore();
+
+    // Apply Funny Face Distortions / Props if active
+    if (STATE.funnyFx !== 'none') {
+      this.drawFunnyEffects(ctx, w, h);
+    }
+  }
+
+  drawFunnyEffects(ctx, w, h) {
+    const time = Date.now() * 0.003;
+    const cx = w * 0.5;
+    const cy = h * 0.42;
+
+    ctx.save();
+
+    switch (STATE.funnyFx) {
+      case 'bigeyes': {
+        // Pixel Magnification of Eye Regions
+        const eyeOffset = w * 0.12;
+        const eyeY = cy - h * 0.04;
+        const eyeRadius = w * 0.09;
+
+        [-eyeOffset, eyeOffset].forEach(offset => {
+          ctx.save();
+          ctx.beginPath();
+          ctx.arc(cx + offset, eyeY, eyeRadius, 0, Math.PI * 2);
+          ctx.clip();
+          ctx.drawImage(EL.canvas, (cx + offset) - eyeRadius * 1.45, eyeY - eyeRadius * 1.45, eyeRadius * 2.9, eyeRadius * 2.9);
+          ctx.restore();
+
+          // Sparkle eye shine
+          ctx.fillStyle = 'rgba(255,255,255,0.7)';
+          ctx.beginPath();
+          ctx.arc(cx + offset - 8, eyeY - 8, 5, 0, Math.PI * 2);
+          ctx.fill();
+        });
+        break;
+      }
+      case 'alien': {
+        // Bulge head & narrow chin
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(cx, cy - h * 0.08, w * 0.26, 0, Math.PI * 2);
+        ctx.clip();
+        ctx.drawImage(EL.canvas, cx - w * 0.35, cy - h * 0.2, w * 0.7, h * 0.4);
+        ctx.restore();
+        break;
+      }
+      case 'tinyface': {
+        // Pinch center
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(cx, cy, w * 0.18, 0, Math.PI * 2);
+        ctx.clip();
+        ctx.drawImage(EL.canvas, cx - w * 0.12, cy - h * 0.12, w * 0.24, h * 0.24);
+        ctx.restore();
+        break;
+      }
+      case 'catears': {
+        // Animated Cat Ears with ear twitch
+        const earW = w * 0.09;
+        const earH = h * 0.14;
+        const earY = cy - h * 0.24;
+        const twitch = Math.sin(time * 3) * 4;
+
+        [-w * 0.16, w * 0.16].forEach((offset, idx) => {
+          ctx.save();
+          ctx.translate(cx + offset, earY);
+          ctx.rotate((idx === 0 ? -0.25 : 0.25) + (idx === 0 ? twitch * 0.02 : 0));
+          // Outer Ear
+          ctx.fillStyle = '#ff7597';
+          ctx.beginPath();
+          ctx.moveTo(-earW, earH);
+          ctx.lineTo(0, -earH);
+          ctx.lineTo(earW, earH);
+          ctx.closePath();
+          ctx.fill();
+          // Inner Ear
+          ctx.fillStyle = '#ffffff';
+          ctx.beginPath();
+          ctx.moveTo(-earW * 0.5, earH * 0.9);
+          ctx.lineTo(0, -earH * 0.6);
+          ctx.lineTo(earW * 0.5, earH * 0.9);
+          ctx.closePath();
+          ctx.fill();
+          ctx.restore();
+        });
+        break;
+      }
+      case 'dogears': {
+        // Doggy floppy ears & nose
+        const earW = w * 0.11;
+        const earH = h * 0.18;
+        const earY = cy - h * 0.16;
+
+        [-w * 0.22, w * 0.22].forEach((offset) => {
+          ctx.fillStyle = '#8b5a2b';
+          ctx.beginPath();
+          ctx.ellipse(cx + offset, earY, earW * 0.6, earH, 0.2, 0, Math.PI * 2);
+          ctx.fill();
+        });
+
+        // Doggy nose
+        ctx.fillStyle = '#222';
+        ctx.beginPath();
+        ctx.ellipse(cx, cy + h * 0.06, 18, 12, 0, 0, Math.PI * 2);
+        ctx.fill();
+        break;
+      }
+      case 'cybervisor': {
+        // Glowing futuristic neon visor glasses
+        ctx.strokeStyle = '#00f0ff';
+        ctx.lineWidth = 5;
+        ctx.shadowColor = '#00f0ff';
+        ctx.shadowBlur = 18;
+        ctx.fillStyle = 'rgba(0, 240, 255, 0.28)';
+
+        const visorW = w * 0.32;
+        const visorH = h * 0.08;
+        const vy = cy - h * 0.06;
+
+        ctx.beginPath();
+        ctx.roundRect(cx - visorW * 0.5, vy, visorW, visorH, 8);
+        ctx.fill();
+        ctx.stroke();
+
+        // Visor HUD Grid Lines
+        ctx.fillStyle = '#ff007f';
+        ctx.fillRect(cx - visorW * 0.4, vy + visorH * 0.4, 20, 2);
+        ctx.fillRect(cx + visorW * 0.2, vy + visorH * 0.4, 30, 2);
+        break;
+      }
+      case 'thermal': {
+        // False color thermal camera effect
+        ctx.globalCompositeOperation = 'color-burn';
+        ctx.fillStyle = 'rgba(255, 60, 0, 0.4)';
+        ctx.fillRect(0, 0, w, h);
+        break;
+      }
+      case 'cartoon': {
+        // High contrast posterization
+        ctx.filter = 'contrast(160%) saturate(180%)';
+        break;
+      }
+    }
+
+    ctx.restore();
+  }
+
+  drawSourceVideoPanel(ctx, w, h) {
+    if (EL.srcVideo.readyState < 2) return;
+
+    const b = STATE.sourceBox;
+    const px = Math.round(b.x * w);
+    const py = Math.round(b.y * h);
+    const pw = Math.round(b.w * w);
+    const ph = Math.round(b.h * h);
+
+    ctx.save();
+
+    // Drop shadow
+    ctx.shadowColor = 'rgba(0, 0, 0, 0.8)';
+    ctx.shadowBlur = 16;
+    ctx.shadowOffsetX = 0;
+    ctx.shadowOffsetY = 6;
+
+    // Rounded clipping region
+    ctx.beginPath();
+    ctx.roundRect(px, py, pw, ph, b.radius);
+    ctx.clip();
+
+    // Render Source Video maintaining aspect ratio within the box
+    ctx.drawImage(EL.srcVideo, px, py, pw, ph);
+
+    // Glowing Reaction Border
+    if (b.border) {
+      ctx.restore();
+      ctx.save();
+      ctx.strokeStyle = '#00f0ff';
+      ctx.lineWidth = 4;
+      ctx.shadowColor = 'rgba(0, 240, 255, 0.6)';
+      ctx.shadowBlur = 10;
+      ctx.beginPath();
+      ctx.roundRect(px, py, pw, ph, b.radius);
+      ctx.stroke();
+    }
+
+    ctx.restore();
+  }
+
+  drawOverlayWatermark(ctx, w, h) {
+    // Subtle, elegant watermark
+    ctx.save();
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+    ctx.font = 'bold 12px sans-serif';
+    ctx.fillText('REACTION PRO', 18, h - 18);
+    ctx.restore();
+  }
+}
+
+const StudioCompositor = new Compositor();
+
+// ================= 3. TOUCH DRAG & RESIZE CONTROLLER =================
+class TouchBoxController {
+  constructor() {
+    this.box = EL.sourceTouchBox;
+    this.handle = EL.resizeHandle;
+    this.wrap = EL.viewportWrap;
+    this.isDragging = false;
+    this.isResizing = false;
+    this.startX = 0;
+    this.startY = 0;
+    this.initEvents();
+  }
+
+  updateDomPosition() {
+    const wrapRect = this.wrap.getBoundingClientRect();
+    const b = STATE.sourceBox;
+
+    this.box.style.left = (b.x * wrapRect.width) + 'px';
+    this.box.style.top = (b.y * wrapRect.height) + 'px';
+    this.box.style.width = (b.w * wrapRect.width) + 'px';
+    this.box.style.height = (b.h * wrapRect.height) + 'px';
+  }
+
+  initEvents() {
+    // Pointer Dragging
+    this.box.addEventListener('pointerdown', (e) => {
+      if (e.target === this.handle) return;
+      this.isDragging = true;
+      this.startX = e.clientX;
+      this.startY = e.clientY;
+      this.box.setPointerCapture(e.pointerId);
+    });
+
+    this.box.addEventListener('pointermove', (e) => {
+      if (!this.isDragging) return;
+      const wrapRect = this.wrap.getBoundingClientRect();
+      const dx = (e.clientX - this.startX) / wrapRect.width;
+      const dy = (e.clientY - this.startY) / wrapRect.height;
+
+      STATE.sourceBox.x = Math.max(0, Math.min(1 - STATE.sourceBox.w, STATE.sourceBox.x + dx));
+      STATE.sourceBox.y = Math.max(0, Math.min(1 - STATE.sourceBox.h, STATE.sourceBox.y + dy));
+
+      this.startX = e.clientX;
+      this.startY = e.clientY;
+      this.updateDomPosition();
+    });
+
+    const stopDrag = (e) => {
+      this.isDragging = false;
+    };
+    this.box.addEventListener('pointerup', stopDrag);
+    this.box.addEventListener('pointercancel', stopDrag);
+
+    // Pointer Resizing
+    this.handle.addEventListener('pointerdown', (e) => {
+      e.stopPropagation();
+      this.isResizing = true;
+      this.startX = e.clientX;
+      this.startY = e.clientY;
+      this.handle.setPointerCapture(e.pointerId);
+    });
+
+    this.handle.addEventListener('pointermove', (e) => {
+      if (!this.isResizing) return;
+      const wrapRect = this.wrap.getBoundingClientRect();
+      const dx = (e.clientX - this.startX) / wrapRect.width;
+      const dy = (e.clientY - this.startY) / wrapRect.height;
+
+      STATE.sourceBox.w = Math.max(0.18, Math.min(0.9, STATE.sourceBox.w + dx));
+      STATE.sourceBox.h = Math.max(0.18, Math.min(0.9, STATE.sourceBox.h + dy));
+
+      this.startX = e.clientX;
+      this.startY = e.clientY;
+      this.updateDomPosition();
+    });
+
+    const stopResize = () => { this.isResizing = false; };
+    this.handle.addEventListener('pointerup', stopResize);
+    this.handle.addEventListener('pointercancel', stopResize);
+
+    window.addEventListener('resize', () => this.updateDomPosition());
+  }
+
+  setLayoutPreset(preset) {
+    STATE.layoutMode = preset;
+    switch (preset) {
+      case 'pip-topright':
+        STATE.sourceBox = { x: 0.64, y: 0.04, w: 0.32, h: 0.32, border: true, radius: 12 };
+        break;
+      case 'pip-topleft':
+        STATE.sourceBox = { x: 0.04, y: 0.04, w: 0.32, h: 0.32, border: true, radius: 12 };
+        break;
+      case 'pip-bottomright':
+        STATE.sourceBox = { x: 0.64, y: 0.64, w: 0.32, h: 0.32, border: true, radius: 12 };
+        break;
+      case 'sidebyside':
+        STATE.sourceBox = { x: 0.5, y: 0.1, w: 0.48, h: 0.8, border: true, radius: 10 };
+        break;
+      case 'topbottom':
+        STATE.sourceBox = { x: 0.05, y: 0.52, w: 0.9, h: 0.44, border: true, radius: 10 };
+        break;
+    }
+    this.updateDomPosition();
+  }
+}
+
+const BoxController = new TouchBoxController();
+
+// ================= 4. LOCAL INDEXED-DB VIDEO STORAGE =================
+class VideoDatabase {
+  constructor() {
+    this.dbName = 'ReactionProDB';
+    this.version = 1;
+    this.db = null;
+  }
+
+  async open() {
+    if (this.db) return this.db;
+    return new Promise((resolve, reject) => {
+      const req = indexedDB.open(this.dbName, this.version);
+      req.onupgradeneeded = (e) => {
+        const db = e.target.result;
+        if (!db.objectStoreNames.contains('recordings')) {
+          db.createObjectStore('recordings', { keyPath: 'id' });
+        }
+      };
+      req.onsuccess = (e) => {
+        this.db = e.target.result;
+        resolve(this.db);
+      };
+      req.onerror = (e) => reject(e);
+    });
+  }
+
+  async saveRecording(recObj) {
+    const db = await this.open();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction('recordings', 'readwrite');
+      const store = tx.objectStore('recordings');
+      store.put(recObj);
+      tx.oncomplete = () => resolve(recObj.id);
+      tx.onerror = (e) => reject(e);
+    });
+  }
+
+  async getAllRecordings() {
+    const db = await this.open();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction('recordings', 'readonly');
+      const store = tx.objectStore('recordings');
+      const req = store.getAll();
+      req.onsuccess = () => resolve(req.result || []);
+      req.onerror = (e) => reject(e);
+    });
+  }
+
+  async deleteRecording(id) {
+    const db = await this.open();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction('recordings', 'readwrite');
+      const store = tx.objectStore('recordings');
+      store.delete(id);
+      tx.oncomplete = () => resolve(true);
+      tx.onerror = (e) => reject(e);
+    });
+  }
+}
+
+const DB = new VideoDatabase();
+
+// ================= 5. RECORDING & EXPORT ORCHESTRATOR =================
+class StudioRecorder {
+  constructor() {
+    this.recorder = null;
+    this.recordedChunks = [];
+    this.startTime = 0;
+    this.timerInterval = null;
+  }
+
+  getSupportedMimeType() {
+    const types = [
+      'video/webm;codecs=vp9,opus',
+      'video/webm;codecs=vp8,opus',
+      'video/webm;codecs=h264,opus',
+      'video/mp4;codecs=avc1,mp4a.40.2',
+      'video/webm'
+    ];
+    for (const t of types) {
+      if (MediaRecorder.isTypeSupported(t)) return t;
+    }
+    return '';
+  }
+
+  startCountdownAndRecord() {
+    if (STATE.recording) {
+      this.stopRecording();
+      return;
+    }
+
+    if (STATE.countdown > 0) {
+      let count = STATE.countdown;
+      EL.countdownOverlay.textContent = count;
+      EL.countdownOverlay.style.display = 'flex';
+
+      const timer = setInterval(() => {
+        count--;
+        if (count > 0) {
+          EL.countdownOverlay.textContent = count;
+        } else {
+          clearInterval(timer);
+          EL.countdownOverlay.style.display = 'none';
+          this.executeRecording();
+        }
+      }, 1000);
+    } else {
+      this.executeRecording();
+    }
+  }
+
+  executeRecording() {
+    try {
+      this.recordedChunks = [];
+
+      // 1. Capture video stream from live composited canvas
+      const canvasStream = EL.canvas.captureStream(STATE.targetFps);
+
+      // 2. Capture mixed audio stream from Web Audio DSP
+      const audioStream = AudioSys.getMixedStream();
+
+      // Combine tracks
+      const tracks = [...canvasStream.getVideoTracks()];
+      if (audioStream && audioStream.getAudioTracks().length > 0) {
+        tracks.push(audioStream.getAudioTracks()[0]);
+      }
+
+      const combinedStream = new MediaStream(tracks);
+      const mimeType = this.getSupportedMimeType();
+
+      this.recorder = new MediaRecorder(combinedStream, {
+        mimeType: mimeType || undefined,
+        videoBitsPerSecond: (STATE.perfMode === 'quality') ? 6000000 : 3500000
+      });
+
+      this.recorder.ondataavailable = (e) => {
+        if (e.data && e.data.size > 0) {
+          this.recordedChunks.push(e.data);
+        }
+      };
+
+      this.recorder.onstop = () => {
+        this.finishRecording();
+      };
+
+      // Play reaction source video in sync with recording
+      if (EL.srcVideo.src) {
+        EL.srcVideo.currentTime = 0;
+        EL.srcVideo.play().catch(e => console.log('Source autoplay restriction handled:', e));
+      }
+
+      this.recorder.start(500); // 500ms chunks for stability
+      STATE.recording = true;
+      EL.mainRecBtn.classList.add('recording');
+      EL.sourceTouchBox.classList.add('recording-locked');
+
+      this.startTime = Date.now();
+      this.timerInterval = setInterval(() => {
+        const elapsedSec = Math.floor((Date.now() - this.startTime) / 1000);
+        const m = String(Math.floor(elapsedSec / 60)).padStart(2, '0');
+        const s = String(elapsedSec % 60).padStart(2, '0');
+        EL.timerDisplay.textContent = `${m}:${s}`;
+      }, 500);
+
+      showToast('Recording Started');
+    } catch (err) {
+      console.error('Recording initialization failure:', err);
+      showToast('Recording Failed: Codec/Hardware Not Supported');
+    }
+  }
+
+  stopRecording() {
+    if (!STATE.recording || !this.recorder) return;
+    this.recorder.stop();
+    STATE.recording = false;
+    EL.mainRecBtn.classList.remove('recording');
+    EL.sourceTouchBox.classList.remove('recording-locked');
+    clearInterval(this.timerInterval);
+    EL.timerDisplay.textContent = '00:00';
+
+    if (EL.srcVideo.src) {
+      EL.srcVideo.pause();
+    }
+  }
+
+  async finishRecording() {
+    showToast('Processing Reaction...');
+    const mime = this.recorder.mimeType || 'video/webm';
+    const isMp4 = mime.includes('mp4');
+    const ext = isMp4 ? 'mp4' : 'webm';
+    const blob = new Blob(this.recordedChunks, { type: mime });
+
+    // Generate thumbnail from first canvas frame
+    const thumbData = EL.canvas.toDataURL('image/jpeg', 0.6);
+
+    const recObj = {
+      id: 'reaction_' + Date.now(),
+      title: 'Reaction ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      date: new Date().toLocaleDateString(),
+      duration: Math.max(1, Math.round((Date.now() - this.startTime) / 1000)),
+      sizeMb: (blob.size / (1024 * 1024)).toFixed(1),
+      blob: blob,
+      ext: ext,
+      thumbnail: thumbData
+    };
+
+    await DB.saveRecording(recObj);
+    STATE.activeVideoBlob = blob;
+
+    // Load into Editor automatically
+    loadRecordingIntoEditor(recObj);
+    switchView('editor');
+    showToast('Saved to Local Studio!');
+  }
+}
+
+const StudioRec = new StudioRecorder();
+
+// ================= 6. UI NAVIGATION & EVENT HANDLERS =================
+function switchView(viewName) {
+  STATE.currentView = viewName;
+  EL.views.forEach(v => v.classList.remove('active'));
+  EL.navButtons.forEach(b => {
+    b.classList.toggle('active', b.dataset.view === viewName);
+  });
+
+  const activeEl = document.getElementById('view-' + viewName);
+  if (activeEl) activeEl.classList.add('active');
+
+  // Camera Management
+  if (viewName === 'studio') {
+    StudioCompositor.startCamera();
+    setTimeout(() => BoxController.updateDomPosition(), 100);
+  } else {
+    if (!STATE.recording) {
+      StudioCompositor.stopCamera();
+    }
+  }
+
+  if (viewName === 'library') {
+    refreshLibraryList();
+  }
+}
+
+function showToast(msg) {
+  EL.toastText.textContent = msg;
+  EL.toast.classList.add('show');
+  setTimeout(() => EL.toast.classList.remove('show'), 2600);
+}
+
+function openSheet(sheetId) {
+  closeAllSheets();
+  const el = document.getElementById(sheetId);
+  if (el) el.classList.add('open');
+}
+
+function closeAllSheets() {
+  document.querySelectorAll('.tool-sheet').forEach(s => s.classList.remove('open'));
+}
+
+// Navigation Events
+EL.navButtons.forEach(btn => {
+  btn.addEventListener('click', () => switchView(btn.dataset.view));
+});
+
+// Home Action Shortcuts
+document.getElementById('btnQuickStart').addEventListener('click', () => switchView('studio'));
+document.getElementById('menuBtnImportVideo').addEventListener('click', () => {
+  EL.videoFileInput.click();
+});
+document.getElementById('menuBtnBeauty').addEventListener('click', () => {
+  switchView('studio');
+  openSheet('sheetBeauty');
+});
+document.getElementById('menuBtnFunnyFace').addEventListener('click', () => {
+  switchView('studio');
+  openSheet('sheetFunny');
+});
+document.getElementById('menuBtnBackground').addEventListener('click', () => {
+  switchView('studio');
+  openSheet('sheetBackground');
+});
+document.getElementById('menuBtnVoice').addEventListener('click', () => {
+  switchView('studio');
+  openSheet('sheetVoice');
+});
+document.getElementById('menuBtnLibrary').addEventListener('click', () => switchView('library'));
+
+// Studio Dock Sheet Toggles
+document.getElementById('dockBtnBeauty').addEventListener('click', () => openSheet('sheetBeauty'));
+document.getElementById('dockBtnFunny').addEventListener('click', () => openSheet('sheetFunny'));
+document.getElementById('dockBtnAudio').addEventListener('click', () => openSheet('sheetVoice'));
+document.getElementById('dockBtnLayout').addEventListener('click', () => openSheet('sheetLayout'));
+document.querySelectorAll('[data-close]').forEach(btn => {
+  btn.addEventListener('click', () => closeAllSheets());
+});
+
+// Camera Controls
+document.getElementById('btnFlipCam').addEventListener('click', () => {
+  StudioCompositor.switchCamera();
+});
+
+// Main Record Trigger
+EL.mainRecBtn.addEventListener('click', () => {
+  StudioRec.startCountdownAndRecord();
+});
+
+// Video File Selector (Local Android Gallery)
+EL.videoFileInput.addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const url = URL.createObjectURL(file);
+  EL.srcVideo.src = url;
+  EL.srcVideo.load();
+  EL.srcVideo.onloadedmetadata = () => {
+    AudioSys.attachSourceVideo(EL.srcVideo);
+    showToast(`Loaded: ${file.name}`);
+    switchView('studio');
+  };
+});
+
+document.getElementById('btnReplaceSourceFile').addEventListener('click', () => {
+  closeAllSheets();
+  EL.videoFileInput.click();
+});
+
+// Custom Background Image Picker
+EL.customBgInput.addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const img = new Image();
+  img.src = URL.createObjectURL(file);
+  img.onload = () => {
+    STATE.customBgImg = img;
+    STATE.backgroundType = 'custom';
+    showToast('Custom Background Loaded');
+  };
+});
+
+// Beauty Sliders Binding
+const bindSlider = (id, prop, lblId, suffix) => {
+  const el = document.getElementById(id);
+  const lbl = document.getElementById(lblId);
+  el.addEventListener('input', () => {
+    STATE.beauty[prop] = parseFloat(el.value);
+    lbl.textContent = el.value + suffix;
+  });
+};
+bindSlider('sliderSmooth', 'smoothing', 'lblSmooth', '%');
+bindSlider('sliderBrightness', 'brightness', 'lblBrightness', '%');
+bindSlider('sliderWarmth', 'warmth', 'lblWarmth', '%');
+bindSlider('sliderContrast', 'contrast', 'lblContrast', '%');
+
+// Beauty Presets
+document.querySelectorAll('[data-beauty-preset]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('[data-beauty-preset]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const p = btn.dataset.beautyPreset;
+    if (p === 'natural') {
+      STATE.beauty = { smoothing: 30, brightness: 110, warmth: 105, contrast: 110 };
+    } else if (p === 'radiant') {
+      STATE.beauty = { smoothing: 55, brightness: 125, warmth: 115, contrast: 115 };
+    } else if (p === 'warm') {
+      STATE.beauty = { smoothing: 40, brightness: 105, warmth: 130, contrast: 105 };
+    } else if (p === 'smooth') {
+      STATE.beauty = { smoothing: 85, brightness: 115, warmth: 105, contrast: 105 };
+    } else if (p === 'reset') {
+      STATE.beauty = { smoothing: 0, brightness: 100, warmth: 100, contrast: 100 };
+    }
+    document.getElementById('sliderSmooth').value = STATE.beauty.smoothing;
+    document.getElementById('lblSmooth').textContent = STATE.beauty.smoothing + '%';
+    document.getElementById('sliderBrightness').value = STATE.beauty.brightness;
+    document.getElementById('lblBrightness').textContent = STATE.beauty.brightness + '%';
+    document.getElementById('sliderWarmth').value = STATE.beauty.warmth;
+    document.getElementById('lblWarmth').textContent = STATE.beauty.warmth + '%';
+    document.getElementById('sliderContrast').value = STATE.beauty.contrast;
+    document.getElementById('lblContrast').textContent = STATE.beauty.contrast + '%';
+  });
+});
+
+// Funny Face Filter Selector
+document.querySelectorAll('[data-fx]').forEach(card => {
+  card.addEventListener('click', () => {
+    document.querySelectorAll('[data-fx]').forEach(c => c.classList.remove('active'));
+    card.classList.add('active');
+    STATE.funnyFx = card.dataset.fx;
+    showToast(`Effect: ${card.dataset.fx}`);
+  });
+});
+
+// Virtual Background Selection
+document.querySelectorAll('[data-bg]').forEach(chip => {
+  chip.addEventListener('click', () => {
+    document.querySelectorAll('[data-bg]').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    const bg = chip.dataset.bg;
+    if (bg === 'custom') {
+      EL.customBgInput.click();
+    } else {
+      STATE.backgroundType = bg;
+    }
+  });
+});
+
+// Voice Changer Selection
+document.querySelectorAll('[data-voice]').forEach(card => {
+  card.addEventListener('click', () => {
+    document.querySelectorAll('[data-voice]').forEach(c => c.classList.remove('active'));
+    card.classList.add('active');
+    STATE.voiceType = card.dataset.voice;
+    AudioSys.rebuildVoiceChain();
+    showToast(`Voice: ${card.dataset.voice}`);
+  });
+});
+
+// Volume Audio Sliders
+document.getElementById('sliderMicGain').addEventListener('input', (e) => {
+  const val = parseFloat(e.target.value) / 100;
+  AudioSys.setMicGain(val);
+  document.getElementById('lblMicVol').textContent = e.target.value + '%';
+});
+
+document.getElementById('sliderSourceVol').addEventListener('input', (e) => {
+  const val = parseFloat(e.target.value) / 100;
+  AudioSys.setSourceGain(val);
+  document.getElementById('lblSourceVol').textContent = e.target.value + '%';
+});
+
+// Layout Presets
+document.querySelectorAll('[data-layout]').forEach(chip => {
+  chip.addEventListener('click', () => {
+    document.querySelectorAll('[data-layout]').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    BoxController.setLayoutPreset(chip.dataset.layout);
+  });
+});
+
+// Settings Handlers
+document.getElementById('prefPerfMode').addEventListener('change', (e) => {
+  STATE.perfMode = e.target.value;
+  document.getElementById('homePerfModeBadge').textContent = e.target.value.toUpperCase();
+  StudioCompositor.updateResolution();
+  showToast(`Profile: ${e.target.value.toUpperCase()}`);
+});
+
+document.getElementById('prefCountdown').addEventListener('change', (e) => {
+  STATE.countdown = parseInt(e.target.value, 10);
+});
+
+document.getElementById('prefMirrorCam').addEventListener('change', (e) => {
+  STATE.mirrorCam = e.target.checked;
+});
+
+document.getElementById('prefNoiseSuppression').addEventListener('change', (e) => {
+  STATE.noiseSuppression = e.target.checked;
+  StudioCompositor.startCamera();
+});
+
+// ================= 7. EDITOR & EXPORT MODULE =================
+let currentEditorRec = null;
+
+function loadRecordingIntoEditor(recObj) {
+  currentEditorRec = recObj;
+  const url = URL.createObjectURL(recObj.blob);
+  EL.editorVideo.src = url;
+
+  EL.editorVideo.onloadedmetadata = () => {
+    const dur = EL.editorVideo.duration || recObj.duration;
+    EL.trimStartSlider.max = dur;
+    EL.trimEndSlider.max = dur;
+    EL.trimStartSlider.value = 0;
+    EL.trimEndSlider.value = dur;
+    EL.trimStartVal.textContent = '0.0s';
+    EL.trimEndVal.textContent = dur.toFixed(1) + 's';
+  };
+}
+
+EL.trimStartSlider.addEventListener('input', (e) => {
+  EL.trimStartVal.textContent = parseFloat(e.target.value).toFixed(1) + 's';
+  EL.editorVideo.currentTime = parseFloat(e.target.value);
+});
+
+EL.trimEndSlider.addEventListener('input', (e) => {
+  EL.trimEndVal.textContent = parseFloat(e.target.value).toFixed(1) + 's';
+});
+
+document.getElementById('btnExportFinal').addEventListener('click', () => {
+  if (!currentEditorRec) {
+    showToast('No Active Video');
+    return;
+  }
+
+  // Trigger Native Android Download
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(currentEditorRec.blob);
+  a.download = `${currentEditorRec.title.replace(/\s+/g, '_')}.${currentEditorRec.ext}`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  showToast('Export Downloaded to Gallery');
+});
+
+// ================= 8. RECORDINGS LIBRARY VIEW =================
+async function refreshLibraryList() {
+  const records = await DB.getAllRecordings();
+  EL.recordingsGrid.innerHTML = '';
+  EL.libCountPill.textContent = `${records.length} Videos`;
+
+  if (records.length === 0) {
+    EL.emptyLibNotice.style.display = 'block';
+    return;
+  }
+  EL.emptyLibNotice.style.display = 'none';
+
+  records.reverse().forEach(rec => {
+    const card = document.createElement('div');
+    card.className = 'recording-card';
+    card.innerHTML = `
+      <img src="${rec.thumbnail}" class="rec-thumb" alt="Thumbnail">
+      <div class="rec-info">
+        <div class="rec-title">${rec.title}</div>
+        <div class="rec-meta">${rec.date} • ${rec.duration}s • ${rec.sizeMb}MB</div>
+      </div>
+      <div class="rec-actions">
+        <button class="icon-btn btn-play-rec" title="Play / Edit">
+          <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </button>
+        <button class="icon-btn btn-share-rec" title="Share">
+          <svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+        </button>
+        <button class="icon-btn btn-del-rec" title="Delete" style="color:var(--danger);">
+          <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+        </button>
+      </div>
+    `;
+
+    card.querySelector('.btn-play-rec').addEventListener('click', () => {
+      loadRecordingIntoEditor(rec);
+      switchView('editor');
+    });
+
+    card.querySelector('.btn-share-rec').addEventListener('click', async () => {
+      if (navigator.share && navigator.canShare) {
+        try {
+          const file = new File([rec.blob], `${rec.title}.${rec.ext}`, { type: rec.blob.type });
+          if (navigator.canShare({ files: [file] })) {
+            await navigator.share({
+              files: [file],
+              title: rec.title,
+              text: 'Check out my reaction video from Reaction Pro Studio!'
+            });
+            showToast('Shared successfully');
+            return;
+          }
+        } catch (e) {
+          console.log('Share skipped/unsupported:', e);
+        }
+      }
+      // Fallback: Direct Download
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(rec.blob);
+      a.download = `${rec.title}.${rec.ext}`;
+      a.click();
+    });
+
+    card.querySelector('.btn-del-rec').addEventListener('click', async () => {
+      if (confirm(`Delete "${rec.title}"?`)) {
+        await DB.deleteRecording(rec.id);
+        refreshLibraryList();
+        showToast('Video Deleted');
+      }
+    });
+
+    EL.recordingsGrid.appendChild(card);
+  });
+}
+
+// Window Load Initialization
+window.addEventListener('DOMContentLoaded', () => {
+  StudioCompositor.initPredefinedBackgrounds();
+  BoxController.setLayoutPreset('pip-topright');
+  StudioCompositor.updateResolution();
+});
+</script>
+</body>
+</html>
