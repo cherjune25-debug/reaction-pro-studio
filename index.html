@@ -1,36 +1,24 @@
 <!DOCTYPE html>
-<html lang="en" style="background-color:#080514;color:#ffffff;">
+<html lang="en" style="background:#080514;color:#fff;">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="color-scheme" content="dark">
 <meta name="theme-color" content="#080514">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<title>Reaction Pro Studio</title>
+<title>Reaction Pro Studio - Viral Edition</title>
 <style>
 :root {
   color-scheme: dark;
   --bg-dark: #080514;
   --bg-card: #120e26;
-  --bg-card-hover: #1a1538;
-  --bg-glass: rgba(18, 14, 38, 0.85);
-  --neon-purple: #9d4edd;
-  --neon-purple-glow: rgba(157, 78, 221, 0.45);
+  --bg-sheet: #161230;
   --neon-blue: #00f0ff;
-  --neon-blue-glow: rgba(0, 240, 255, 0.45);
+  --neon-purple: #9d4edd;
   --neon-pink: #ff007f;
-  --neon-pink-glow: rgba(255, 0, 127, 0.45);
-  --text-primary: #ffffff;
-  --text-secondary: #a39ec4;
-  --border-subtle: rgba(157, 78, 221, 0.28);
-  --border-active: rgba(0, 240, 255, 0.7);
+  --text-main: #ffffff;
+  --text-muted: #a39ec4;
+  --border: rgba(157, 78, 221, 0.35);
   --danger: #ff3366;
-  --success: #00f59b;
-  --radius-sm: 8px;
-  --radius-md: 14px;
-  --radius-lg: 22px;
-  --radius-full: 9999px;
-  --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 * {
@@ -42,282 +30,69 @@
 }
 
 html, body {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  background: #080514 !important;
-  background-color: #080514 !important;
-  color: #ffffff !important;
-  font-family: var(--font-main);
-  font-size: 14px;
-}
-
-/* Hardened Root Container */
-#app-root {
-  position: fixed;
-  inset: 0;
   width: 100vw;
   height: 100vh;
   height: 100dvh;
-  display: flex;
-  flex-direction: column;
-  background: #080514;
-  color: #ffffff;
   overflow: hidden;
-  z-index: 1;
+  background: #080514 !important;
+  color: #fff !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  overscroll-behavior: none;
 }
 
-.view-container {
+#app-root {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #080514;
+}
+
+/* Studio Stage */
+.studio-stage {
   flex: 1 1 auto;
+  position: relative;
   width: 100%;
   height: calc(100% - 64px);
-  position: relative;
-  overflow-y: auto;
-  overflow-x: hidden;
-  display: none;
-  -webkit-overflow-scrolling: touch;
-  background: #080514;
-}
-
-.view-container.active {
-  display: flex !important;
-  flex-direction: column;
-}
-
-/* Bottom Navigation */
-#bottom-nav {
-  flex: 0 0 64px;
-  height: 64px;
-  min-height: 64px;
-  background: #120e26;
-  border-top: 1px solid var(--border-subtle);
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  position: relative;
-  z-index: 100;
-  padding-bottom: env(safe-area-inset-bottom, 0px);
-}
-
-.nav-btn {
-  background: none;
-  border: none;
-  color: #a39ec4;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 3px;
-  font-size: 10.5px;
-  font-weight: 600;
-  cursor: pointer;
-  padding: 8px 12px;
-  min-width: 60px;
-}
-
-.nav-btn svg {
-  width: 20px;
-  height: 20px;
-  stroke: #a39ec4;
-  fill: none;
-  stroke-width: 2;
-}
-
-.nav-btn.active {
-  color: #00f0ff;
-}
-
-.nav-btn.active svg {
-  stroke: #00f0ff;
-  filter: drop-shadow(0 0 6px var(--neon-blue-glow));
-}
-
-/* Header */
-.app-header {
-  padding: 16px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid var(--border-subtle);
-  background: #120e26;
-  position: sticky;
-  top: 0;
-  z-index: 50;
-}
-
-.brand-badge {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.brand-title {
-  font-size: 18px;
-  font-weight: 800;
-  background: linear-gradient(135deg, #00f0ff, #9d4edd);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.perf-pill {
-  font-size: 10px;
-  font-weight: 700;
-  text-transform: uppercase;
-  padding: 4px 10px;
-  border-radius: var(--radius-full);
-  background: rgba(0, 240, 255, 0.12);
-  border: 1px solid #00f0ff;
-  color: #00f0ff;
-}
-
-/* Home View */
-.home-hero {
-  padding: 20px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.hero-cta {
-  background: linear-gradient(145deg, #1f1247, #130a2f);
-  border: 1px solid #9d4edd;
-  border-radius: var(--radius-lg);
-  padding: 22px;
-  box-shadow: 0 10px 28px rgba(157, 78, 221, 0.35);
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  position: relative;
+  background: #000;
   overflow: hidden;
-}
-
-.hero-title {
-  font-size: 22px;
-  font-weight: 800;
-  color: #ffffff;
-  line-height: 1.25;
-}
-
-.hero-desc {
-  font-size: 13px;
-  color: #a39ec4;
-  line-height: 1.4;
-}
-
-.btn-primary {
-  background: linear-gradient(135deg, #9d4edd, #ff007f);
-  color: #ffffff;
-  border: none;
-  border-radius: var(--radius-md);
-  padding: 14px 20px;
-  font-size: 14px;
-  font-weight: 700;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  cursor: pointer;
-  box-shadow: 0 6px 18px rgba(255, 0, 127, 0.45);
-}
-
-.grid-menu {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-  padding: 0 16px 24px;
-}
-
-.menu-card {
-  background: #120e26;
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  cursor: pointer;
-}
-
-.menu-card-icon {
-  width: 38px;
-  height: 38px;
-  border-radius: var(--radius-sm);
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.menu-card-icon svg {
-  width: 22px;
-  height: 22px;
-  stroke: #ffffff;
-  fill: none;
-  stroke-width: 2;
-}
-
-.menu-card-title {
-  font-size: 13.5px;
-  font-weight: 700;
-  color: #ffffff;
-}
-
-.menu-card-sub {
-  font-size: 11.5px;
-  color: #a39ec4;
-}
-
-/* Studio Workstation View */
-#view-studio {
-  background: #000000;
-  display: none;
-  flex-direction: column;
-  height: 100%;
-}
-
-.studio-viewport-wrap {
-  flex: 1 1 auto;
-  position: relative;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #05030b;
-  overflow: hidden;
 }
 
 #compositorCanvas {
   width: 100%;
   height: 100%;
-  object-fit: contain;
-  background: #000000;
+  object-fit: cover;
   display: block;
 }
 
-.studio-top-overlay {
+/* Floating Badges */
+.hud-top {
   position: absolute;
-  top: 14px;
-  left: 14px;
-  right: 14px;
+  top: env(safe-area-inset-top, 10px);
+  left: 12px;
+  right: 12px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  z-index: 10;
+  z-index: 20;
   pointer-events: none;
 }
 
-.rec-timer-badge {
+.rec-badge {
   background: rgba(0, 0, 0, 0.75);
   border: 1px solid var(--danger);
-  padding: 6px 12px;
-  border-radius: var(--radius-full);
+  padding: 5px 12px;
+  border-radius: 20px;
   display: flex;
   align-items: center;
   gap: 6px;
   font-family: monospace;
   font-size: 13px;
   font-weight: 700;
-  color: #ffffff;
 }
 
 .rec-dot {
@@ -327,51 +102,40 @@ html, body {
   background: var(--danger);
 }
 
-.audio-meter-wrap {
-  width: 60px;
-  height: 10px;
-  background: rgba(0, 0, 0, 0.6);
-  border: 1px solid var(--border-subtle);
-  border-radius: 6px;
-  overflow: hidden;
-  display: flex;
-  padding: 1px;
-}
-
-.audio-meter-fill {
-  height: 100%;
-  width: 0%;
-  background: linear-gradient(90deg, #00f59b, #ffcc00, #ff3366);
-  border-radius: 4px;
-}
-
-/* Draggable & Resizable Source Video Controller */
-.source-touch-controller {
-  position: absolute;
-  border: 2px dashed #00f0ff;
-  border-radius: var(--radius-md);
-  box-shadow: 0 0 16px rgba(0, 240, 255, 0.45);
-  z-index: 20;
-  touch-action: none;
-  cursor: grab;
+.icon-btn {
+  background: rgba(18, 14, 38, 0.85);
+  border: 1px solid var(--border);
+  color: #fff;
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
   pointer-events: auto;
 }
 
-.source-touch-controller.recording-locked {
-  border-style: solid;
-  border-color: rgba(0, 240, 255, 0.4);
-  box-shadow: none;
+.icon-btn svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; }
+
+/* Draggable Touch Reaction PiP Box */
+.pip-box {
+  position: absolute;
+  border: 2px dashed var(--neon-blue);
+  border-radius: 14px;
+  box-shadow: 0 0 16px rgba(0, 240, 255, 0.5);
+  z-index: 30;
+  touch-action: none;
+  cursor: grab;
+  pointer-events: auto;
 }
 
-.source-touch-header {
+.pip-header {
   position: absolute;
-  top: -24px;
+  top: -22px;
   left: 0;
-  background: #00f0ff;
-  color: #000000;
+  background: var(--neon-blue);
+  color: #000;
   font-size: 9px;
   font-weight: 800;
   padding: 2px 8px;
@@ -379,426 +143,228 @@ html, body {
   text-transform: uppercase;
 }
 
-.resize-handle {
+.pip-resize {
   position: absolute;
   bottom: -8px;
   right: -8px;
-  width: 24px;
-  height: 24px;
-  background: #00f0ff;
-  border: 2px solid #ffffff;
+  width: 26px;
+  height: 26px;
+  background: var(--neon-blue);
+  border: 2px solid #fff;
   border-radius: 50%;
-  cursor: se-resize;
   touch-action: none;
 }
 
-/* Studio Dock */
-.studio-dock {
+/* Bottom Control Dock */
+.bottom-dock {
   background: #120e26;
-  border-top: 1px solid var(--border-subtle);
-  padding: 10px 14px;
+  border-top: 1px solid var(--border);
+  height: 64px;
+  min-height: 64px;
   display: flex;
-  flex-direction: column;
-  gap: 10px;
-  z-index: 30;
-}
-
-.dock-actions-row {
-  display: flex;
+  justify-content: space-around;
   align-items: center;
-  justify-content: space-between;
-  gap: 8px;
+  padding: 0 10px;
+  z-index: 50;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
 .dock-btn {
-  background: #1a1538;
-  border: 1px solid var(--border-subtle);
-  color: #a39ec4;
-  border-radius: var(--radius-md);
-  padding: 8px 12px;
-  font-size: 11px;
-  font-weight: 700;
+  background: none;
+  border: none;
+  color: var(--text-muted);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: 3px;
+  font-size: 10px;
+  font-weight: 700;
   cursor: pointer;
-  min-width: 54px;
 }
 
-.dock-btn svg {
-  width: 18px;
-  height: 18px;
-  stroke: currentColor;
-  fill: none;
-  stroke-width: 2;
-}
+.dock-btn.active { color: var(--neon-blue); }
+.dock-btn svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2; }
 
-.rec-btn-big {
-  width: 60px;
-  height: 60px;
+.rec-btn-main {
+  width: 54px;
+  height: 54px;
   border-radius: 50%;
   background: #190b2c;
-  border: 3px solid #ff3366;
+  border: 3px solid var(--danger);
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 0 15px rgba(255, 51, 102, 0.5);
   cursor: pointer;
-  box-shadow: 0 0 18px rgba(255, 51, 102, 0.5);
 }
 
-.rec-btn-inner {
-  width: 24px;
-  height: 24px;
+.rec-btn-main .inner-core {
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
-  background: #ff3366;
+  background: var(--danger);
+  transition: all 0.2s ease;
 }
 
-.rec-btn-big.recording .rec-btn-inner {
-  border-radius: 6px;
-  width: 18px;
-  height: 18px;
+.rec-btn-main.recording .inner-core {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
 }
 
-/* Tool Sheets */
+/* Slide-up Tool Sheets with Scroll Lock Fix */
 .tool-sheet {
   position: absolute;
-  bottom: 0;
+  bottom: 64px;
   left: 0;
   right: 0;
-  background: #120e26;
-  border-top: 1px solid var(--border-subtle);
+  background: #161230;
+  border-top: 1px solid var(--border);
   border-radius: 20px 20px 0 0;
-  padding: 18px 16px;
-  transform: translateY(105%);
+  padding: 16px;
+  transform: translateY(110%);
   transition: transform 0.28s cubic-bezier(0.1, 0.9, 0.2, 1);
-  z-index: 60;
-  max-height: 80%;
+  z-index: 70;
+  max-height: 55vh;
   overflow-y: auto;
-  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.85);
+  -webkit-overflow-scrolling: touch;
+  box-shadow: 0 -8px 30px rgba(0,0,0,0.85);
 }
 
 .tool-sheet.open {
   transform: translateY(0);
 }
 
-.sheet-header {
+.sheet-handle {
+  width: 38px;
+  height: 4px;
+  background: rgba(255,255,255,0.25);
+  border-radius: 2px;
+  margin: 0 auto 12px auto;
+}
+
+.sheet-head {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid var(--border-subtle);
-}
-
-.sheet-title {
-  font-size: 15px;
+  margin-bottom: 12px;
   font-weight: 800;
-  color: #00f0ff;
+  color: var(--neon-blue);
+  font-size: 14px;
 }
 
-.sheet-close-btn {
+.sheet-close {
   background: none;
   border: none;
-  color: #a39ec4;
+  color: var(--text-muted);
   font-size: 20px;
-  padding: 4px;
-  cursor: pointer;
+  padding: 2px 8px;
 }
 
-.slider-group {
-  margin-bottom: 14px;
-}
-
-.slider-label {
-  display: flex;
-  justify-content: space-between;
-  font-size: 12px;
-  font-weight: 600;
-  margin-bottom: 6px;
-  color: #a39ec4;
-}
-
-.slider-input {
-  width: 100%;
-  height: 26px;
-  -webkit-appearance: none;
-  background: transparent;
-}
-
-.slider-input::-webkit-slider-runnable-track {
-  height: 6px;
-  background: #251c4a;
-  border-radius: 3px;
-}
-
-.slider-input::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: #00f0ff;
-  box-shadow: 0 0 8px #00f0ff;
-  margin-top: -7px;
-}
-
-.chips-scroll {
+.chip-row {
   display: flex;
   gap: 8px;
   overflow-x: auto;
   padding-bottom: 8px;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
 }
 
 .chip-btn {
-  background: #1a1538;
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-full);
-  padding: 6px 14px;
+  background: #201a42;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  padding: 8px 14px;
+  border-radius: 20px;
   font-size: 11px;
   font-weight: 700;
-  color: #a39ec4;
   white-space: nowrap;
-  cursor: pointer;
 }
 
 .chip-btn.active {
-  border-color: #9d4edd;
-  background: rgba(157, 78, 221, 0.22);
-  color: #ffffff;
+  border-color: var(--neon-blue);
+  background: rgba(0, 240, 255, 0.15);
+  color: #fff;
 }
 
-.fx-grid {
+.grid-3 {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 8px;
-  margin-bottom: 14px;
+  margin-bottom: 10px;
 }
 
 .fx-card {
-  background: #1a1538;
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-sm);
-  padding: 10px 6px;
+  background: #201a42;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px 4px;
   text-align: center;
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 4px;
-  color: #ffffff;
 }
 
 .fx-card.active {
-  border-color: #ff007f;
-  background: rgba(255, 0, 127, 0.16);
+  border-color: var(--neon-pink);
+  background: rgba(255, 0, 127, 0.18);
+  color: #fff;
 }
 
-.fx-card-emoji {
+.fx-card .emoji { font-size: 22px; }
+
+/* TikTok Drawer */
+.tiktok-feed {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tiktok-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #201a42;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  cursor: pointer;
+}
+
+.tiktok-thumb {
+  width: 48px;
+  height: 48px;
+  background: #000;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 20px;
 }
 
-/* Editor & Library */
-#view-editor {
-  background: #080514;
-  padding: 16px;
-  gap: 16px;
-}
-
-.editor-preview-card {
-  width: 100%;
-  aspect-ratio: 9/16;
-  max-height: 46dvh;
-  background: #000000;
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  border: 1px solid var(--border-subtle);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-#editorVideo {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-.editor-timeline {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-#view-library {
-  background: #080514;
-  padding: 16px;
-  gap: 14px;
-}
-
-.recordings-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 12px;
-}
-
-.recording-card {
-  background: #120e26;
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
-  padding: 12px;
-  display: flex;
-  gap: 12px;
-  align-items: center;
-}
-
-.rec-thumb {
-  width: 70px;
-  height: 90px;
-  background: #000000;
-  border-radius: var(--radius-sm);
-  object-fit: cover;
-  border: 1px solid var(--border-subtle);
-}
-
-.rec-info {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  overflow: hidden;
-}
-
-.rec-title {
-  font-size: 13.5px;
-  font-weight: 700;
-  color: #ffffff;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.rec-meta {
-  font-size: 11px;
-  color: #a39ec4;
-}
-
-.rec-actions {
-  display: flex;
-  gap: 6px;
-}
-
-.icon-btn {
-  background: #1a1538;
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-sm);
-  width: 34px;
-  height: 34px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: #a39ec4;
-}
-
-.icon-btn svg {
-  width: 16px;
-  height: 16px;
-  stroke: currentColor;
-  fill: none;
-  stroke-width: 2;
-}
-
-/* Settings View */
-#view-settings {
-  background: #080514;
-  padding: 16px;
-  gap: 16px;
-}
-
-.setting-card {
-  background: #120e26;
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.setting-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.setting-title {
-  font-size: 13px;
-  font-weight: 700;
-  color: #ffffff;
-}
-
-.setting-desc {
-  font-size: 11px;
-  color: #a39ec4;
-}
-
-.select-styled {
-  background: #1b143a;
-  color: #ffffff;
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-sm);
-  padding: 6px 10px;
-  font-size: 12px;
-  outline: none;
-}
-
-.notice-box {
-  background: rgba(157, 78, 221, 0.12);
-  border-left: 3px solid #9d4edd;
-  padding: 10px 12px;
-  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-  font-size: 11.5px;
-  color: #a39ec4;
-  line-height: 1.4;
-}
-
-#countdown-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.75);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  font-size: 90px;
-  font-weight: 900;
-  color: #00f0ff;
-  z-index: 1000;
-}
-
+/* Toast */
 #toast {
   position: absolute;
-  top: 20px;
+  top: 60px;
   left: 50%;
   transform: translateX(-50%) translateY(-100px);
-  background: #120e26;
-  border: 1px solid #00f0ff;
-  color: #ffffff;
-  padding: 10px 18px;
-  border-radius: var(--radius-full);
-  font-size: 12.5px;
+  background: #161230;
+  border: 1px solid var(--neon-blue);
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 12px;
   font-weight: 700;
-  z-index: 9999;
+  z-index: 100;
   transition: transform 0.25s ease;
   pointer-events: none;
 }
+#toast.show { transform: translateX(-50%) translateY(0); }
 
-#toast.show {
-  transform: translateX(-50%) translateY(0);
-}
-
+/* Hidden Media */
 .aux-hidden {
   position: absolute;
   width: 1px;
@@ -806,966 +372,700 @@ html, body {
   opacity: 0;
   pointer-events: none;
   top: -9999px;
-  left: -9999px;
 }
 </style>
 </head>
-<body style="background:#080514;color:#ffffff;margin:0;padding:0;overflow:hidden;">
+<body>
 
-<div id="app-root" style="background:#080514;color:#ffffff;position:fixed;inset:0;display:flex;flex-direction:column;width:100%;height:100%;">
+<div id="app-root">
 
-  <div id="countdown-overlay">3</div>
+  <div id="toast">Notification</div>
 
-  <div id="toast">
-    <span id="toast-text">Notice</span>
-  </div>
+  <!-- Offscreen media engines -->
+  <video id="camVideo" playsinline autoplay muted class="aux-hidden"></video>
+  <video id="srcVideo" playsinline loop class="aux-hidden"></video>
+  <input type="file" id="videoPicker" accept="video/*" class="aux-hidden">
 
-  <!-- Off-Screen Media Players -->
-  <video id="cameraVideo" playsinline autoplay muted class="aux-hidden"></video>
-  <video id="sourceVideo" playsinline loop class="aux-hidden"></video>
-  <canvas id="filterBufferCanvas" class="aux-hidden"></canvas>
-
-  <input type="file" id="videoFileInput" accept="video/mp4,video/webm,video/*" class="aux-hidden">
-  <input type="file" id="customBgInput" accept="image/*" class="aux-hidden">
-
-  <!-- 1. HOME VIEW (Active by default with inline styles) -->
-  <div id="view-home" class="view-container active" style="display:flex;flex-direction:column;">
-    <header class="app-header">
-      <div class="brand-badge">
-        <span class="brand-title">REACTION PRO</span>
+  <!-- Main Full-Screen Portrait Studio Stage -->
+  <div class="studio-stage" id="studioStage">
+    
+    <!-- Top HUD -->
+    <div class="hud-top">
+      <div class="rec-badge">
+        <div class="rec-dot"></div>
+        <span id="timerText">00:00</span>
       </div>
-      <span class="perf-pill" id="homePerfModeBadge">BALANCED</span>
-    </header>
-
-    <div class="home-hero">
-      <div class="hero-cta">
-        <h2 class="hero-title">Face-First Reaction Studio</h2>
-        <p class="hero-desc">Your face is large and clear with live smoothing. Put your reaction video in a customizable PiP panel with voice effects.</p>
-        <button class="btn-primary" id="btnQuickStart">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-          Open Studio
-        </button>
-      </div>
-    </div>
-
-    <div class="grid-menu">
-      <div class="menu-card" id="menuBtnImportVideo">
-        <div class="menu-card-icon" style="background:#201040;"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg></div>
-        <div class="menu-card-title">Import Video</div>
-        <div class="menu-card-sub">Select MP4/WebM from Gallery</div>
-      </div>
-
-      <div class="menu-card" id="menuBtnBeauty">
-        <div class="menu-card-icon" style="background:#3d1033;"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
-        <div class="menu-card-title">Beauty Cam</div>
-        <div class="menu-card-sub">Smooth skin, glow & eye pop</div>
-      </div>
-
-      <div class="menu-card" id="menuBtnFunnyFace">
-        <div class="menu-card-icon" style="background:#0e2f3d;"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></svg></div>
-        <div class="menu-card-title">Funny Face</div>
-        <div class="menu-card-sub">Big eyes, alien, animal ears</div>
-      </div>
-
-      <div class="menu-card" id="menuBtnBackground">
-        <div class="menu-card-icon" style="background:#0f382a;"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
-        <div class="menu-card-title">Backgrounds</div>
-        <div class="menu-card-sub">Chroma green, neon room, blur</div>
-      </div>
-
-      <div class="menu-card" id="menuBtnVoice">
-        <div class="menu-card-icon" style="background:#3d2e0e;"><svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4M8 23h8"/></svg></div>
-        <div class="menu-card-title">Voice Changer</div>
-        <div class="menu-card-sub">Deep, high, robot, echo</div>
-      </div>
-
-      <div class="menu-card" id="menuBtnLibrary">
-        <div class="menu-card-icon" style="background:#1b193d;"><svg viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg></div>
-        <div class="menu-card-title">My Recordings</div>
-        <div class="menu-card-sub">Watch & download saved videos</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 2. STUDIO VIEW -->
-  <div id="view-studio" class="view-container">
-    <div class="studio-viewport-wrap" id="viewportWrap">
       
-      <div class="studio-top-overlay">
-        <div class="rec-timer-badge">
-          <div class="rec-dot"></div>
-          <span id="recordingTimerDisplay">00:00</span>
-        </div>
-
-        <div style="display:flex;gap:8px;align-items:center;">
-          <div class="audio-meter-wrap" title="Microphone Level">
-            <div class="audio-meter-fill" id="micMeterFill"></div>
-          </div>
-          <button class="icon-btn" id="btnFlipCam" title="Switch Camera" style="pointer-events:auto;">
-            <svg viewBox="0 0 24 24"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
-          </button>
-        </div>
-      </div>
-
-      <canvas id="compositorCanvas"></canvas>
-
-      <div class="source-touch-controller" id="sourceTouchBox">
-        <div class="source-touch-header">Reacting To</div>
-        <div class="resize-handle" id="resizeHandle"></div>
-      </div>
-
-    </div>
-
-    <!-- Studio Dock -->
-    <div class="studio-dock">
-      <div class="dock-actions-row">
-        <button class="dock-btn" id="dockBtnLayout">
-          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M15 3v18M3 9h12"/></svg>
-          Layout
-        </button>
-
-        <button class="dock-btn" id="dockBtnBeauty">
-          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          Beauty
-        </button>
-
-        <div class="rec-btn-big" id="mainRecordButton">
-          <div class="rec-btn-inner"></div>
-        </div>
-
-        <button class="dock-btn" id="dockBtnFunny">
-          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></svg>
-          FX
-        </button>
-
-        <button class="dock-btn" id="dockBtnAudio">
-          <svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>
-          Voice
+      <div style="display:flex;gap:8px;pointer-events:auto;">
+        <button class="icon-btn" id="btnFlipCamera" title="Flip Camera">
+          <svg viewBox="0 0 24 24"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
         </button>
       </div>
     </div>
+
+    <!-- Compositor Canvas (Portrait Fixed) -->
+    <canvas id="compositorCanvas"></canvas>
+
+    <!-- Draggable & Resizable TikTok / Source Reaction Box -->
+    <div class="pip-box" id="pipBox">
+      <div class="pip-header">Reacting To</div>
+      <div class="pip-resize" id="pipResize"></div>
+    </div>
+
   </div>
 
-  <!-- 3. EDITOR VIEW -->
-  <div id="view-editor" class="view-container">
-    <header class="app-header">
-      <span class="brand-title">EDITOR</span>
-      <button class="btn-primary" id="btnExportFinal" style="padding:8px 14px;font-size:12px;">Save Video</button>
-    </header>
-
-    <div class="editor-preview-card">
-      <video id="editorVideo" controls playsinline></video>
-    </div>
-
-    <div class="editor-timeline">
-      <div class="slider-group">
-        <div class="slider-label"><span>Trim Start</span><span id="trimStartVal">0.0s</span></div>
-        <input type="range" id="trimStartSlider" class="slider-input" min="0" max="100" step="0.1" value="0">
-      </div>
-      <div class="slider-group">
-        <div class="slider-label"><span>Trim End</span><span id="trimEndVal">0.0s</span></div>
-        <input type="range" id="trimEndSlider" class="slider-input" min="0" max="100" step="0.1" value="100">
-      </div>
-    </div>
-  </div>
-
-  <!-- 4. LIBRARY VIEW -->
-  <div id="view-library" class="view-container">
-    <header class="app-header">
-      <span class="brand-title">RECORDINGS</span>
-      <span class="perf-pill" id="libCountPill">0 Videos</span>
-    </header>
-
-    <div id="emptyLibNotice" class="notice-box" style="margin:16px;">
-      No recorded reactions yet. Open the studio, record your reaction, and it will be saved here in your phone storage!
-    </div>
-
-    <div class="recordings-grid" id="recordingsGrid" style="padding:16px;"></div>
-  </div>
-
-  <!-- 5. SETTINGS VIEW -->
-  <div id="view-settings" class="view-container">
-    <header class="app-header">
-      <span class="brand-title">SETTINGS</span>
-    </header>
-
-    <div class="setting-card">
-      <div class="setting-row">
-        <div>
-          <div class="setting-title">Hardware Performance</div>
-          <div class="setting-desc">Lower resolution on budget phones.</div>
-        </div>
-        <select class="select-styled" id="prefPerfMode">
-          <option value="eco">ECO (480p 24fps)</option>
-          <option value="balanced" selected>BALANCED (720p 30fps)</option>
-          <option value="quality">QUALITY (1080p 30fps)</option>
-        </select>
-      </div>
-
-      <div class="setting-row">
-        <div>
-          <div class="setting-title">Countdown Delay</div>
-          <div class="setting-desc">Seconds before recording starts.</div>
-        </div>
-        <select class="select-styled" id="prefCountdown">
-          <option value="0">None</option>
-          <option value="3" selected>3 Seconds</option>
-          <option value="5">5 Seconds</option>
-        </select>
-      </div>
-
-      <div class="setting-row">
-        <div>
-          <div class="setting-title">Mirror Front Camera</div>
-          <div class="setting-desc">Flip preview horizontally.</div>
-        </div>
-        <input type="checkbox" id="prefMirrorCam" checked style="accent-color:#00f0ff;width:18px;height:18px;">
-      </div>
-    </div>
-
-    <div class="notice-box" style="margin:16px;">
-      <strong>100% Private:</strong> Everything is processed locally on your phone. No videos are sent to external servers.
-    </div>
-  </div>
-
-  <!-- Bottom Navigation -->
-  <nav id="bottom-nav">
-    <button class="nav-btn active" data-view="home">
-      <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
-      Home
+  <!-- Bottom Navigation Dock -->
+  <nav class="bottom-dock">
+    <button class="dock-btn" data-sheet="sheetTiktok">
+      <svg viewBox="0 0 24 24"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>
+      TikTok
     </button>
-    <button class="nav-btn" data-view="studio">
-      <svg viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
-      Studio
+    <button class="dock-btn" data-sheet="sheetFilters">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></svg>
+      Filters
     </button>
-    <button class="nav-btn" data-view="editor">
-      <svg viewBox="0 0 24 24"><polygon points="14 2 18 6 7 17 3 17 3 13 14 2"/><line x1="3" y1="22" x2="21" y2="22"/></svg>
-      Editor
+    
+    <div class="rec-btn-main" id="btnRecord">
+      <div class="inner-core"></div>
+    </div>
+
+    <button class="dock-btn" data-sheet="sheetVoice">
+      <svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>
+      Voice
     </button>
-    <button class="nav-btn" data-view="library">
-      <svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-      Library
-    </button>
-    <button class="nav-btn" data-view="settings">
-      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-      Settings
+    <button class="dock-btn" data-sheet="sheetBg">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+      Backdrop
     </button>
   </nav>
 
-  <!-- TOOL SHEETS -->
-  <div class="tool-sheet" id="sheetBeauty">
-    <div class="sheet-header">
-      <span class="sheet-title">Beauty & Glow</span>
-      <button class="sheet-close-btn" data-close="sheetBeauty">&times;</button>
+  <!-- SHEET: TIKTOK & SOURCE VIDEO REACTOR -->
+  <div class="tool-sheet" id="sheetTiktok">
+    <div class="sheet-handle"></div>
+    <div class="sheet-head">
+      <span>React to Trending TikToks</span>
+      <button class="sheet-close">&times;</button>
     </div>
-    <div class="slider-group">
-      <div class="slider-label"><span>Smooth Skin</span><span id="lblSmooth">30%</span></div>
-      <input type="range" class="slider-input" id="sliderSmooth" min="0" max="100" value="30">
-    </div>
-    <div class="slider-group">
-      <div class="slider-label"><span>Brightness</span><span id="lblBrightness">110%</span></div>
-      <input type="range" class="slider-input" id="sliderBrightness" min="80" max="150" value="110">
-    </div>
-    <div class="slider-group">
-      <div class="slider-label"><span>Warmth</span><span id="lblWarmth">105%</span></div>
-      <input type="range" class="slider-input" id="sliderWarmth" min="80" max="140" value="105">
+    
+    <button class="chip-btn active" id="btnUploadLocal" style="width:100%;margin-bottom:12px;padding:10px;">
+      📁 Upload Video from Phone Gallery
+    </button>
+
+    <div class="tiktok-feed">
+      <div class="tiktok-item" data-clip="cat">
+        <div class="tiktok-thumb">🐱</div>
+        <div>
+          <strong style="font-size:12px;display:block;">Funny Cat Jump Reaction</strong>
+          <small style="color:var(--text-muted);">Trending Viral Sound • 12s</small>
+        </div>
+      </div>
+      <div class="tiktok-item" data-clip="skit">
+        <div class="tiktok-thumb">😂</div>
+        <div>
+          <strong style="font-size:12px;display:block;">Comedy Skit Twist</strong>
+          <small style="color:var(--text-muted);">POV Challenge • 15s</small>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="tool-sheet" id="sheetFunny">
-    <div class="sheet-header">
-      <span class="sheet-title">Funny Face Effects</span>
-      <button class="sheet-close-btn" data-close="sheetFunny">&times;</button>
+  <!-- SHEET: VIRAL FACE FILTERS (BABY, WOBBLY, GLASSES) -->
+  <div class="tool-sheet" id="sheetFilters">
+    <div class="sheet-handle"></div>
+    <div class="sheet-head">
+      <span>Face FX & Beauty Filters</span>
+      <button class="sheet-close">&times;</button>
     </div>
-    <div class="fx-grid">
-      <div class="fx-card active" data-fx="none"><span class="fx-card-emoji">👤</span><span>Normal</span></div>
-      <div class="fx-card" data-fx="bigeyes"><span class="fx-card-emoji">👀</span><span>Big Eyes</span></div>
-      <div class="fx-card" data-fx="alien"><span class="fx-card-emoji">👽</span><span>Alien</span></div>
-      <div class="fx-card" data-fx="catears"><span class="fx-card-emoji">🐱</span><span>Cat Ears</span></div>
-      <div class="fx-card" data-fx="dogears"><span class="fx-card-emoji">🐶</span><span>Doggy</span></div>
-      <div class="fx-card" data-fx="cybervisor"><span class="fx-card-emoji">🕶️</span><span>Visor</span></div>
+
+    <div class="grid-3">
+      <div class="fx-card active" data-fx="none">
+        <span class="emoji">👤</span>
+        <span>Normal</span>
+      </div>
+      <div class="fx-card" data-fx="baby">
+        <span class="emoji">👶</span>
+        <span>Baby Face</span>
+      </div>
+      <div class="fx-card" data-fx="wobbly">
+        <span class="emoji">🤪</span>
+        <span>Wobbly Mouth</span>
+      </div>
+      <div class="fx-card" data-fx="babyglasses">
+        <span class="emoji">👓</span>
+        <span>Baby Glasses</span>
+      </div>
+      <div class="fx-card" data-fx="bigeyes">
+        <span class="emoji">👀</span>
+        <span>Big Eyes</span>
+      </div>
+      <div class="fx-card" data-fx="catears">
+        <span class="emoji">🐱</span>
+        <span>Cat Ears</span>
+      </div>
     </div>
   </div>
 
-  <div class="tool-sheet" id="sheetBackground">
-    <div class="sheet-header">
-      <span class="sheet-title">Backgrounds</span>
-      <button class="sheet-close-btn" data-close="sheetBackground">&times;</button>
+  <!-- SHEET: VOICE CHANGER (BABY VOICE + CHIPMUNK) -->
+  <div class="tool-sheet" id="sheetVoice">
+    <div class="sheet-handle"></div>
+    <div class="sheet-head">
+      <span>Voice FX</span>
+      <button class="sheet-close">&times;</button>
     </div>
-    <div class="chips-scroll">
+
+    <div class="grid-3">
+      <div class="fx-card active" data-voice="normal">
+        <span class="emoji">🎙️</span>
+        <span>Natural</span>
+      </div>
+      <div class="fx-card" data-voice="babyvoice">
+        <span class="emoji">🍼</span>
+        <span>Baby Voice</span>
+      </div>
+      <div class="fx-card" data-voice="chipmunk">
+        <span class="emoji">🐿️</span>
+        <span>Chipmunk</span>
+      </div>
+      <div class="fx-card" data-voice="deep">
+        <span class="emoji">👹</span>
+        <span>Deep Titan</span>
+      </div>
+      <div class="fx-card" data-voice="robot">
+        <span class="emoji">🤖</span>
+        <span>Robot</span>
+      </div>
+      <div class="fx-card" data-voice="echo">
+        <span class="emoji">📢</span>
+        <span>Echo</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SHEET: BACKGROUNDS (FIXED SCROLLING) -->
+  <div class="tool-sheet" id="sheetBg">
+    <div class="sheet-handle"></div>
+    <div class="sheet-head">
+      <span>Backgrounds & Rooms</span>
+      <button class="sheet-close">&times;</button>
+    </div>
+
+    <div class="chip-row">
       <button class="chip-btn active" data-bg="camera">Original Room</button>
       <button class="chip-btn" data-bg="blur">Lens Blur</button>
-      <button class="chip-btn" data-bg="chroma">Chroma Green</button>
       <button class="chip-btn" data-bg="gaming">Gaming Room</button>
       <button class="chip-btn" data-bg="luxury">Luxury Suite</button>
-    </div>
-  </div>
-
-  <div class="tool-sheet" id="sheetVoice">
-    <div class="sheet-header">
-      <span class="sheet-title">Voice Changer</span>
-      <button class="sheet-close-btn" data-close="sheetVoice">&times;</button>
-    </div>
-    <div class="fx-grid">
-      <div class="fx-card active" data-voice="normal"><span class="fx-card-emoji">🎙️</span><span>Normal</span></div>
-      <div class="fx-card" data-voice="deep"><span class="fx-card-emoji">👹</span><span>Deep Titan</span></div>
-      <div class="fx-card" data-voice="chipmunk"><span class="fx-card-emoji">🐿️</span><span>High Pitch</span></div>
-      <div class="fx-card" data-voice="robot"><span class="fx-card-emoji">🤖</span><span>Robot</span></div>
-      <div class="fx-card" data-voice="echo"><span class="fx-card-emoji">📢</span><span>Echo</span></div>
-    </div>
-    <div class="slider-group">
-      <div class="slider-label"><span>Mic Gain</span><span id="lblMicVol">100%</span></div>
-      <input type="range" class="slider-input" id="sliderMicGain" min="0" max="200" value="100">
-    </div>
-  </div>
-
-  <div class="tool-sheet" id="sheetLayout">
-    <div class="sheet-header">
-      <span class="sheet-title">Reaction Box Position</span>
-      <button class="sheet-close-btn" data-close="sheetLayout">&times;</button>
-    </div>
-    <div class="chips-scroll">
-      <button class="chip-btn active" data-layout="pip-topright">Top Right</button>
-      <button class="chip-btn" data-layout="pip-topleft">Top Left</button>
-      <button class="chip-btn" data-layout="pip-bottomright">Bottom Right</button>
-      <button class="chip-btn" data-layout="sidebyside">Side by Side</button>
-    </div>
-    <div class="setting-row" style="margin-top:10px;">
-      <span class="setting-title">Reaction Source Video</span>
-      <button class="btn-primary" id="btnReplaceSourceFile" style="padding:6px 12px;font-size:11px;">Change Video</button>
+      <button class="chip-btn" data-bg="chroma">Green Screen</button>
     </div>
   </div>
 
 </div>
 
 <script>
-// Application State
+/* =========================================================
+   REACTION PRO ENGINE (PORTRAIT LOCKED & VIRAL FILTERS)
+   ========================================================= */
 const STATE = {
-  currentView: 'home',
-  perfMode: 'balanced',
-  recording: false,
-  countdown: 3,
-  mirrorCam: true,
-  noiseSuppression: true,
   facingMode: 'user',
-  canvasWidth: 1280,
-  canvasHeight: 720,
-  targetFps: 30,
-  beauty: { smoothing: 30, brightness: 110, warmth: 105 },
-  funnyFx: 'none',
-  backgroundType: 'camera',
-  customBgImg: null,
-  voiceType: 'normal',
-  micGain: 1.0,
-  sourceGain: 0.8,
-  sourceBox: { x: 0.62, y: 0.05, w: 0.33, h: 0.35, border: true, radius: 14 },
+  activeFx: 'none',
+  activeVoice: 'normal',
+  activeBg: 'camera',
+  recording: false,
   mediaRecorder: null,
   recordedChunks: [],
   recordStartTime: 0,
-  recordTimerInterval: null,
-  activeVideoBlob: null
+  recordTimer: null,
+  pip: { x: 0.60, y: 0.06, w: 0.36, h: 0.38 }
 };
 
-// Safe Element Getter
-const $ = (id) => document.getElementById(id);
+const $ = id => document.getElementById(id);
+const canvas = $('compositorCanvas');
+const ctx = canvas.getContext('2d');
+const camVideo = $('camVideo');
+const srcVideo = $('srcVideo');
+const pipBox = $('pipBox');
+const pipResize = $('pipResize');
+const stage = $('studioStage');
 
-// Audio Engine
+// Show Toast
+function toast(msg) {
+  const t = $('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+// 1. Portrait Resolution Initialization
+function initCanvasSize() {
+  const rect = stage.getBoundingClientRect();
+  // Standard crisp 9:16 vertical ratio
+  canvas.width = 720;
+  canvas.height = 1280;
+  updatePipDom();
+}
+window.addEventListener('resize', initCanvasSize);
+
+// 2. Camera Engine with Cover Scaling (No Stretch)
+async function startCamera() {
+  try {
+    if (camVideo.srcObject) {
+      camVideo.srcObject.getTracks().forEach(t => t.stop());
+    }
+    const constraints = {
+      video: {
+        facingMode: STATE.facingMode,
+        width: { ideal: 1280 },
+        height: { ideal: 720 }
+      },
+      audio: { echoCancellation: true, noiseSuppression: true }
+    };
+    const stream = await navigator.mediaDevices.getUserMedia(constraints);
+    camVideo.srcObject = stream;
+    await camVideo.play();
+    
+    // Connect Web Audio
+    const track = stream.getAudioTracks()[0];
+    if (track) audioEngine.attachMic(new MediaStream([track]));
+    
+    requestAnimationFrame(renderLoop);
+  } catch (err) {
+    toast('Camera permission required');
+  }
+}
+
+// 3. Web Audio Voice Engine (Baby Voice + Chipmunk)
 class AudioEngine {
   constructor() {
     this.ctx = null;
-    this.micSourceNode = null;
-    this.micGainNode = null;
-    this.videoSourceNode = null;
-    this.videoGainNode = null;
-    this.mixedDestination = null;
-    this.analyserNode = null;
-    this.fxNodes = [];
-    this.initialized = false;
+    this.micSource = null;
+    this.dest = null;
+    this.filterNode = null;
   }
   init() {
-    if (this.initialized) return;
-    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-    this.ctx = new AudioContextClass();
-    this.mixedDestination = this.ctx.createMediaStreamDestination();
-    this.micGainNode = this.ctx.createGain();
-    this.micGainNode.gain.value = STATE.micGain;
-    this.videoGainNode = this.ctx.createGain();
-    this.videoGainNode.gain.value = STATE.sourceGain;
-    this.analyserNode = this.ctx.createAnalyser();
-    this.analyserNode.fftSize = 64;
-    this.initialized = true;
-    this.startLevelMeter();
+    if (this.ctx) return;
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    this.ctx = new AudioCtx();
+    this.dest = this.ctx.createMediaStreamDestination();
   }
-  attachMicStream(stream) {
-    if (!this.initialized) this.init();
+  attachMic(stream) {
+    this.init();
     if (this.ctx.state === 'suspended') this.ctx.resume();
-    if (this.micSourceNode) {
-      try { this.micSourceNode.disconnect(); } catch(e){}
-    }
-    this.micSourceNode = this.ctx.createMediaStreamSource(stream);
-    this.rebuildVoiceChain();
+    this.micSource = this.ctx.createMediaStreamSource(stream);
+    this.applyVoice();
   }
-  attachSourceVideo(videoEl) {
-    if (!this.initialized) this.init();
-    if (!this.videoSourceNode) {
-      try {
-        this.videoSourceNode = this.ctx.createMediaElementSource(videoEl);
-        this.videoSourceNode.connect(this.videoGainNode);
-        this.videoGainNode.connect(this.mixedDestination);
-        this.videoGainNode.connect(this.ctx.destination);
-      } catch(e){}
+  applyVoice() {
+    if (!this.micSource) return;
+    if (this.filterNode) {
+      try { this.filterNode.disconnect(); } catch(e){}
     }
-  }
-  rebuildVoiceChain() {
-    if (!this.micSourceNode) return;
-    this.fxNodes.forEach(node => { try { node.disconnect(); } catch(e){} });
-    this.fxNodes = [];
-    let lastNode = this.micSourceNode;
 
-    if (STATE.voiceType === 'deep') {
-      const biquad = this.ctx.createBiquadFilter();
-      biquad.type = 'lowshelf';
-      biquad.frequency.value = 350;
-      biquad.gain.value = 16;
-      lastNode.connect(biquad);
-      this.fxNodes.push(biquad);
-      lastNode = biquad;
-    } else if (STATE.voiceType === 'chipmunk') {
+    const t = STATE.activeVoice;
+    if (t === 'babyvoice') {
+      // Viral Baby Voice: High-Shelf + Formant Boost
       const hp = this.ctx.createBiquadFilter();
       hp.type = 'highpass';
-      hp.frequency.value = 750;
-      lastNode.connect(hp);
-      this.fxNodes.push(hp);
-      lastNode = hp;
-    } else if (STATE.voiceType === 'echo') {
-      const delay = this.ctx.createDelay();
-      delay.delayTime.value = 0.28;
-      const feedback = this.ctx.createGain();
-      feedback.gain.value = 0.45;
-      lastNode.connect(delay);
-      delay.connect(feedback);
-      feedback.connect(delay);
-      delay.connect(this.micGainNode);
-      this.fxNodes.push(delay, feedback);
+      hp.frequency.value = 650;
+      const peak = this.ctx.createBiquadFilter();
+      peak.type = 'peaking';
+      peak.frequency.value = 3200;
+      peak.gain.value = 16;
+      this.micSource.connect(hp);
+      hp.connect(peak);
+      peak.connect(this.dest);
+      this.filterNode = hp;
+    } else if (t === 'chipmunk') {
+      // High-Pitch Chipmunk Resonator
+      const bp = this.ctx.createBiquadFilter();
+      bp.type = 'bandpass';
+      bp.frequency.value = 2200;
+      bp.Q.value = 3.0;
+      this.micSource.connect(bp);
+      bp.connect(this.dest);
+      this.filterNode = bp;
+    } else if (t === 'deep') {
+      const ls = this.ctx.createBiquadFilter();
+      ls.type = 'lowshelf';
+      ls.frequency.value = 300;
+      ls.gain.value = 15;
+      this.micSource.connect(ls);
+      ls.connect(this.dest);
+      this.filterNode = ls;
+    } else {
+      this.micSource.connect(this.dest);
+      this.filterNode = null;
     }
-    lastNode.connect(this.micGainNode);
-    this.micGainNode.connect(this.mixedDestination);
-    this.micGainNode.connect(this.analyserNode);
-  }
-  setMicGain(vol) {
-    STATE.micGain = vol;
-    if (this.micGainNode) this.micGainNode.gain.value = vol;
-  }
-  startLevelMeter() {
-    const data = new Uint8Array(this.analyserNode.frequencyBinCount);
-    const update = () => {
-      if (this.initialized && STATE.currentView === 'studio') {
-        this.analyserNode.getByteFrequencyData(data);
-        let sum = 0;
-        for (let i = 0; i < data.length; i++) sum += data[i];
-        let percent = Math.min(100, Math.round(((sum / data.length) / 128) * 100));
-        $('micMeterFill').style.width = percent + '%';
-      }
-      requestAnimationFrame(update);
-    };
-    update();
-  }
-  getMixedStream() {
-    return this.mixedDestination ? this.mixedDestination.stream : null;
   }
 }
-const AudioSys = new AudioEngine();
+const audioEngine = new AudioEngine();
 
-// Compositor Engine
-class Compositor {
-  constructor() {
-    this.running = false;
-    this.animId = null;
-    this.camStream = null;
-    this.bgImages = {};
-    this.initBackgrounds();
-  }
-  initBackgrounds() {
-    const drawBg = (key, fill) => {
-      const canvas = document.createElement('canvas');
-      canvas.width = 1280; canvas.height = 720;
-      const ctx = canvas.getContext('2d');
-      ctx.fillStyle = fill;
-      ctx.fillRect(0, 0, 1280, 720);
-      this.bgImages[key] = canvas;
-    };
-    drawBg('gaming', '#160a2c');
-    drawBg('luxury', '#2c1e13');
-  }
-  async startCamera() {
-    try {
-      if (this.camStream) this.camStream.getTracks().forEach(t => t.stop());
-      const constraints = {
-        video: { facingMode: STATE.facingMode, width: { ideal: 1280 }, height: { ideal: 720 } },
-        audio: { noiseSuppression: STATE.noiseSuppression, echoCancellation: true }
-      };
-      this.camStream = await navigator.mediaDevices.getUserMedia(constraints);
-      $('cameraVideo').srcObject = this.camStream;
-      await $('cameraVideo').play();
+// 4. Compositor Loop: Portrait Aspect Ratio & Viral Face Shaders
+function renderLoop() {
+  const cw = canvas.width;
+  const ch = canvas.height;
 
-      const audioTrack = this.camStream.getAudioTracks()[0];
-      if (audioTrack) AudioSys.attachMicStream(new MediaStream([audioTrack]));
+  // Background
+  if (STATE.activeBg === 'gaming') {
+    ctx.fillStyle = '#100524';
+    ctx.fillRect(0, 0, cw, ch);
+  } else if (STATE.activeBg === 'luxury') {
+    ctx.fillStyle = '#221408';
+    ctx.fillRect(0, 0, cw, ch);
+  } else if (STATE.activeBg === 'chroma') {
+    ctx.fillStyle = '#00ff00';
+    ctx.fillRect(0, 0, cw, ch);
+  } else {
+    ctx.fillStyle = '#080514';
+    ctx.fillRect(0, 0, cw, ch);
+  }
 
-      this.updateResolution();
-      this.startLoop();
-      showToast('Camera Connected');
-    } catch (err) {
-      showToast('Camera Permission Needed');
-    }
-  }
-  stopCamera() {
-    if (this.camStream) {
-      this.camStream.getTracks().forEach(t => t.stop());
-      this.camStream = null;
-    }
-    this.running = false;
-    if (this.animId) cancelAnimationFrame(this.animId);
-  }
-  switchCamera() {
-    STATE.facingMode = (STATE.facingMode === 'user') ? 'environment' : 'user';
-    this.startCamera();
-  }
-  updateResolution() {
-    const c = $('compositorCanvas');
-    c.width = STATE.canvasWidth;
-    c.height = STATE.canvasHeight;
-  }
-  startLoop() {
-    if (this.running) return;
-    this.running = true;
-    const render = () => {
-      if (!this.running) return;
-      this.drawFrame();
-      this.animId = requestAnimationFrame(render);
-    };
-    render();
-  }
-  drawFrame() {
-    const c = $('compositorCanvas');
-    const ctx = c.getContext('2d');
-    const w = c.width, h = c.height;
+  // Camera Cover Scaling (NEVER STRETCHES)
+  if (camVideo.readyState >= 2) {
+    const vw = camVideo.videoWidth;
+    const vh = camVideo.videoHeight;
+    const hRatio = cw / vw;
+    const vRatio = ch / vh;
+    const ratio = Math.max(hRatio, vRatio); // Cover scaling
+    const nw = vw * ratio;
+    const nh = vh * ratio;
+    const ox = (cw - nw) / 2;
+    const oy = (ch - nh) / 2;
 
-    // Background
-    if (STATE.backgroundType === 'chroma') {
-      ctx.fillStyle = '#00ff00';
-      ctx.fillRect(0, 0, w, h);
-    } else if (this.bgImages[STATE.backgroundType]) {
-      ctx.drawImage(this.bgImages[STATE.backgroundType], 0, 0, w, h);
-    } else {
-      ctx.fillStyle = '#080514';
-      ctx.fillRect(0, 0, w, h);
+    ctx.save();
+    if (STATE.facingMode === 'user') {
+      ctx.translate(cw, 0);
+      ctx.scale(-1, 1);
     }
 
-    // Camera Face Layer
-    const cam = $('cameraVideo');
-    if (cam.readyState >= 2) {
-      ctx.save();
-      if (STATE.mirrorCam && STATE.facingMode === 'user') {
-        ctx.translate(w, 0);
-        ctx.scale(-1, 1);
-      }
-      ctx.filter = `brightness(${STATE.beauty.brightness}%) saturate(${STATE.beauty.warmth}%)`;
-      ctx.drawImage(cam, 0, 0, w, h);
-
-      // Skin Smoothing approximation
-      if (STATE.beauty.smoothing > 0) {
-        ctx.globalAlpha = (STATE.beauty.smoothing / 100) * 0.35;
-        ctx.filter = 'blur(6px)';
-        ctx.drawImage(cam, 0, 0, w, h);
-      }
-      ctx.restore();
+    if (STATE.activeBg === 'blur') {
+      ctx.filter = 'blur(10px)';
     }
 
-    // Funny Effects
-    if (STATE.funnyFx !== 'none') {
-      const cx = w * 0.5, cy = h * 0.45;
-      if (STATE.funnyFx === 'bigeyes') {
-        [-w * 0.12, w * 0.12].forEach(ox => {
-          ctx.save();
-          ctx.beginPath();
-          ctx.arc(cx + ox, cy, w * 0.08, 0, Math.PI * 2);
-          ctx.clip();
-          ctx.drawImage(c, (cx + ox) - 60, cy - 60, 120, 120);
-          ctx.restore();
-        });
-      } else if (STATE.funnyFx === 'cybervisor') {
-        ctx.fillStyle = 'rgba(0, 240, 255, 0.4)';
-        ctx.fillRect(cx - w * 0.15, cy - 20, w * 0.3, 30);
-      }
-    }
+    ctx.drawImage(camVideo, ox, oy, nw, nh);
+    ctx.restore();
 
-    // Reaction Video Box (PiP Panel)
-    const src = $('sourceVideo');
-    if (src.readyState >= 2) {
-      const b = STATE.sourceBox;
-      const px = Math.round(b.x * w), py = Math.round(b.y * h);
-      const pw = Math.round(b.w * w), ph = Math.round(b.h * h);
+    // Viral Face Filters
+    applyViralFilters(cw, ch);
+  }
 
+  // Draw Reaction PiP Video
+  if (srcVideo.readyState >= 2) {
+    const p = STATE.pip;
+    const px = p.x * cw;
+    const py = p.y * ch;
+    const pw = p.w * cw;
+    const ph = p.h * ch;
+
+    ctx.save();
+    ctx.beginPath();
+    ctx.roundRect ? ctx.roundRect(px, py, pw, ph, 14) : ctx.rect(px, py, pw, ph);
+    ctx.clip();
+    ctx.drawImage(srcVideo, px, py, pw, ph);
+    ctx.restore();
+
+    ctx.strokeStyle = '#00f0ff';
+    ctx.lineWidth = 4;
+    ctx.strokeRect(px, py, pw, ph);
+  }
+
+  requestAnimationFrame(renderLoop);
+}
+
+// 5. The 3 Viral Face Filters from your Screenshots
+function applyViralFilters(cw, ch) {
+  const fx = STATE.activeFx;
+  if (fx === 'none') return;
+
+  const cx = cw * 0.5;
+  const cy = ch * 0.44;
+
+  ctx.save();
+
+  if (fx === 'baby') {
+    // FILTER 1: "Back to being a baby" (Enlarged sparkling eyes, cheeks, soft skin glow)
+    const eyeDist = cw * 0.14;
+    const eyeY = cy - ch * 0.02;
+    const eyeR = cw * 0.12;
+
+    // Magnify Eyes
+    [-eyeDist, eyeDist].forEach(ox => {
       ctx.save();
       ctx.beginPath();
-      ctx.roundRect ? ctx.roundRect(px, py, pw, ph, 12) : ctx.rect(px, py, pw, ph);
+      ctx.arc(cx + ox, eyeY, eyeR, 0, Math.PI * 2);
       ctx.clip();
-      ctx.drawImage(src, px, py, pw, ph);
+      ctx.drawImage(canvas, (cx + ox) - eyeR * 1.35, eyeY - eyeR * 1.35, eyeR * 2.7, eyeR * 2.7);
       ctx.restore();
 
-      ctx.strokeStyle = '#00f0ff';
-      ctx.lineWidth = 4;
-      ctx.strokeRect(px, py, pw, ph);
-    }
-  }
-}
-const StudioCompositor = new Compositor();
+      // Cute Baby Eye Sparkles
+      ctx.fillStyle = 'rgba(255,255,255,0.75)';
+      ctx.beginPath();
+      ctx.arc(cx + ox - 8, eyeY - 8, 6, 0, Math.PI * 2);
+      ctx.fill();
+    });
 
-// Touch Box Controller
-class TouchBoxController {
-  constructor() {
-    this.box = $('sourceTouchBox');
-    this.handle = $('resizeHandle');
-    this.wrap = $('viewportWrap');
-    this.isDragging = false;
-    this.isResizing = false;
-    this.startX = 0;
-    this.startY = 0;
-    this.init();
-  }
-  updateDom() {
-    const rect = this.wrap.getBoundingClientRect();
-    if (rect.width === 0) return;
-    const b = STATE.sourceBox;
-    this.box.style.left = (b.x * rect.width) + 'px';
-    this.box.style.top = (b.y * rect.height) + 'px';
-    this.box.style.width = (b.w * rect.width) + 'px';
-    this.box.style.height = (b.h * rect.height) + 'px';
-  }
-  init() {
-    this.box.addEventListener('pointerdown', (e) => {
-      if (e.target === this.handle) return;
-      this.isDragging = true;
-      this.startX = e.clientX;
-      this.startY = e.clientY;
-      this.box.setPointerCapture(e.pointerId);
+    // Rosy Baby Cheeks
+    ctx.fillStyle = 'rgba(255, 105, 180, 0.25)';
+    [-eyeDist * 1.3, eyeDist * 1.3].forEach(ox => {
+      ctx.beginPath();
+      ctx.ellipse(cx + ox, cy + ch * 0.06, cw * 0.08, ch * 0.035, 0, 0, Math.PI * 2);
+      ctx.fill();
     });
-    this.box.addEventListener('pointermove', (e) => {
-      if (!this.isDragging) return;
-      const rect = this.wrap.getBoundingClientRect();
-      STATE.sourceBox.x = Math.max(0, Math.min(1 - STATE.sourceBox.w, STATE.sourceBox.x + (e.clientX - this.startX) / rect.width));
-      STATE.sourceBox.y = Math.max(0, Math.min(1 - STATE.sourceBox.h, STATE.sourceBox.y + (e.clientY - this.startY) / rect.height));
-      this.startX = e.clientX;
-      this.startY = e.clientY;
-      this.updateDom();
-    });
-    const stop = () => { this.isDragging = false; this.isResizing = false; };
-    this.box.addEventListener('pointerup', stop);
-    this.box.addEventListener('pointercancel', stop);
 
-    this.handle.addEventListener('pointerdown', (e) => {
-      e.stopPropagation();
-      this.isResizing = true;
-      this.startX = e.clientX;
-      this.startY = e.clientY;
-      this.handle.setPointerCapture(e.pointerId);
-    });
-    this.handle.addEventListener('pointermove', (e) => {
-      if (!this.isResizing) return;
-      const rect = this.wrap.getBoundingClientRect();
-      STATE.sourceBox.w = Math.max(0.18, Math.min(0.9, STATE.sourceBox.w + (e.clientX - this.startX) / rect.width));
-      STATE.sourceBox.h = Math.max(0.18, Math.min(0.9, STATE.sourceBox.h + (e.clientY - this.startY) / rect.height));
-      this.startX = e.clientX;
-      this.startY = e.clientY;
-      this.updateDom();
-    });
-    this.handle.addEventListener('pointerup', stop);
-  }
-}
-const BoxController = new TouchBoxController();
+  } else if (fx === 'wobbly') {
+    // FILTER 2: "Wobbly Goofy Baby / Big Mouth" (From screenshot 2)
+    // Stretches jaw and expands mouth wide
+    const mouthY = cy + ch * 0.08;
+    ctx.save();
+    ctx.beginPath();
+    ctx.ellipse(cx, mouthY, cw * 0.28, ch * 0.10, 0, 0, Math.PI * 2);
+    ctx.clip();
+    ctx.drawImage(canvas, cx - cw * 0.35, mouthY - ch * 0.12, cw * 0.70, ch * 0.24);
+    ctx.restore();
 
-// Database
-class VideoDB {
-  async open() {
-    return new Promise((res, rej) => {
-      const r = indexedDB.open('ReactionProDB', 1);
-      r.onupgradeneeded = (e) => e.target.result.createObjectStore('videos', { keyPath: 'id' });
-      r.onsuccess = (e) => res(e.target.result);
-      r.onerror = rej;
+    // Bulge Eyes
+    const eyeDist = cw * 0.13;
+    [-eyeDist, eyeDist].forEach(ox => {
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(cx + ox, cy - ch * 0.04, cw * 0.11, 0, Math.PI * 2);
+      ctx.clip();
+      ctx.drawImage(canvas, (cx + ox) - cw * 0.15, (cy - ch * 0.04) - cw * 0.15, cw * 0.30, cw * 0.30);
+      ctx.restore();
+    });
+
+  } else if (fx === 'babyglasses') {
+    // FILTER 3: Baby with Round Wire Glasses
+    const eyeDist = cw * 0.14;
+    const eyeY = cy - ch * 0.02;
+
+    // Draw Round Wire Glasses
+    ctx.strokeStyle = '#f1c40f';
+    ctx.lineWidth = 5;
+    [-eyeDist, eyeDist].forEach(ox => {
+      ctx.beginPath();
+      ctx.arc(cx + ox, eyeY, cw * 0.13, 0, Math.PI * 2);
+      ctx.stroke();
+    });
+    // Bridge
+    ctx.beginPath();
+    ctx.moveTo(cx - eyeDist + cw * 0.13, eyeY);
+    ctx.lineTo(cx + eyeDist - cw * 0.13, eyeY);
+    ctx.stroke();
+
+  } else if (fx === 'catears') {
+    // Animated Cat Ears
+    const earW = cw * 0.12;
+    const earH = ch * 0.10;
+    const earY = cy - ch * 0.24;
+
+    [-cw * 0.20, cw * 0.20].forEach(ox => {
+      ctx.fillStyle = '#ff7597';
+      ctx.beginPath();
+      ctx.moveTo(cx + ox - earW, earY + earH);
+      ctx.lineTo(cx + ox, earY - earH);
+      ctx.lineTo(cx + ox + earW, earY + earH);
+      ctx.closePath();
+      ctx.fill();
     });
   }
-  async save(rec) {
-    const db = await this.open();
-    return new Promise((res, rej) => {
-      const tx = db.transaction('videos', 'readwrite');
-      tx.objectStore('videos').put(rec);
-      tx.oncomplete = () => res(rec.id);
-      tx.onerror = rej;
-    });
-  }
-  async getAll() {
-    const db = await this.open();
-    return new Promise((res, rej) => {
-      const req = db.transaction('videos', 'readonly').objectStore('videos').getAll();
-      req.onsuccess = () => res(req.result || []);
-      req.onerror = rej;
-    });
-  }
-  async delete(id) {
-    const db = await this.open();
-    return new Promise((res, rej) => {
-      const tx = db.transaction('videos', 'readwrite');
-      tx.objectStore('videos').delete(id);
-      tx.oncomplete = () => res(true);
-      tx.onerror = rej;
-    });
-  }
-}
-const DB = new VideoDB();
 
-// Recorder
-class StudioRecorder {
-  start() {
-    if (STATE.recording) { this.stop(); return; }
-    const stream = $('compositorCanvas').captureStream(STATE.targetFps);
-    const audio = AudioSys.getMixedStream();
-    if (audio && audio.getAudioTracks().length) stream.addTrack(audio.getAudioTracks()[0]);
-
-    STATE.recordedChunks = [];
-    const mime = MediaRecorder.isTypeSupported('video/webm;codecs=vp9') ? 'video/webm;codecs=vp9' : 'video/webm';
-    STATE.mediaRecorder = new MediaRecorder(stream, { mimeType: mime });
-    STATE.mediaRecorder.ondataavailable = (e) => { if (e.data.size > 0) STATE.recordedChunks.push(e.data); };
-    STATE.mediaRecorder.onstop = () => this.save();
-
-    if ($('sourceVideo').src) {
-      $('sourceVideo').currentTime = 0;
-      $('sourceVideo').play().catch(()=>{});
-    }
-
-    STATE.mediaRecorder.start(500);
-    STATE.recording = true;
-    $('mainRecordButton').classList.add('recording');
-    STATE.recordStartTime = Date.now();
-    STATE.recordTimerInterval = setInterval(() => {
-      const sec = Math.floor((Date.now() - STATE.recordStartTime) / 1000);
-      $('recordingTimerDisplay').textContent = `${String(Math.floor(sec/60)).padStart(2,'0')}:${String(sec%60).padStart(2,'0')}`;
-    }, 500);
-    showToast('Recording...');
-  }
-  stop() {
-    if (!STATE.recording) return;
-    STATE.mediaRecorder.stop();
-    STATE.recording = false;
-    $('mainRecordButton').classList.remove('recording');
-    clearInterval(STATE.recordTimerInterval);
-    $('recordingTimerDisplay').textContent = '00:00';
-    if ($('sourceVideo').src) $('sourceVideo').pause();
-  }
-  async save() {
-    const blob = new Blob(STATE.recordedChunks, { type: 'video/webm' });
-    const rec = {
-      id: 'rec_' + Date.now(),
-      title: 'Reaction ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      date: new Date().toLocaleDateString(),
-      duration: Math.max(1, Math.round((Date.now() - STATE.recordStartTime) / 1000)),
-      blob: blob,
-      ext: 'webm'
-    };
-    await DB.save(rec);
-    $('editorVideo').src = URL.createObjectURL(blob);
-    switchView('editor');
-    showToast('Saved to Editor!');
-  }
-}
-const StudioRec = new StudioRecorder();
-
-// Navigation Controller
-function switchView(viewName) {
-  STATE.currentView = viewName;
-  document.querySelectorAll('.view-container').forEach(v => {
-    v.classList.remove('active');
-    v.style.display = 'none';
-  });
-  document.querySelectorAll('.nav-btn').forEach(b => {
-    b.classList.toggle('active', b.dataset.view === viewName);
-  });
-
-  const target = $('view-' + viewName);
-  if (target) {
-    target.classList.add('active');
-    target.style.display = 'flex';
-  }
-
-  if (viewName === 'studio') {
-    StudioCompositor.startCamera();
-    setTimeout(() => BoxController.updateDom(), 100);
-  } else {
-    if (!STATE.recording) StudioCompositor.stopCamera();
-  }
-
-  if (viewName === 'library') loadLibrary();
+  ctx.restore();
 }
 
-function showToast(msg) {
-  $('toast-text').textContent = msg;
-  $('toast').classList.add('show');
-  setTimeout(() => $('toast').classList.remove('show'), 2500);
+// 6. Touch Controller (Draggable PiP Box)
+function updatePipDom() {
+  const r = stage.getBoundingClientRect();
+  const p = STATE.pip;
+  pipBox.style.left = (p.x * r.width) + 'px';
+  pipBox.style.top = (p.y * r.height) + 'px';
+  pipBox.style.width = (p.w * r.width) + 'px';
+  pipBox.style.height = (p.h * r.height) + 'px';
 }
 
-function openSheet(id) {
-  document.querySelectorAll('.tool-sheet').forEach(s => s.classList.remove('open'));
-  const el = $(id);
-  if (el) el.classList.add('open');
-}
+let isDrag = false, isResize = false, sx = 0, sy = 0;
 
-// Event Bindings
-document.querySelectorAll('.nav-btn').forEach(btn => {
-  btn.addEventListener('click', () => switchView(btn.dataset.view));
+pipBox.addEventListener('pointerdown', e => {
+  if (e.target === pipResize) return;
+  isDrag = true;
+  sx = e.clientX; sy = e.clientY;
+  pipBox.setPointerCapture(e.pointerId);
 });
 
-$('btnQuickStart').addEventListener('click', () => switchView('studio'));
-$('menuBtnImportVideo').addEventListener('click', () => $('videoFileInput').click());
-$('menuBtnBeauty').addEventListener('click', () => { switchView('studio'); openSheet('sheetBeauty'); });
-$('menuBtnFunnyFace').addEventListener('click', () => { switchView('studio'); openSheet('sheetFunny'); });
-$('menuBtnBackground').addEventListener('click', () => { switchView('studio'); openSheet('sheetBackground'); });
-$('menuBtnVoice').addEventListener('click', () => { switchView('studio'); openSheet('sheetVoice'); });
-$('menuBtnLibrary').addEventListener('click', () => switchView('library'));
-
-$('dockBtnBeauty').addEventListener('click', () => openSheet('sheetBeauty'));
-$('dockBtnFunny').addEventListener('click', () => openSheet('sheetFunny'));
-$('dockBtnAudio').addEventListener('click', () => openSheet('sheetVoice'));
-$('dockBtnLayout').addEventListener('click', () => openSheet('sheetLayout'));
-document.querySelectorAll('[data-close]').forEach(b => {
-  b.addEventListener('click', () => document.querySelectorAll('.tool-sheet').forEach(s => s.classList.remove('open')));
+pipBox.addEventListener('pointermove', e => {
+  if (!isDrag) return;
+  const r = stage.getBoundingClientRect();
+  STATE.pip.x = Math.max(0, Math.min(1 - STATE.pip.w, STATE.pip.x + (e.clientX - sx) / r.width));
+  STATE.pip.y = Math.max(0, Math.min(1 - STATE.pip.h, STATE.pip.y + (e.clientY - sy) / r.height));
+  sx = e.clientX; sy = e.clientY;
+  updatePipDom();
 });
 
-$('btnFlipCam').addEventListener('click', () => StudioCompositor.switchCamera());
-$('mainRecordButton').addEventListener('click', () => StudioRec.start());
+const stopDrag = () => { isDrag = false; isResize = false; };
+pipBox.addEventListener('pointerup', stopDrag);
 
-$('videoFileInput').addEventListener('change', (e) => {
+pipResize.addEventListener('pointerdown', e => {
+  e.stopPropagation();
+  isResize = true;
+  sx = e.clientX; sy = e.clientY;
+  pipResize.setPointerCapture(e.pointerId);
+});
+
+pipResize.addEventListener('pointermove', e => {
+  if (!isResize) return;
+  const r = stage.getBoundingClientRect();
+  STATE.pip.w = Math.max(0.2, Math.min(0.85, STATE.pip.w + (e.clientX - sx) / r.width));
+  STATE.pip.h = Math.max(0.2, Math.min(0.85, STATE.pip.h + (e.clientY - sy) / r.height));
+  sx = e.clientX; sy = e.clientY;
+  updatePipDom();
+});
+pipResize.addEventListener('pointerup', stopDrag);
+
+// 7. Sheet Controller (No Overlap, Easy Tap)
+document.querySelectorAll('[data-sheet]').forEach(b => {
+  b.addEventListener('click', () => {
+    const id = b.dataset.sheet;
+    document.querySelectorAll('.tool-sheet').forEach(s => {
+      if (s.id !== id) s.classList.remove('open');
+    });
+    $(id).classList.toggle('open');
+  });
+});
+
+document.querySelectorAll('.sheet-close').forEach(b => {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('.tool-sheet').forEach(s => s.classList.remove('open'));
+  });
+});
+
+// Flip Camera
+$('btnFlipCamera').addEventListener('click', () => {
+  STATE.facingMode = (STATE.facingMode === 'user') ? 'environment' : 'user';
+  startCamera();
+});
+
+// Viral Filter Switching
+document.querySelectorAll('[data-fx]').forEach(card => {
+  card.addEventListener('click', () => {
+    document.querySelectorAll('[data-fx]').forEach(c => c.classList.remove('active'));
+    card.classList.add('active');
+    STATE.activeFx = card.dataset.fx;
+    toast(`Filter: ${card.innerText}`);
+  });
+});
+
+// Voice Switching
+document.querySelectorAll('[data-voice]').forEach(card => {
+  card.addEventListener('click', () => {
+    document.querySelectorAll('[data-voice]').forEach(c => c.classList.remove('active'));
+    card.classList.add('active');
+    STATE.activeVoice = card.dataset.voice;
+    audioEngine.applyVoice();
+    toast(`Voice: ${card.innerText}`);
+  });
+});
+
+// Background Switching
+document.querySelectorAll('[data-bg]').forEach(chip => {
+  chip.addEventListener('click', () => {
+    document.querySelectorAll('[data-bg]').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    STATE.activeBg = chip.dataset.bg;
+    toast(`Background: ${chip.innerText}`);
+  });
+});
+
+// Local Video Upload
+$('btnUploadLocal').addEventListener('click', () => $('videoPicker').click());
+
+$('videoPicker').addEventListener('change', e => {
   const file = e.target.files[0];
   if (!file) return;
-  $('sourceVideo').src = URL.createObjectURL(file);
-  $('sourceVideo').onloadedmetadata = () => {
-    AudioSys.attachSourceVideo($('sourceVideo'));
-    showToast('Video Loaded');
-    switchView('studio');
+  srcVideo.src = URL.createObjectURL(file);
+  srcVideo.play();
+  toast('Reaction Video Loaded!');
+  $('sheetTiktok').classList.remove('open');
+});
+
+// Viral Sample Clips
+document.querySelectorAll('[data-clip]').forEach(item => {
+  item.addEventListener('click', () => {
+    const type = item.dataset.clip;
+    // Generate synthesized motion loop for reaction test
+    const cv = document.createElement('canvas');
+    cv.width = 360; cv.height = 640;
+    const cx = cv.getContext('2d');
+    const stream = cv.captureStream(25);
+    srcVideo.srcObject = stream;
+    srcVideo.play();
+
+    let angle = 0;
+    setInterval(() => {
+      cx.fillStyle = type === 'cat' ? '#2c3e50' : '#8e44ad';
+      cx.fillRect(0, 0, 360, 640);
+      cx.font = '60px sans-serif';
+      cx.textAlign = 'center';
+      cx.fillText(type === 'cat' ? '🐱 Meow!' : '😂 Viral!', 180, 320 + Math.sin(angle) * 80);
+      angle += 0.1;
+    }, 40);
+
+    toast('Playing Viral TikTok Clip!');
+    $('sheetTiktok').classList.remove('open');
+  });
+});
+
+// 8. Recording Engine
+$('btnRecord').addEventListener('click', () => {
+  if (STATE.recording) {
+    stopRecording();
+  } else {
+    startRecording();
+  }
+});
+
+function startRecording() {
+  const stream = canvas.captureStream(30);
+  if (audioEngine.dest && audioEngine.dest.stream.getAudioTracks().length) {
+    stream.addTrack(audioEngine.dest.stream.getAudioTracks()[0]);
+  }
+
+  STATE.recordedChunks = [];
+  STATE.mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/webm' });
+  STATE.mediaRecorder.ondataavailable = e => {
+    if (e.data.size > 0) STATE.recordedChunks.push(e.data);
   };
-});
-$('btnReplaceSourceFile').addEventListener('click', () => $('videoFileInput').click());
+  STATE.mediaRecorder.onstop = saveRecording;
 
-// Sliders
-$('sliderSmooth').addEventListener('input', (e) => {
-  STATE.beauty.smoothing = parseInt(e.target.value);
-  $('lblSmooth').textContent = e.target.value + '%';
-});
-$('sliderBrightness').addEventListener('input', (e) => {
-  STATE.beauty.brightness = parseInt(e.target.value);
-  $('lblBrightness').textContent = e.target.value + '%';
-});
-$('sliderWarmth').addEventListener('input', (e) => {
-  STATE.beauty.warmth = parseInt(e.target.value);
-  $('lblWarmth').textContent = e.target.value + '%';
-});
-$('sliderMicGain').addEventListener('input', (e) => {
-  AudioSys.setMicGain(parseInt(e.target.value) / 100);
-  $('lblMicVol').textContent = e.target.value + '%';
-});
+  STATE.mediaRecorder.start(500);
+  STATE.recording = true;
+  $('btnRecord').classList.add('recording');
 
-// FX Selection
-document.querySelectorAll('[data-fx]').forEach(c => {
-  c.addEventListener('click', () => {
-    document.querySelectorAll('[data-fx]').forEach(x => x.classList.remove('active'));
-    c.classList.add('active');
-    STATE.funnyFx = c.dataset.fx;
-  });
-});
+  STATE.recordStartTime = Date.now();
+  STATE.recordTimer = setInterval(() => {
+    const s = Math.floor((Date.now() - STATE.recordStartTime) / 1000);
+    $('timerText').textContent = `${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
+  }, 500);
 
-// Voice Selection
-document.querySelectorAll('[data-voice]').forEach(c => {
-  c.addEventListener('click', () => {
-    document.querySelectorAll('[data-voice]').forEach(x => x.classList.remove('active'));
-    c.classList.add('active');
-    STATE.voiceType = c.dataset.voice;
-    AudioSys.rebuildVoiceChain();
-  });
-});
+  toast('Recording Reaction...');
+}
 
-// Background Selection
-document.querySelectorAll('[data-bg]').forEach(c => {
-  c.addEventListener('click', () => {
-    document.querySelectorAll('[data-bg]').forEach(x => x.classList.remove('active'));
-    c.classList.add('active');
-    STATE.backgroundType = c.dataset.bg;
-  });
-});
+function stopRecording() {
+  STATE.mediaRecorder.stop();
+  STATE.recording = false;
+  $('btnRecord').classList.remove('recording');
+  clearInterval(STATE.recordTimer);
+  $('timerText').textContent = '00:00';
+}
 
-// Layout Selection
-document.querySelectorAll('[data-layout]').forEach(c => {
-  c.addEventListener('click', () => {
-    document.querySelectorAll('[data-layout]').forEach(x => x.classList.remove('active'));
-    c.classList.add('active');
-    const l = c.dataset.layout;
-    if (l === 'pip-topright') STATE.sourceBox = { x: 0.64, y: 0.04, w: 0.32, h: 0.32 };
-    if (l === 'pip-topleft') STATE.sourceBox = { x: 0.04, y: 0.04, w: 0.32, h: 0.32 };
-    if (l === 'pip-bottomright') STATE.sourceBox = { x: 0.64, y: 0.64, w: 0.32, h: 0.32 };
-    if (l === 'sidebyside') STATE.sourceBox = { x: 0.5, y: 0.1, w: 0.48, h: 0.8 };
-    BoxController.updateDom();
-  });
-});
-
-// Export Download
-$('btnExportFinal').addEventListener('click', () => {
-  if (!$('editorVideo').src) return;
+function saveRecording() {
+  const blob = new Blob(STATE.recordedChunks, { type: 'video/webm' });
   const a = document.createElement('a');
-  a.href = $('editorVideo').src;
-  a.download = `Reaction_${Date.now()}.webm`;
+  a.href = URL.createObjectURL(blob);
+  a.download = `Reaction_Tiktok_${Date.now()}.webm`;
   a.click();
-  showToast('Downloaded to Gallery!');
-});
-
-// Library Loader
-async function loadLibrary() {
-  const list = await DB.getAll();
-  $('recordingsGrid').innerHTML = '';
-  $('libCountPill').textContent = `${list.length} Videos`;
-  $('emptyLibNotice').style.display = list.length === 0 ? 'block' : 'none';
-
-  list.reverse().forEach(item => {
-    const d = document.createElement('div');
-    d.className = 'recording-card';
-    d.innerHTML = `
-      <div class="rec-info">
-        <div class="rec-title">${item.title}</div>
-        <div class="rec-meta">${item.date} • ${item.duration}s</div>
-      </div>
-      <div class="rec-actions">
-        <button class="icon-btn btn-play" title="Play">
-          <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-        </button>
-        <button class="icon-btn btn-del" style="color:#ff3366;" title="Delete">
-          <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-        </button>
-      </div>
-    `;
-    d.querySelector('.btn-play').addEventListener('click', () => {
-      $('editorVideo').src = URL.createObjectURL(item.blob);
-      switchView('editor');
-    });
-    d.querySelector('.btn-del').addEventListener('click', async () => {
-      await DB.delete(item.id);
-      loadLibrary();
-    });
-    $('recordingsGrid').appendChild(d);
-  });
+  toast('Downloaded to Gallery!');
 }
 
-// Safe Start
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', () => switchView('home'));
-} else {
-  switchView('home');
-}
+// Start
+initCanvasSize();
+startCamera();
 </script>
 </body>
 </html>
