@@ -5,18 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="color-scheme" content="dark">
 <meta name="theme-color" content="#080514">
-<title>Reaction Pro Studio - Viral Edition</title>
+<title>Reaction Pro Studio</title>
 <style>
 :root {
   color-scheme: dark;
   --bg-dark: #080514;
-  --bg-card: #120e26;
-  --bg-sheet: #161230;
+  --bg-card: #130f28;
+  --bg-card-hover: #1b1638;
   --neon-blue: #00f0ff;
   --neon-purple: #9d4edd;
   --neon-pink: #ff007f;
-  --text-main: #ffffff;
-  --text-muted: #a39ec4;
+  --text-muted: #9e99c2;
   --border: rgba(157, 78, 221, 0.35);
   --danger: #ff3366;
 }
@@ -49,17 +48,135 @@ html, body {
   background: #080514;
 }
 
-/* Studio Stage */
-.studio-stage {
+/* ================= SCREEN 1: SETUP LOBBY (FOLDERS VISIBLE) ================= */
+#setup-lobby {
   flex: 1 1 auto;
-  position: relative;
+  display: flex;
+  flex-direction: column;
   width: 100%;
-  height: calc(100% - 64px);
-  background: #000;
-  overflow: hidden;
+  height: 100%;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  background: #080514;
+}
+
+.lobby-header {
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+  background: #120e26;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.brand-badge {
+  font-size: 18px;
+  font-weight: 800;
+  background: linear-gradient(135deg, #00f0ff, #9d4edd);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Big Start Button at Top */
+.hero-banner {
+  padding: 14px 16px;
+}
+
+.big-record-launch-btn {
+  background: linear-gradient(135deg, #9d4edd, #ff007f);
+  border: none;
+  border-radius: 18px;
+  padding: 18px;
+  width: 100%;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 900;
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 12px;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(255, 0, 127, 0.45);
+}
+
+.big-record-launch-btn .dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 10px #fff;
+}
+
+/* Status Pill */
+.ready-pill {
+  font-size: 11px;
+  color: var(--neon-blue);
+  background: rgba(0, 240, 255, 0.12);
+  border: 1px solid var(--neon-blue);
+  padding: 4px 10px;
+  border-radius: 20px;
+  text-align: center;
+  margin: 0 16px 10px 16px;
+  font-weight: 600;
+}
+
+/* Menu Folders Grid */
+.folder-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  padding: 6px 16px 80px 16px;
+}
+
+.folder-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.folder-card:active {
+  background: var(--bg-card-hover);
+  border-color: var(--neon-blue);
+}
+
+.folder-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+.folder-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.folder-sub {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* ================= SCREEN 2: ACTIVE REACTION WORKSTATION ================= */
+#recording-stage {
+  flex: 1 1 auto;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  overflow: hidden;
+  display: none;
 }
 
 #compositorCanvas {
@@ -69,8 +186,8 @@ html, body {
   display: block;
 }
 
-/* Floating Badges */
-.hud-top {
+/* Top Floating Controls on Stage */
+.stage-top-hud {
   position: absolute;
   top: env(safe-area-inset-top, 10px);
   left: 12px;
@@ -102,7 +219,7 @@ html, body {
   background: var(--danger);
 }
 
-.icon-btn {
+.hud-btn {
   background: rgba(18, 14, 38, 0.85);
   border: 1px solid var(--border);
   color: #fff;
@@ -116,7 +233,7 @@ html, body {
   pointer-events: auto;
 }
 
-.icon-btn svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; }
+.hud-btn svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; }
 
 /* Draggable Touch Reaction PiP Box */
 .pip-box {
@@ -147,75 +264,43 @@ html, body {
   position: absolute;
   bottom: -8px;
   right: -8px;
-  width: 26px;
-  height: 26px;
+  width: 28px;
+  height: 28px;
   background: var(--neon-blue);
   border: 2px solid #fff;
   border-radius: 50%;
   touch-action: none;
 }
 
-/* Bottom Control Dock */
-.bottom-dock {
-  background: #120e26;
-  border-top: 1px solid var(--border);
-  height: 64px;
-  min-height: 64px;
+/* Floating Stop Recording Bar at Bottom of Stage */
+.stage-bottom-bar {
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  right: 0;
   display: flex;
-  justify-content: space-around;
-  align-items: center;
-  padding: 0 10px;
-  z-index: 50;
-  padding-bottom: env(safe-area-inset-bottom, 0px);
-}
-
-.dock-btn {
-  background: none;
-  border: none;
-  color: var(--text-muted);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 3px;
-  font-size: 10px;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.dock-btn.active { color: var(--neon-blue); }
-.dock-btn svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2; }
-
-.rec-btn-main {
-  width: 54px;
-  height: 54px;
-  border-radius: 50%;
-  background: #190b2c;
-  border: 3px solid var(--danger);
-  display: flex;
-  align-items: center;
   justify-content: center;
-  box-shadow: 0 0 15px rgba(255, 51, 102, 0.5);
+  align-items: center;
+  gap: 16px;
+  z-index: 40;
+}
+
+.stop-rec-btn {
+  background: #ff3366;
+  border: 3px solid #fff;
+  color: #fff;
+  padding: 12px 28px;
+  border-radius: 30px;
+  font-weight: 900;
+  font-size: 14px;
+  box-shadow: 0 0 20px rgba(255, 51, 102, 0.8);
   cursor: pointer;
 }
 
-.rec-btn-main .inner-core {
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background: var(--danger);
-  transition: all 0.2s ease;
-}
-
-.rec-btn-main.recording .inner-core {
-  width: 16px;
-  height: 16px;
-  border-radius: 4px;
-}
-
-/* Slide-up Tool Sheets with Scroll Lock Fix */
+/* Slide-up Tool Sheets */
 .tool-sheet {
   position: absolute;
-  bottom: 64px;
+  bottom: 0;
   left: 0;
   right: 0;
   background: #161230;
@@ -225,7 +310,7 @@ html, body {
   transform: translateY(110%);
   transition: transform 0.28s cubic-bezier(0.1, 0.9, 0.2, 1);
   z-index: 70;
-  max-height: 55vh;
+  max-height: 60vh;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   box-shadow: 0 -8px 30px rgba(0,0,0,0.85);
@@ -257,8 +342,9 @@ html, body {
   background: none;
   border: none;
   color: var(--text-muted);
-  font-size: 20px;
+  font-size: 22px;
   padding: 2px 8px;
+  cursor: pointer;
 }
 
 .chip-row {
@@ -316,39 +402,10 @@ html, body {
 
 .fx-card .emoji { font-size: 22px; }
 
-/* TikTok Drawer */
-.tiktok-feed {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.tiktok-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background: #201a42;
-  padding: 10px;
-  border-radius: 10px;
-  border: 1px solid var(--border);
-  cursor: pointer;
-}
-
-.tiktok-thumb {
-  width: 48px;
-  height: 48px;
-  background: #000;
-  border-radius: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
-}
-
 /* Toast */
 #toast {
   position: absolute;
-  top: 60px;
+  top: 70px;
   left: 50%;
   transform: translateX(-50%) translateY(-100px);
   background: #161230;
@@ -364,7 +421,7 @@ html, body {
 }
 #toast.show { transform: translateX(-50%) translateY(0); }
 
-/* Hidden Media */
+/* Hidden off-screen media */
 .aux-hidden {
   position: absolute;
   width: 1px;
@@ -379,101 +436,132 @@ html, body {
 
 <div id="app-root">
 
-  <div id="toast">Notification</div>
+  <div id="toast">Notice</div>
 
-  <!-- Offscreen media engines -->
+  <!-- Off-Screen Engines -->
   <video id="camVideo" playsinline autoplay muted class="aux-hidden"></video>
   <video id="srcVideo" playsinline loop class="aux-hidden"></video>
   <input type="file" id="videoPicker" accept="video/*" class="aux-hidden">
 
-  <!-- Main Full-Screen Portrait Studio Stage -->
-  <div class="studio-stage" id="studioStage">
+  <!-- ================= 1. SETUP LOBBY (FOLDERS VISIBLE BEFORE RECORD) ================= -->
+  <div id="setup-lobby">
+    <header class="lobby-header">
+      <span class="brand-badge">REACTION PRO STUDIO</span>
+      <span style="font-size:11px;color:var(--neon-blue);font-weight:700;">LOBBY SETUP</span>
+    </header>
+
+    <div class="hero-banner">
+      <button class="big-record-launch-btn" id="btnLaunchRecording">
+        <span class="dot"></span>
+        START REACTION RECORDING
+      </button>
+    </div>
+
+    <div class="ready-pill" id="statusPill">
+      ✓ Ready: Setup your video & effects below before launching!
+    </div>
+
+    <!-- The Folders you can configure first -->
+    <div class="folder-grid">
+      
+      <div class="folder-card" id="folderTiktok">
+        <div class="folder-icon" style="background:#2b1055;">📱</div>
+        <div class="folder-title">1. Reaction Video</div>
+        <div class="folder-sub" id="lblVideoStatus">Choose from Gallery or TikTok</div>
+      </div>
+
+      <div class="folder-card" id="folderFilters">
+        <div class="folder-icon" style="background:#4a1236;">👶</div>
+        <div class="folder-title">2. Face Filters</div>
+        <div class="folder-sub" id="lblFilterStatus">Baby Face, Wobbly, Glasses</div>
+      </div>
+
+      <div class="folder-card" id="folderVoice">
+        <div class="folder-icon" style="background:#113840;">🍼</div>
+        <div class="folder-title">3. Voice Changer</div>
+        <div class="folder-sub" id="lblVoiceStatus">Baby Voice, Chipmunk, Deep</div>
+      </div>
+
+      <div class="folder-card" id="folderBackground">
+        <div class="folder-icon" style="background:#0f382a;">🖼️</div>
+        <div class="folder-title">4. Backgrounds</div>
+        <div class="folder-sub" id="lblBgStatus">Room, Blur, Chroma Green</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= 2. ACTIVE REACTION STAGE (PORTRAIT FULL SCREEN) ================= -->
+  <div id="recording-stage">
     
-    <!-- Top HUD -->
-    <div class="hud-top">
+    <div class="stage-top-hud">
       <div class="rec-badge">
         <div class="rec-dot"></div>
         <span id="timerText">00:00</span>
       </div>
-      
-      <div style="display:flex;gap:8px;pointer-events:auto;">
-        <button class="icon-btn" id="btnFlipCamera" title="Flip Camera">
-          <svg viewBox="0 0 24 24"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
-        </button>
-      </div>
+
+      <button class="hud-btn" id="btnFlipCamera" title="Flip Camera">
+        <svg viewBox="0 0 24 24"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+      </button>
     </div>
 
-    <!-- Compositor Canvas (Portrait Fixed) -->
+    <!-- Canvas (Portrait Full Screen) -->
     <canvas id="compositorCanvas"></canvas>
 
-    <!-- Draggable & Resizable TikTok / Source Reaction Box -->
+    <!-- Reaction Video PiP Box (Draggable & Resizable) -->
     <div class="pip-box" id="pipBox">
       <div class="pip-header">Reacting To</div>
       <div class="pip-resize" id="pipResize"></div>
     </div>
 
-  </div>
-
-  <!-- Bottom Navigation Dock -->
-  <nav class="bottom-dock">
-    <button class="dock-btn" data-sheet="sheetTiktok">
-      <svg viewBox="0 0 24 24"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>
-      TikTok
-    </button>
-    <button class="dock-btn" data-sheet="sheetFilters">
-      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></svg>
-      Filters
-    </button>
-    
-    <div class="rec-btn-main" id="btnRecord">
-      <div class="inner-core"></div>
+    <!-- Bottom Action Bar on Stage -->
+    <div class="stage-bottom-bar">
+      <button class="stop-rec-btn" id="btnStopRecord">
+        ⏹ STOP & FINISH
+      </button>
     </div>
 
-    <button class="dock-btn" data-sheet="sheetVoice">
-      <svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>
-      Voice
-    </button>
-    <button class="dock-btn" data-sheet="sheetBg">
-      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-      Backdrop
-    </button>
-  </nav>
+  </div>
 
-  <!-- SHEET: TIKTOK & SOURCE VIDEO REACTOR -->
+  <!-- ================= BOTTOM TOOL SHEETS ================= -->
+
+  <!-- SHEET: TIKTOK / VIDEO SELECTOR -->
   <div class="tool-sheet" id="sheetTiktok">
     <div class="sheet-handle"></div>
     <div class="sheet-head">
-      <span>React to Trending TikToks</span>
+      <span>1. Choose Reaction Video</span>
       <button class="sheet-close">&times;</button>
     </div>
     
-    <button class="chip-btn active" id="btnUploadLocal" style="width:100%;margin-bottom:12px;padding:10px;">
+    <button class="chip-btn active" id="btnUploadLocal" style="width:100%;margin-bottom:12px;padding:12px;">
       📁 Upload Video from Phone Gallery
     </button>
 
-    <div class="tiktok-feed">
-      <div class="tiktok-item" data-clip="cat">
-        <div class="tiktok-thumb">🐱</div>
+    <div style="font-size:11px;color:var(--text-muted);margin-bottom:8px;">OR REACT TO VIRAL TIKTOK SAMPLES:</div>
+
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <div class="folder-card" data-clip="cat" style="flex-direction:row;align-items:center;">
+        <span style="font-size:24px;">🐱</span>
         <div>
-          <strong style="font-size:12px;display:block;">Funny Cat Jump Reaction</strong>
-          <small style="color:var(--text-muted);">Trending Viral Sound • 12s</small>
+          <strong style="font-size:12px;display:block;">Funny Cat Jump</strong>
+          <small style="color:var(--text-muted);">Trending Viral Sound</small>
         </div>
       </div>
-      <div class="tiktok-item" data-clip="skit">
-        <div class="tiktok-thumb">😂</div>
+      <div class="folder-card" data-clip="skit" style="flex-direction:row;align-items:center;">
+        <span style="font-size:24px;">😂</span>
         <div>
-          <strong style="font-size:12px;display:block;">Comedy Skit Twist</strong>
-          <small style="color:var(--text-muted);">POV Challenge • 15s</small>
+          <strong style="font-size:12px;display:block;">Comedy Skit Clip</strong>
+          <small style="color:var(--text-muted);">POV Challenge</small>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- SHEET: VIRAL FACE FILTERS (BABY, WOBBLY, GLASSES) -->
+  <!-- SHEET: VIRAL BABY FILTERS -->
   <div class="tool-sheet" id="sheetFilters">
     <div class="sheet-handle"></div>
     <div class="sheet-head">
-      <span>Face FX & Beauty Filters</span>
+      <span>2. Choose Face Filter</span>
       <button class="sheet-close">&times;</button>
     </div>
 
@@ -488,7 +576,7 @@ html, body {
       </div>
       <div class="fx-card" data-fx="wobbly">
         <span class="emoji">🤪</span>
-        <span>Wobbly Mouth</span>
+        <span>Big Mouth</span>
       </div>
       <div class="fx-card" data-fx="babyglasses">
         <span class="emoji">👓</span>
@@ -505,18 +593,18 @@ html, body {
     </div>
   </div>
 
-  <!-- SHEET: VOICE CHANGER (BABY VOICE + CHIPMUNK) -->
+  <!-- SHEET: VOICE CHANGER -->
   <div class="tool-sheet" id="sheetVoice">
     <div class="sheet-handle"></div>
     <div class="sheet-head">
-      <span>Voice FX</span>
+      <span>3. Choose Voice Changer</span>
       <button class="sheet-close">&times;</button>
     </div>
 
     <div class="grid-3">
       <div class="fx-card active" data-voice="normal">
         <span class="emoji">🎙️</span>
-        <span>Natural</span>
+        <span>Normal</span>
       </div>
       <div class="fx-card" data-voice="babyvoice">
         <span class="emoji">🍼</span>
@@ -541,11 +629,11 @@ html, body {
     </div>
   </div>
 
-  <!-- SHEET: BACKGROUNDS (FIXED SCROLLING) -->
+  <!-- SHEET: BACKGROUNDS -->
   <div class="tool-sheet" id="sheetBg">
     <div class="sheet-handle"></div>
     <div class="sheet-head">
-      <span>Backgrounds & Rooms</span>
+      <span>4. Choose Background</span>
       <button class="sheet-close">&times;</button>
     </div>
 
@@ -562,7 +650,7 @@ html, body {
 
 <script>
 /* =========================================================
-   REACTION PRO ENGINE (PORTRAIT LOCKED & VIRAL FILTERS)
+   REACTION PRO STUDIO: LOBBY & REACTION RECORDER
    ========================================================= */
 const STATE = {
   facingMode: 'user',
@@ -574,7 +662,7 @@ const STATE = {
   recordedChunks: [],
   recordStartTime: 0,
   recordTimer: null,
-  pip: { x: 0.60, y: 0.06, w: 0.36, h: 0.38 }
+  pip: { x: 0.60, y: 0.08, w: 0.36, h: 0.38 }
 };
 
 const $ = id => document.getElementById(id);
@@ -584,9 +672,8 @@ const camVideo = $('camVideo');
 const srcVideo = $('srcVideo');
 const pipBox = $('pipBox');
 const pipResize = $('pipResize');
-const stage = $('studioStage');
+const stage = $('recordingStage') || $('recording-stage');
 
-// Show Toast
 function toast(msg) {
   const t = $('toast');
   t.textContent = msg;
@@ -594,45 +681,38 @@ function toast(msg) {
   setTimeout(() => t.classList.remove('show'), 2200);
 }
 
-// 1. Portrait Resolution Initialization
+// 1. Portrait Resolution
 function initCanvasSize() {
-  const rect = stage.getBoundingClientRect();
-  // Standard crisp 9:16 vertical ratio
   canvas.width = 720;
   canvas.height = 1280;
   updatePipDom();
 }
 window.addEventListener('resize', initCanvasSize);
 
-// 2. Camera Engine with Cover Scaling (No Stretch)
+// 2. Camera Engine
 async function startCamera() {
   try {
     if (camVideo.srcObject) {
       camVideo.srcObject.getTracks().forEach(t => t.stop());
     }
     const constraints = {
-      video: {
-        facingMode: STATE.facingMode,
-        width: { ideal: 1280 },
-        height: { ideal: 720 }
-      },
+      video: { facingMode: STATE.facingMode, width: { ideal: 1280 }, height: { ideal: 720 } },
       audio: { echoCancellation: true, noiseSuppression: true }
     };
     const stream = await navigator.mediaDevices.getUserMedia(constraints);
     camVideo.srcObject = stream;
     await camVideo.play();
     
-    // Connect Web Audio
     const track = stream.getAudioTracks()[0];
     if (track) audioEngine.attachMic(new MediaStream([track]));
     
     requestAnimationFrame(renderLoop);
   } catch (err) {
-    toast('Camera permission required');
+    toast('Camera access needed to record');
   }
 }
 
-// 3. Web Audio Voice Engine (Baby Voice + Chipmunk)
+// 3. Audio Engine
 class AudioEngine {
   constructor() {
     this.ctx = null;
@@ -660,7 +740,6 @@ class AudioEngine {
 
     const t = STATE.activeVoice;
     if (t === 'babyvoice') {
-      // Viral Baby Voice: High-Shelf + Formant Boost
       const hp = this.ctx.createBiquadFilter();
       hp.type = 'highpass';
       hp.frequency.value = 650;
@@ -673,7 +752,6 @@ class AudioEngine {
       peak.connect(this.dest);
       this.filterNode = hp;
     } else if (t === 'chipmunk') {
-      // High-Pitch Chipmunk Resonator
       const bp = this.ctx.createBiquadFilter();
       bp.type = 'bandpass';
       bp.frequency.value = 2200;
@@ -697,7 +775,7 @@ class AudioEngine {
 }
 const audioEngine = new AudioEngine();
 
-// 4. Compositor Loop: Portrait Aspect Ratio & Viral Face Shaders
+// 4. Portrait Rendering Loop
 function renderLoop() {
   const cw = canvas.width;
   const ch = canvas.height;
@@ -717,13 +795,13 @@ function renderLoop() {
     ctx.fillRect(0, 0, cw, ch);
   }
 
-  // Camera Cover Scaling (NEVER STRETCHES)
+  // Camera Cover Scaling (No Stretch)
   if (camVideo.readyState >= 2) {
     const vw = camVideo.videoWidth;
     const vh = camVideo.videoHeight;
     const hRatio = cw / vw;
     const vRatio = ch / vh;
-    const ratio = Math.max(hRatio, vRatio); // Cover scaling
+    const ratio = Math.max(hRatio, vRatio);
     const nw = vw * ratio;
     const nh = vh * ratio;
     const ox = (cw - nw) / 2;
@@ -742,11 +820,11 @@ function renderLoop() {
     ctx.drawImage(camVideo, ox, oy, nw, nh);
     ctx.restore();
 
-    // Viral Face Filters
+    // Filters
     applyViralFilters(cw, ch);
   }
 
-  // Draw Reaction PiP Video
+  // Draw PiP Reaction Box
   if (srcVideo.readyState >= 2) {
     const p = STATE.pip;
     const px = p.x * cw;
@@ -769,7 +847,7 @@ function renderLoop() {
   requestAnimationFrame(renderLoop);
 }
 
-// 5. The 3 Viral Face Filters from your Screenshots
+// 5. Viral Filters
 function applyViralFilters(cw, ch) {
   const fx = STATE.activeFx;
   if (fx === 'none') return;
@@ -780,12 +858,10 @@ function applyViralFilters(cw, ch) {
   ctx.save();
 
   if (fx === 'baby') {
-    // FILTER 1: "Back to being a baby" (Enlarged sparkling eyes, cheeks, soft skin glow)
     const eyeDist = cw * 0.14;
     const eyeY = cy - ch * 0.02;
     const eyeR = cw * 0.12;
 
-    // Magnify Eyes
     [-eyeDist, eyeDist].forEach(ox => {
       ctx.save();
       ctx.beginPath();
@@ -794,14 +870,12 @@ function applyViralFilters(cw, ch) {
       ctx.drawImage(canvas, (cx + ox) - eyeR * 1.35, eyeY - eyeR * 1.35, eyeR * 2.7, eyeR * 2.7);
       ctx.restore();
 
-      // Cute Baby Eye Sparkles
       ctx.fillStyle = 'rgba(255,255,255,0.75)';
       ctx.beginPath();
       ctx.arc(cx + ox - 8, eyeY - 8, 6, 0, Math.PI * 2);
       ctx.fill();
     });
 
-    // Rosy Baby Cheeks
     ctx.fillStyle = 'rgba(255, 105, 180, 0.25)';
     [-eyeDist * 1.3, eyeDist * 1.3].forEach(ox => {
       ctx.beginPath();
@@ -810,8 +884,6 @@ function applyViralFilters(cw, ch) {
     });
 
   } else if (fx === 'wobbly') {
-    // FILTER 2: "Wobbly Goofy Baby / Big Mouth" (From screenshot 2)
-    // Stretches jaw and expands mouth wide
     const mouthY = cy + ch * 0.08;
     ctx.save();
     ctx.beginPath();
@@ -820,7 +892,6 @@ function applyViralFilters(cw, ch) {
     ctx.drawImage(canvas, cx - cw * 0.35, mouthY - ch * 0.12, cw * 0.70, ch * 0.24);
     ctx.restore();
 
-    // Bulge Eyes
     const eyeDist = cw * 0.13;
     [-eyeDist, eyeDist].forEach(ox => {
       ctx.save();
@@ -832,11 +903,9 @@ function applyViralFilters(cw, ch) {
     });
 
   } else if (fx === 'babyglasses') {
-    // FILTER 3: Baby with Round Wire Glasses
     const eyeDist = cw * 0.14;
     const eyeY = cy - ch * 0.02;
 
-    // Draw Round Wire Glasses
     ctx.strokeStyle = '#f1c40f';
     ctx.lineWidth = 5;
     [-eyeDist, eyeDist].forEach(ox => {
@@ -844,14 +913,12 @@ function applyViralFilters(cw, ch) {
       ctx.arc(cx + ox, eyeY, cw * 0.13, 0, Math.PI * 2);
       ctx.stroke();
     });
-    // Bridge
     ctx.beginPath();
     ctx.moveTo(cx - eyeDist + cw * 0.13, eyeY);
     ctx.lineTo(cx + eyeDist - cw * 0.13, eyeY);
     ctx.stroke();
 
   } else if (fx === 'catears') {
-    // Animated Cat Ears
     const earW = cw * 0.12;
     const earH = ch * 0.10;
     const earY = cy - ch * 0.24;
@@ -870,7 +937,7 @@ function applyViralFilters(cw, ch) {
   ctx.restore();
 }
 
-// 6. Touch Controller (Draggable PiP Box)
+// 6. Touch Controller
 function updatePipDom() {
   const r = stage.getBoundingClientRect();
   const p = STATE.pip;
@@ -918,16 +985,11 @@ pipResize.addEventListener('pointermove', e => {
 });
 pipResize.addEventListener('pointerup', stopDrag);
 
-// 7. Sheet Controller (No Overlap, Easy Tap)
-document.querySelectorAll('[data-sheet]').forEach(b => {
-  b.addEventListener('click', () => {
-    const id = b.dataset.sheet;
-    document.querySelectorAll('.tool-sheet').forEach(s => {
-      if (s.id !== id) s.classList.remove('open');
-    });
-    $(id).classList.toggle('open');
-  });
-});
+// 7. Folder Click Handlers (Opens Sheets to Setup)
+$('folderTiktok').addEventListener('click', () => $('sheetTiktok').classList.add('open'));
+$('folderFilters').addEventListener('click', () => $('sheetFilters').classList.add('open'));
+$('folderVoice').addEventListener('click', () => $('sheetVoice').classList.add('open'));
+$('folderBackground').addEventListener('click', () => $('sheetBg').classList.add('open'));
 
 document.querySelectorAll('.sheet-close').forEach(b => {
   b.addEventListener('click', () => {
@@ -941,12 +1003,13 @@ $('btnFlipCamera').addEventListener('click', () => {
   startCamera();
 });
 
-// Viral Filter Switching
+// Filter Switching
 document.querySelectorAll('[data-fx]').forEach(card => {
   card.addEventListener('click', () => {
     document.querySelectorAll('[data-fx]').forEach(c => c.classList.remove('active'));
     card.classList.add('active');
     STATE.activeFx = card.dataset.fx;
+    $('lblFilterStatus').textContent = card.innerText.replace('\n', ' ');
     toast(`Filter: ${card.innerText}`);
   });
 });
@@ -958,6 +1021,7 @@ document.querySelectorAll('[data-voice]').forEach(card => {
     card.classList.add('active');
     STATE.activeVoice = card.dataset.voice;
     audioEngine.applyVoice();
+    $('lblVoiceStatus').textContent = card.innerText.replace('\n', ' ');
     toast(`Voice: ${card.innerText}`);
   });
 });
@@ -968,11 +1032,12 @@ document.querySelectorAll('[data-bg]').forEach(chip => {
     document.querySelectorAll('[data-bg]').forEach(c => c.classList.remove('active'));
     chip.classList.add('active');
     STATE.activeBg = chip.dataset.bg;
+    $('lblBgStatus').textContent = chip.innerText;
     toast(`Background: ${chip.innerText}`);
   });
 });
 
-// Local Video Upload
+// Video Upload
 $('btnUploadLocal').addEventListener('click', () => $('videoPicker').click());
 
 $('videoPicker').addEventListener('change', e => {
@@ -980,6 +1045,7 @@ $('videoPicker').addEventListener('change', e => {
   if (!file) return;
   srcVideo.src = URL.createObjectURL(file);
   srcVideo.play();
+  $('lblVideoStatus').textContent = 'Loaded: ' + file.name;
   toast('Reaction Video Loaded!');
   $('sheetTiktok').classList.remove('open');
 });
@@ -988,7 +1054,6 @@ $('videoPicker').addEventListener('change', e => {
 document.querySelectorAll('[data-clip]').forEach(item => {
   item.addEventListener('click', () => {
     const type = item.dataset.clip;
-    // Generate synthesized motion loop for reaction test
     const cv = document.createElement('canvas');
     cv.width = 360; cv.height = 640;
     const cx = cv.getContext('2d');
@@ -1000,24 +1065,34 @@ document.querySelectorAll('[data-clip]').forEach(item => {
     setInterval(() => {
       cx.fillStyle = type === 'cat' ? '#2c3e50' : '#8e44ad';
       cx.fillRect(0, 0, 360, 640);
-      cx.font = '60px sans-serif';
+      cx.font = '55px sans-serif';
       cx.textAlign = 'center';
       cx.fillText(type === 'cat' ? '🐱 Meow!' : '😂 Viral!', 180, 320 + Math.sin(angle) * 80);
       angle += 0.1;
     }, 40);
 
-    toast('Playing Viral TikTok Clip!');
+    $('lblVideoStatus').textContent = type === 'cat' ? 'Viral Cat Jump' : 'Viral Comedy Skit';
+    toast('Playing Viral Sample Clip!');
     $('sheetTiktok').classList.remove('open');
   });
 });
 
-// 8. Recording Engine
-$('btnRecord').addEventListener('click', () => {
-  if (STATE.recording) {
-    stopRecording();
-  } else {
-    startRecording();
-  }
+// ================= 8. SWITCH FROM LOBBY TO FULL SCREEN REACTION =================
+$('btnLaunchRecording').addEventListener('click', async () => {
+  // 1. Hide Lobby
+  $('setup-lobby').style.display = 'none';
+  // 2. Show Full-Screen Reaction Stage
+  $('recording-stage').style.display = 'block';
+
+  // 3. Start Camera and Position PiP Box
+  await startCamera();
+  initCanvasSize();
+  startRecording();
+});
+
+// Stop & return to Lobby
+$('btnStopRecord').addEventListener('click', () => {
+  stopRecording();
 });
 
 function startRecording() {
@@ -1035,7 +1110,6 @@ function startRecording() {
 
   STATE.mediaRecorder.start(500);
   STATE.recording = true;
-  $('btnRecord').classList.add('recording');
 
   STATE.recordStartTime = Date.now();
   STATE.recordTimer = setInterval(() => {
@@ -1043,29 +1117,30 @@ function startRecording() {
     $('timerText').textContent = `${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
   }, 500);
 
-  toast('Recording Reaction...');
+  toast('Recording Started!');
 }
 
 function stopRecording() {
-  STATE.mediaRecorder.stop();
+  if (STATE.mediaRecorder) STATE.mediaRecorder.stop();
   STATE.recording = false;
-  $('btnRecord').classList.remove('recording');
   clearInterval(STATE.recordTimer);
   $('timerText').textContent = '00:00';
+
+  // Return to Lobby
+  $('recording-stage').style.display = 'none';
+  $('setup-lobby').style.display = 'flex';
 }
 
 function saveRecording() {
   const blob = new Blob(STATE.recordedChunks, { type: 'video/webm' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = `Reaction_Tiktok_${Date.now()}.webm`;
+  a.download = `Reaction_Studio_${Date.now()}.webm`;
   a.click();
   toast('Downloaded to Gallery!');
 }
 
-// Start
 initCanvasSize();
-startCamera();
 </script>
 </body>
 </html>
