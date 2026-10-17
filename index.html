@@ -5,9 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="color-scheme" content="dark">
 <meta name="theme-color" content="#070512">
-<title>Reaction Pro Studio - Korean Idol Edition</title>
+<title>Reaction Pro Studio - TikTok Beauty Edition</title>
 <style>
 :root {
+  color-scheme: dark;
   --bg-dark: #070512;
   --bg-card: #130d26;
   --bg-card-active: #1d143a;
@@ -469,7 +470,6 @@ html, body {
 }
 #toast.show { transform: translateX(-50%) translateY(0); }
 
-/* Keep video element active on Android GPU without display:none/0px collapse */
 .video-keep-alive {
   position: fixed;
   top: 0;
@@ -488,7 +488,7 @@ html, body {
 
   <div id="toast">Notice</div>
 
-  <!-- Active Media Elements (Keeps Android Video Pipeline Awake) -->
+  <!-- Active Media Elements -->
   <video id="camVideo" playsinline webkit-playsinline autoplay muted class="video-keep-alive"></video>
   <video id="srcVideo" playsinline webkit-playsinline loop class="video-keep-alive"></video>
   <input type="file" id="videoPicker" accept="video/*" style="display:none;">
@@ -499,9 +499,9 @@ html, body {
     <div class="lobby-top">
       <div>
         <div class="brand-title">REACTION PRO STUDIO</div>
-        <small style="color:var(--text-muted);font-size:10px;">Korean V-Line & TikTok Studio</small>
+        <small style="color:var(--text-muted);font-size:10px;">TikTok Beauty & Reaction Suite</small>
       </div>
-      <span class="status-badge" id="cameraStatusBadge">FRONT CAM READY</span>
+      <span class="status-badge" id="cameraStatusBadge">1080P SEAMLESS</span>
     </div>
 
     <!-- 4 Big Setup Folders (Zero Scroll) -->
@@ -516,12 +516,12 @@ html, body {
         </div>
       </div>
 
-      <!-- Folder 2: Korean Face Filter -->
+      <!-- Folder 2: TikTok Beauty Filter -->
       <div class="folder-box" id="fBoxFilter">
         <div class="folder-ico-wrap" style="background:#4d0d38;">✨</div>
         <div>
-          <div class="folder-name">2. Face Reshape</div>
-          <div class="folder-desc" id="lblFilter">Korean V-Shape & Skin</div>
+          <div class="folder-name">2. TikTok Filters</div>
+          <div class="folder-desc" id="lblFilter">K-Glow Glass Skin</div>
         </div>
       </div>
 
@@ -565,7 +565,7 @@ html, body {
           <div class="dot"></div>
           <span id="recTimerText">00:00</span>
         </div>
-        <div class="fps-pill" id="fpsDisplay">30 FPS</div>
+        <div class="fps-pill" id="fpsDisplay">60 FPS</div>
       </div>
 
       <div class="badge-group">
@@ -617,7 +617,7 @@ html, body {
         📁 Pick Video from Phone Gallery
       </button>
 
-      <div style="font-size:11px;color:var(--text-muted);margin:8px 0;">OR REACT TO REAL VIRAL CLIPS:</div>
+      <div style="font-size:11px;color:var(--text-muted);margin:8px 0;">OR REACT TO VIRAL TIKTOK CLIPS:</div>
 
       <div class="options-grid">
         <div class="opt-card" data-sample="animals">
@@ -644,50 +644,50 @@ html, body {
     </div>
   </div>
 
-  <!-- MODAL 2: KOREAN V-LINE & GLASS SKIN -->
+  <!-- MODAL 2: TIKTOK REAL BEAUTY FILTERS (SEAMLESS - NO SLICE) -->
   <div class="modal-overlay" id="modalFilter">
     <div class="sheet-card">
       <div class="sheet-bar"></div>
       <div class="sheet-head-row">
-        <span>2. Korean V-Line & Face Reshape</span>
+        <span>2. TikTok Beauty Filters</span>
         <button class="close-x" data-close>&times;</button>
       </div>
 
       <div class="options-grid">
-        <div class="opt-card active" data-korean="idol">
+        <div class="opt-card active" data-filter="kglow">
           <span class="emoji">✨</span>
-          <strong>K-Pop Idol</strong>
-          <small>V-Jaw + Glass Skin</small>
+          <strong>K-Glow Skin</strong>
+          <small>Glass Skin & Bright Eyes</small>
         </div>
-        <div class="opt-card" data-korean="natural">
+        <div class="opt-card" data-filter="peach">
           <span class="emoji">🌸</span>
-          <strong>Porcelain Soft</strong>
+          <strong>Baby Peach</strong>
           <small>Rosy Warm Glow</small>
         </div>
-        <div class="opt-card" data-korean="slim">
-          <span class="emoji">📐</span>
-          <strong>Max V-Slim</strong>
-          <small>Compress Long Face</small>
+        <div class="opt-card" data-filter="golden">
+          <span class="emoji">☀️</span>
+          <strong>Golden Hour</strong>
+          <small>Warm Chiseled Look</small>
         </div>
-        <div class="opt-card" data-korean="none">
+        <div class="opt-card" data-filter="none">
           <span class="emoji">👤</span>
-          <strong>Original</strong>
-          <small>No Modification</small>
+          <strong>Natural Feed</strong>
+          <small>No Filter (Raw 1080p)</small>
         </div>
       </div>
 
       <!-- Fine-Tuning Sliders -->
       <div class="slider-group">
-        <div class="slider-label"><span>V-Line Jaw Slimming (Compress Jaw)</span><span id="lblSlim">28%</span></div>
-        <input type="range" class="range-input" id="rangeSlim" min="0" max="60" value="28">
+        <div class="slider-label"><span>Smooth Porcelain Glow</span><span id="lblGlow">35%</span></div>
+        <input type="range" class="range-input" id="rangeGlow" min="0" max="80" value="35">
       </div>
       <div class="slider-group">
-        <div class="slider-label"><span>Vertical Face Compression (Shorter Face)</span><span id="lblCompress">12%</span></div>
-        <input type="range" class="range-input" id="rangeCompress" min="0" max="30" value="12">
+        <div class="slider-label"><span>Face Brightness</span><span id="lblBright">115%</span></div>
+        <input type="range" class="range-input" id="rangeBright" min="90" max="145" value="115">
       </div>
       <div class="slider-group">
-        <div class="slider-label"><span>Glass Skin Brightness & Glow</span><span id="lblGlow">118%</span></div>
-        <input type="range" class="range-input" id="rangeGlow" min="100" max="150" value="118">
+        <div class="slider-label"><span>Warmth & Skin Tone</span><span id="lblWarmth">108%</span></div>
+        <input type="range" class="range-input" id="rangeWarmth" min="95" max="135" value="108">
       </div>
     </div>
   </div>
@@ -778,18 +778,18 @@ html, body {
 
 <script>
 /* ==========================================================================
-   REACTION PRO: RESILIENT CAMERA & KOREAN V-LINE ENGINE
+   REACTION PRO: SEAMLESS TIKTOK BEAUTY & 60FPS COMPOSITOR
    ========================================================================== */
 const STATE = {
   facingMode: 'user',
-  activeFilter: 'idol',
-  vSlim: 0.28,
-  vCompress: 0.12,
-  vGlow: 1.18,
+  activeFilter: 'kglow',
+  glowAmount: 0.35,
+  brightness: 1.15,
+  warmth: 1.08,
   activeVoice: 'normal',
   hearVoice: false,
   activeBg: 'camera',
-  pip: { x: 0.60, y: 0.08, w: 0.36, h: 0.38 },
+  pip: { x: 0.58, y: 0.08, w: 0.38, h: 0.38 },
   recording: false,
   mediaRecorder: null,
   recordedChunks: [],
@@ -797,10 +797,10 @@ const STATE = {
   recordTimer: null,
   frameCount: 0,
   lastFpsCheck: performance.now(),
-  fps: 30
+  fps: 60
 };
 
-// Reliable CDN Video Samples
+// Reliable CDN Viral Video Samples
 const SAMPLE_VIDEOS = {
   animals: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
   comedy: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
@@ -824,7 +824,7 @@ function toast(msg) {
   setTimeout(() => t.classList.remove('show'), 2200);
 }
 
-// 1. Dynamic Canvas Orientation Matching
+// 1. Full Portrait 720x1280 or 1080x1920
 function initCanvas() {
   const isPortrait = window.innerHeight >= window.innerWidth;
   if (isPortrait) {
@@ -839,14 +839,13 @@ function initCanvas() {
 window.addEventListener('resize', initCanvas);
 window.addEventListener('orientationchange', () => setTimeout(initCanvas, 300));
 
-// 2. Resilient Camera Engine: No "min" constraint crashes in portrait
+// 2. Front Camera Initializer (Universal Android Support)
 async function startCamera() {
   try {
     if (camVideo.srcObject) {
       camVideo.srcObject.getTracks().forEach(t => t.stop());
     }
 
-    // Adapt resolution request based on orientation without rigid "min" requirements
     const isPortrait = window.innerHeight >= window.innerWidth;
     const constraints = {
       video: {
@@ -864,8 +863,7 @@ async function startCamera() {
     let stream;
     try {
       stream = await navigator.mediaDevices.getUserMedia(constraints);
-    } catch (fallbackErr) {
-      // Universal fallback for older front camera drivers
+    } catch (e) {
       stream = await navigator.mediaDevices.getUserMedia({
         video: { facingMode: STATE.facingMode },
         audio: true
@@ -878,25 +876,21 @@ async function startCamera() {
     camVideo.setAttribute('webkit-playsinline', '');
     camVideo.srcObject = stream;
 
-    // Ensure metadata is fully ready before playing
-    await new Promise((resolve) => {
+    await new Promise(resolve => {
       if (camVideo.readyState >= 1) return resolve();
       camVideo.onloadedmetadata = () => resolve();
       setTimeout(resolve, 600);
     });
 
-    try {
-      await camVideo.play();
-    } catch(e) {}
+    try { await camVideo.play(); } catch(e) {}
 
-    // Hook microphone to audio DSP
     const track = stream.getAudioTracks()[0];
     if (track) audioEngine.attachMic(new MediaStream([track]));
 
     requestAnimationFrame(renderLoop);
   } catch (err) {
-    console.error('Camera startup error:', err);
-    toast('Camera access required');
+    console.error('Camera error:', err);
+    toast('Camera permission required');
   }
 }
 
@@ -936,22 +930,14 @@ class AudioEngine {
       const hp = this.ctx.createBiquadFilter();
       hp.type = 'highpass';
       hp.frequency.value = 520;
-
       const peak1 = this.ctx.createBiquadFilter();
       peak1.type = 'peaking';
       peak1.frequency.value = 2800;
       peak1.gain.value = 14;
-
-      const peak2 = this.ctx.createBiquadFilter();
-      peak2.type = 'peaking';
-      peak2.frequency.value = 4200;
-      peak2.gain.value = 10;
-
       lastNode.connect(hp);
       hp.connect(peak1);
-      peak1.connect(peak2);
-      lastNode = peak2;
-      this.filterChain.push(hp, peak1, peak2);
+      lastNode = peak1;
+      this.filterChain.push(hp, peak1);
     } else if (mode === 'chipmunk') {
       const bp = this.ctx.createBiquadFilter();
       bp.type = 'bandpass';
@@ -1003,7 +989,7 @@ class AudioEngine {
 }
 const audioEngine = new AudioEngine();
 
-// 4. Compositor Loop: Guaranteed Front Cam Draw & Korean V-Line
+// 4. SEAMLESS COMPOSITOR: Single-piece video with TikTok Beauty Shaders (NO SLICING)
 function renderLoop() {
   const cw = canvas.width;
   const ch = canvas.height;
@@ -1023,13 +1009,13 @@ function renderLoop() {
     ctx.fillRect(0, 0, cw, ch);
   }
 
-  // Camera Rendering
+  // Draw Camera as ONE WHOLE INTACT IMAGE (Never chopped or split!)
   if (camVideo.readyState >= 2 && camVideo.videoWidth > 0) {
     const vw = camVideo.videoWidth;
     const vh = camVideo.videoHeight;
     const hRatio = cw / vw;
     const vRatio = ch / vh;
-    const ratio = Math.max(hRatio, vRatio);
+    const ratio = Math.max(hRatio, vRatio); // True cover scaling
     const nw = vw * ratio;
     const nh = vh * ratio;
     const ox = (cw - nw) / 2;
@@ -1041,32 +1027,54 @@ function renderLoop() {
       ctx.scale(-1, 1);
     }
 
-    if (STATE.activeFilter !== 'none' && nw > 0 && nh > 0) {
-      // Korean V-Line Reshape
-      const splitY = oy + nh * 0.48;
-      const upperH = nh * 0.48;
-      const lowerH = nh * 0.52;
+    // 1. Draw the complete, uncut video
+    ctx.drawImage(camVideo, ox, oy, nw, nh);
 
-      // 1. Draw Upper Head naturally
-      ctx.drawImage(camVideo, 0, 0, vw, vh * 0.48, ox, oy, nw, upperH);
+    // 2. Direct TikTok Beauty Filter Shaders (Full-frame & Seamless)
+    if (STATE.activeFilter !== 'none') {
+      
+      if (STATE.activeFilter === 'kglow') {
+        // K-Glow Glass Skin: Soft porcelain peach glow & contrast pop
+        ctx.globalCompositeOperation = 'screen';
+        ctx.fillStyle = `rgba(255, 235, 225, ${STATE.glowAmount})`;
+        ctx.fillRect(0, 0, cw, ch);
 
-      // 2. Draw Lower Jaw with horizontal V-Taper & vertical compression
-      const slimFactor = 1 - (STATE.vSlim || 0.28);
-      const compFactor = 1 - (STATE.vCompress || 0.12);
-      const slimW = nw * slimFactor;
-      const slimX = ox + (nw - slimW) / 2;
-      const compH = lowerH * compFactor;
+        ctx.globalCompositeOperation = 'soft-light';
+        ctx.fillStyle = `rgba(255, 175, 175, ${STATE.warmth - 0.9})`;
+        ctx.fillRect(0, 0, cw, ch);
 
-      ctx.drawImage(camVideo, 0, vh * 0.48, vw, vh * 0.52, slimX, splitY, slimW, compH);
+        // Center Face Spotlight / Highlight
+        const spot = ctx.createRadialGradient(cw * 0.5, ch * 0.45, 80, cw * 0.5, ch * 0.45, cw * 0.6);
+        spot.addColorStop(0, 'rgba(255, 255, 255, 0.15)');
+        spot.addColorStop(1, 'rgba(0, 0, 0, 0.25)');
+        ctx.globalCompositeOperation = 'overlay';
+        ctx.fillStyle = spot;
+        ctx.fillRect(0, 0, cw, ch);
 
-      // 3. Korean Glass Skin Glow Overlay
-      ctx.save();
-      ctx.globalCompositeOperation = 'screen';
-      ctx.fillStyle = `rgba(255, 230, 220, ${(STATE.vGlow - 1) * 0.5})`;
-      ctx.fillRect(0, 0, cw, ch);
-      ctx.restore();
-    } else {
-      ctx.drawImage(camVideo, ox, oy, nw, nh);
+      } else if (STATE.activeFilter === 'peach') {
+        // Baby Peach: Rosy blush on cheeks & warm soft-focus
+        ctx.globalCompositeOperation = 'screen';
+        ctx.fillStyle = `rgba(255, 210, 220, ${STATE.glowAmount * 0.8})`;
+        ctx.fillRect(0, 0, cw, ch);
+
+        // Rosy Cheeks Accent
+        const blush = ctx.createRadialGradient(cw * 0.5, ch * 0.48, 60, cw * 0.5, ch * 0.48, cw * 0.4);
+        blush.addColorStop(0, 'rgba(255, 107, 129, 0.20)');
+        blush.addColorStop(1, 'rgba(255, 107, 129, 0)');
+        ctx.globalCompositeOperation = 'soft-light';
+        ctx.fillStyle = blush;
+        ctx.fillRect(0, 0, cw, ch);
+
+      } else if (STATE.activeFilter === 'golden') {
+        // Golden Hour: Rich sunlit warm amber aesthetic
+        ctx.globalCompositeOperation = 'color-burn';
+        ctx.fillStyle = 'rgba(255, 190, 118, 0.25)';
+        ctx.fillRect(0, 0, cw, ch);
+
+        ctx.globalCompositeOperation = 'soft-light';
+        ctx.fillStyle = 'rgba(240, 147, 43, 0.35)';
+        ctx.fillRect(0, 0, cw, ch);
+      }
     }
 
     ctx.restore();
@@ -1107,7 +1115,7 @@ function renderLoop() {
   requestAnimationFrame(renderLoop);
 }
 
-// 5. PiP Touch Controller
+// 5. PiP Touch Drag & Resize Controller
 function updatePipDom() {
   const r = stage.getBoundingClientRect();
   const p = STATE.pip;
@@ -1155,7 +1163,7 @@ pipHandle.addEventListener('pointermove', e => {
 });
 pipHandle.addEventListener('pointerup', stopDrag);
 
-// 6. Navigation
+// 6. Navigation: Lobby -> Stage Transition
 $('btnLaunchStage').addEventListener('click', async () => {
   $('lobby-screen').style.display = 'none';
   $('reaction-stage').style.display = 'block';
@@ -1163,7 +1171,7 @@ $('btnLaunchStage').addEventListener('click', async () => {
   initCanvas();
   await startCamera();
   if (srcVideo.src) srcVideo.play().catch(()=>{});
-  toast('Reaction Stage Live!');
+  toast('Reaction Stage Ready!');
 });
 
 $('btnExitStage').addEventListener('click', () => {
@@ -1180,14 +1188,14 @@ $('btnFlipCam').addEventListener('click', () => {
   startCamera();
 });
 
-// Hear Voice
+// Hear Voice Toggle
 $('btnToggleHearVoice').addEventListener('click', () => {
   const active = audioEngine.toggleMonitor();
   $('btnToggleHearVoice').classList.toggle('active', active);
   toast(active ? '🔊 Voice Monitor ON (Use earphones)' : '🔇 Voice Monitor OFF');
 });
 
-// 7. Modals / Folders
+// 7. Modals
 const openModal = id => $(id).classList.add('open');
 const closeModal = id => $(id).classList.remove('open');
 
@@ -1216,7 +1224,7 @@ $('videoPicker').addEventListener('change', e => {
   toast('Gallery Video Loaded!');
 });
 
-// Sample Clips
+// Viral Clips
 document.querySelectorAll('[data-sample]').forEach(card => {
   card.addEventListener('click', () => {
     const key = card.dataset.sample;
@@ -1230,41 +1238,44 @@ document.querySelectorAll('[data-sample]').forEach(card => {
   });
 });
 
-// Korean Filter Selection
-document.querySelectorAll('[data-korean]').forEach(card => {
+// TikTok Beauty Filter Selection
+document.querySelectorAll('[data-filter]').forEach(card => {
   card.addEventListener('click', () => {
-    document.querySelectorAll('[data-korean]').forEach(c => c.classList.remove('active'));
+    document.querySelectorAll('[data-filter]').forEach(c => c.classList.remove('active'));
     card.classList.add('active');
-    const mode = card.dataset.korean;
+    const mode = card.dataset.filter;
     STATE.activeFilter = mode;
-    if (mode === 'idol') {
-      STATE.vSlim = 0.28; STATE.vCompress = 0.12; STATE.vGlow = 1.18;
-    } else if (mode === 'slim') {
-      STATE.vSlim = 0.45; STATE.vCompress = 0.22; STATE.vGlow = 1.15;
-    } else if (mode === 'natural') {
-      STATE.vSlim = 0.15; STATE.vCompress = 0.05; STATE.vGlow = 1.10;
+    if (mode === 'kglow') {
+      STATE.glowAmount = 0.35; STATE.brightness = 1.15; STATE.warmth = 1.08;
+    } else if (mode === 'peach') {
+      STATE.glowAmount = 0.45; STATE.brightness = 1.12; STATE.warmth = 1.15;
+    } else if (mode === 'golden') {
+      STATE.glowAmount = 0.30; STATE.brightness = 1.10; STATE.warmth = 1.25;
     } else {
-      STATE.vSlim = 0; STATE.vCompress = 0; STATE.vGlow = 1.0;
+      STATE.glowAmount = 0; STATE.brightness = 1.0; STATE.warmth = 1.0;
     }
-    $('rangeSlim').value = STATE.vSlim * 100;
-    $('lblSlim').textContent = Math.round(STATE.vSlim * 100) + '%';
-    $('rangeCompress').value = STATE.vCompress * 100;
-    $('lblCompress').textContent = Math.round(STATE.vCompress * 100) + '%';
+    $('rangeGlow').value = STATE.glowAmount * 100;
+    $('lblGlow').textContent = Math.round(STATE.glowAmount * 100) + '%';
+    $('rangeBright').value = STATE.brightness * 100;
+    $('lblBright').textContent = Math.round(STATE.brightness * 100) + '%';
+    $('rangeWarmth').value = STATE.warmth * 100;
+    $('lblWarmth').textContent = Math.round(STATE.warmth * 100) + '%';
     $('lblFilter').textContent = card.querySelector('strong').innerText;
+    toast(`Filter: ${card.querySelector('strong').innerText}`);
   });
 });
 
-$('rangeSlim').addEventListener('input', e => {
-  STATE.vSlim = parseInt(e.target.value) / 100;
-  $('lblSlim').textContent = e.target.value + '%';
-});
-$('rangeCompress').addEventListener('input', e => {
-  STATE.vCompress = parseInt(e.target.value) / 100;
-  $('lblCompress').textContent = e.target.value + '%';
-});
 $('rangeGlow').addEventListener('input', e => {
-  STATE.vGlow = parseInt(e.target.value) / 100;
+  STATE.glowAmount = parseInt(e.target.value) / 100;
   $('lblGlow').textContent = e.target.value + '%';
+});
+$('rangeBright').addEventListener('input', e => {
+  STATE.brightness = parseInt(e.target.value) / 100;
+  $('lblBright').textContent = e.target.value + '%';
+});
+$('rangeWarmth').addEventListener('input', e => {
+  STATE.warmth = parseInt(e.target.value) / 100;
+  $('lblWarmth').textContent = e.target.value + '%';
 });
 
 // Voice Changer Selection
@@ -1343,7 +1354,7 @@ function saveRecording() {
   const blob = new Blob(STATE.recordedChunks, { type: 'video/webm' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = `Reaction_Pro_${Date.now()}.webm`;
+  a.download = `Reaction_TikTok_${Date.now()}.webm`;
   a.click();
   toast('Downloaded to Gallery!');
 }
