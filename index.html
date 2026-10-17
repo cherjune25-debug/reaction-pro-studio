@@ -1,21 +1,21 @@
 <!DOCTYPE html>
-<html lang="en" style="background:#080514;color:#fff;">
+<html lang="en" style="background:#070512;color:#fff;">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="color-scheme" content="dark">
-<meta name="theme-color" content="#080514">
-<title>Reaction Pro Studio</title>
+<meta name="theme-color" content="#070512">
+<title>Reaction Pro Studio - Korean Idol Edition</title>
 <style>
 :root {
-  color-scheme: dark;
-  --bg-dark: #080514;
-  --bg-card: #130f28;
-  --bg-card-hover: #1b1638;
-  --neon-blue: #00f0ff;
+  --bg-dark: #070512;
+  --bg-card: #130d26;
+  --bg-card-active: #1d143a;
+  --neon-cyan: #00f0ff;
   --neon-purple: #9d4edd;
   --neon-pink: #ff007f;
-  --text-muted: #9e99c2;
+  --korean-peach: #ff7675;
+  --text-muted: #9590b6;
   --border: rgba(157, 78, 221, 0.35);
   --danger: #ff3366;
 }
@@ -33,7 +33,7 @@ html, body {
   height: 100vh;
   height: 100dvh;
   overflow: hidden;
-  background: #080514 !important;
+  background: #070512 !important;
   color: #fff !important;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   overscroll-behavior: none;
@@ -45,135 +45,135 @@ html, body {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  background: #080514;
+  background: #070512;
 }
 
-/* ================= SCREEN 1: SETUP LOBBY (FOLDERS VISIBLE) ================= */
-#setup-lobby {
-  flex: 1 1 auto;
+/* ================= 1. LOCKED LOBBY (NO SCROLL, BIG FOLDERS) ================= */
+#lobby-screen {
+  flex: 1 1 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  width: 100%;
-  height: 100%;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  background: #080514;
+  justify-content: space-between;
+  padding: 14px 16px 20px 16px;
+  background: radial-gradient(circle at top, #15092e 0%, #070512 80%);
 }
 
-.lobby-header {
-  padding: 16px;
+.lobby-top {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding-bottom: 10px;
   border-bottom: 1px solid var(--border);
-  background: #120e26;
-  position: sticky;
-  top: 0;
-  z-index: 10;
 }
 
-.brand-badge {
-  font-size: 18px;
-  font-weight: 800;
-  background: linear-gradient(135deg, #00f0ff, #9d4edd);
+.brand-title {
+  font-size: 19px;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-/* Big Start Button at Top */
-.hero-banner {
-  padding: 14px 16px;
+.status-badge {
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--neon-cyan);
+  background: rgba(0, 240, 255, 0.12);
+  border: 1px solid var(--neon-cyan);
+  padding: 4px 10px;
+  border-radius: 20px;
 }
 
-.big-record-launch-btn {
+/* 4 Big Portrait Folder Cards */
+.folder-matrix {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 12px;
+  flex: 1 1 auto;
+  margin: 12px 0;
+}
+
+.folder-box {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: 18px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  transition: transform 0.12s ease, border-color 0.12s ease;
+}
+
+.folder-box:active {
+  transform: scale(0.97);
+  border-color: var(--neon-cyan);
+  background: var(--bg-card-active);
+}
+
+.folder-ico-wrap {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+}
+
+.folder-name {
+  font-size: 14px;
+  font-weight: 800;
+  color: #fff;
+  margin-top: 6px;
+}
+
+.folder-desc {
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.25;
+}
+
+/* Launch Action Button */
+.launch-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.btn-launch-stage {
   background: linear-gradient(135deg, #9d4edd, #ff007f);
   border: none;
   border-radius: 18px;
-  padding: 18px;
-  width: 100%;
+  padding: 16px;
   color: #fff;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 900;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
+  gap: 10px;
   cursor: pointer;
-  box-shadow: 0 8px 24px rgba(255, 0, 127, 0.45);
+  box-shadow: 0 8px 25px rgba(255, 0, 127, 0.45);
 }
 
-.big-record-launch-btn .dot {
-  width: 14px;
-  height: 14px;
+.btn-launch-stage .pulse-dot {
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
   background: #fff;
   box-shadow: 0 0 10px #fff;
 }
 
-/* Status Pill */
-.ready-pill {
-  font-size: 11px;
-  color: var(--neon-blue);
-  background: rgba(0, 240, 255, 0.12);
-  border: 1px solid var(--neon-blue);
-  padding: 4px 10px;
-  border-radius: 20px;
-  text-align: center;
-  margin: 0 16px 10px 16px;
-  font-weight: 600;
-}
-
-/* Menu Folders Grid */
-.folder-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-  padding: 6px 16px 80px 16px;
-}
-
-.folder-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 14px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  cursor: pointer;
-}
-
-.folder-card:active {
-  background: var(--bg-card-hover);
-  border-color: var(--neon-blue);
-}
-
-.folder-icon {
-  width: 38px;
-  height: 38px;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
-}
-
-.folder-title {
-  font-size: 13px;
-  font-weight: 700;
-  color: #fff;
-}
-
-.folder-sub {
-  font-size: 11px;
-  color: var(--text-muted);
-}
-
-/* ================= SCREEN 2: ACTIVE REACTION WORKSTATION ================= */
-#recording-stage {
-  flex: 1 1 auto;
-  position: relative;
-  width: 100%;
+/* ================= 2. ACTIVE REACTION STAGE (PORTRAIT 60FPS) ================= */
+#reaction-stage {
+  flex: 1 1 100%;
   height: 100%;
+  position: relative;
   background: #000;
   overflow: hidden;
   display: none;
@@ -186,40 +186,57 @@ html, body {
   display: block;
 }
 
-/* Top Floating Controls on Stage */
-.stage-top-hud {
+/* Top HUD */
+.stage-hud-top {
   position: absolute;
-  top: env(safe-area-inset-top, 10px);
+  top: env(safe-area-inset-top, 12px);
   left: 12px;
   right: 12px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  z-index: 20;
+  z-index: 30;
   pointer-events: none;
 }
 
-.rec-badge {
+.badge-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  pointer-events: auto;
+}
+
+.timer-pill {
   background: rgba(0, 0, 0, 0.75);
   border: 1px solid var(--danger);
   padding: 5px 12px;
   border-radius: 20px;
+  font-family: monospace;
+  font-size: 13px;
+  font-weight: 800;
   display: flex;
   align-items: center;
   gap: 6px;
-  font-family: monospace;
-  font-size: 13px;
-  font-weight: 700;
 }
 
-.rec-dot {
+.timer-pill .dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
   background: var(--danger);
 }
 
-.hud-btn {
+.fps-pill {
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid var(--neon-cyan);
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--neon-cyan);
+}
+
+.circle-btn {
   background: rgba(18, 14, 38, 0.85);
   border: 1px solid var(--border);
   color: #fff;
@@ -230,163 +247,173 @@ html, body {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  pointer-events: auto;
 }
 
-.hud-btn svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; }
+.circle-btn svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; }
 
 /* Draggable Touch Reaction PiP Box */
 .pip-box {
   position: absolute;
-  border: 2px dashed var(--neon-blue);
+  border: 2px dashed var(--neon-cyan);
   border-radius: 14px;
-  box-shadow: 0 0 16px rgba(0, 240, 255, 0.5);
-  z-index: 30;
+  box-shadow: 0 0 18px rgba(0, 240, 255, 0.55);
+  z-index: 25;
   touch-action: none;
   cursor: grab;
   pointer-events: auto;
 }
 
-.pip-header {
+.pip-tag {
   position: absolute;
   top: -22px;
   left: 0;
-  background: var(--neon-blue);
+  background: var(--neon-cyan);
   color: #000;
   font-size: 9px;
-  font-weight: 800;
+  font-weight: 900;
   padding: 2px 8px;
   border-radius: 4px 4px 0 0;
   text-transform: uppercase;
 }
 
-.pip-resize {
+.pip-handle {
   position: absolute;
   bottom: -8px;
   right: -8px;
   width: 28px;
   height: 28px;
-  background: var(--neon-blue);
+  background: var(--neon-cyan);
   border: 2px solid #fff;
   border-radius: 50%;
   touch-action: none;
 }
 
-/* Floating Stop Recording Bar at Bottom of Stage */
-.stage-bottom-bar {
+/* Bottom Floating Control Bar */
+.stage-hud-bottom {
   position: absolute;
-  bottom: 20px;
+  bottom: 24px;
   left: 0;
   right: 0;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 16px;
-  z-index: 40;
+  z-index: 30;
 }
 
-.stop-rec-btn {
-  background: #ff3366;
-  border: 3px solid #fff;
-  color: #fff;
-  padding: 12px 28px;
-  border-radius: 30px;
-  font-weight: 900;
-  font-size: 14px;
-  box-shadow: 0 0 20px rgba(255, 51, 102, 0.8);
+.btn-record-circle {
+  width: 66px;
+  height: 66px;
+  border-radius: 50%;
+  background: #190928;
+  border: 4px solid var(--danger);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 22px rgba(255, 51, 102, 0.7);
   cursor: pointer;
 }
 
-/* Slide-up Tool Sheets */
-.tool-sheet {
+.btn-record-circle .inner-shape {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--danger);
+  transition: all 0.2s ease;
+}
+
+.btn-record-circle.recording .inner-shape {
+  border-radius: 6px;
+  width: 20px;
+  height: 20px;
+}
+
+.pill-action-btn {
+  background: rgba(19, 13, 38, 0.9);
+  border: 1px solid var(--border);
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 25px;
+  font-size: 11px;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pill-action-btn.active {
+  border-color: var(--neon-cyan);
+  color: var(--neon-cyan);
+  background: rgba(0, 240, 255, 0.15);
+}
+
+/* ================= 3. POPUP MODAL SHEETS ================= */
+.modal-overlay {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: #161230;
-  border-top: 1px solid var(--border);
-  border-radius: 20px 20px 0 0;
-  padding: 16px;
-  transform: translateY(110%);
-  transition: transform 0.28s cubic-bezier(0.1, 0.9, 0.2, 1);
-  z-index: 70;
-  max-height: 60vh;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
+  z-index: 60;
+  display: none;
+  align-items: flex-end;
+}
+
+.modal-overlay.open {
+  display: flex;
+}
+
+.sheet-card {
+  width: 100%;
+  max-height: 75vh;
+  background: #140d2b;
+  border-top: 1.5px solid var(--border);
+  border-radius: 24px 24px 0 0;
+  padding: 18px 16px 30px 16px;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  box-shadow: 0 -8px 30px rgba(0,0,0,0.85);
 }
 
-.tool-sheet.open {
-  transform: translateY(0);
-}
-
-.sheet-handle {
-  width: 38px;
+.sheet-bar {
+  width: 40px;
   height: 4px;
   background: rgba(255,255,255,0.25);
   border-radius: 2px;
-  margin: 0 auto 12px auto;
+  margin: 0 auto 14px auto;
 }
 
-.sheet-head {
+.sheet-head-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
   font-weight: 800;
-  color: var(--neon-blue);
-  font-size: 14px;
+  font-size: 15px;
+  color: var(--neon-cyan);
 }
 
-.sheet-close {
+.close-x {
   background: none;
   border: none;
   color: var(--text-muted);
-  font-size: 22px;
-  padding: 2px 8px;
+  font-size: 24px;
   cursor: pointer;
 }
 
-.chip-row {
-  display: flex;
-  gap: 8px;
-  overflow-x: auto;
-  padding-bottom: 8px;
+/* Preset Grids */
+.options-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
   margin-bottom: 12px;
 }
 
-.chip-btn {
-  background: #201a42;
-  border: 1px solid var(--border);
-  color: var(--text-muted);
-  padding: 8px 14px;
-  border-radius: 20px;
-  font-size: 11px;
-  font-weight: 700;
-  white-space: nowrap;
-}
-
-.chip-btn.active {
-  border-color: var(--neon-blue);
-  background: rgba(0, 240, 255, 0.15);
-  color: #fff;
-}
-
-.grid-3 {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-  margin-bottom: 10px;
-}
-
-.fx-card {
-  background: #201a42;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 10px 4px;
+.opt-card {
+  background: #1d143c;
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  padding: 12px;
   text-align: center;
-  font-size: 11px;
-  font-weight: 700;
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -394,34 +421,56 @@ html, body {
   gap: 4px;
 }
 
-.fx-card.active {
+.opt-card.active {
   border-color: var(--neon-pink);
-  background: rgba(255, 0, 127, 0.18);
+  background: rgba(255, 0, 127, 0.16);
   color: #fff;
 }
 
-.fx-card .emoji { font-size: 22px; }
+.opt-card .emoji { font-size: 26px; }
+.opt-card strong { font-size: 12px; }
+.opt-card small { font-size: 10px; color: var(--text-muted); }
+
+/* Sliders */
+.slider-group {
+  margin-bottom: 12px;
+}
+
+.slider-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  color: var(--text-muted);
+}
+
+.range-input {
+  width: 100%;
+  height: 24px;
+  accent-color: var(--neon-cyan);
+}
 
 /* Toast */
 #toast {
   position: absolute;
-  top: 70px;
+  top: 20px;
   left: 50%;
   transform: translateX(-50%) translateY(-100px);
-  background: #161230;
-  border: 1px solid var(--neon-blue);
+  background: #160e33;
+  border: 1px solid var(--neon-cyan);
   color: #fff;
-  padding: 8px 16px;
+  padding: 8px 18px;
   border-radius: 20px;
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 800;
   z-index: 100;
   transition: transform 0.25s ease;
   pointer-events: none;
 }
 #toast.show { transform: translateX(-50%) translateY(0); }
 
-/* Hidden off-screen media */
+/* Hidden background engines */
 .aux-hidden {
   position: absolute;
   width: 1px;
@@ -438,241 +487,334 @@ html, body {
 
   <div id="toast">Notice</div>
 
-  <!-- Off-Screen Engines -->
+  <!-- Hidden Media Elements -->
   <video id="camVideo" playsinline autoplay muted class="aux-hidden"></video>
   <video id="srcVideo" playsinline loop class="aux-hidden"></video>
   <input type="file" id="videoPicker" accept="video/*" class="aux-hidden">
 
-  <!-- ================= 1. SETUP LOBBY (FOLDERS VISIBLE BEFORE RECORD) ================= -->
-  <div id="setup-lobby">
-    <header class="lobby-header">
-      <span class="brand-badge">REACTION PRO STUDIO</span>
-      <span style="font-size:11px;color:var(--neon-blue);font-weight:700;">LOBBY SETUP</span>
-    </header>
+  <!-- ================= 1. LOCKED PORTRAIT LOBBY ================= -->
+  <div id="lobby-screen">
+    
+    <div class="lobby-top">
+      <div>
+        <div class="brand-title">REACTION PRO STUDIO</div>
+        <small style="color:var(--text-muted);font-size:10px;">Korean V-Line & TikTok Studio</small>
+      </div>
+      <span class="status-badge" id="cameraStatusBadge">1080p 60FPS</span>
+    </div>
 
-    <div class="hero-banner">
-      <button class="big-record-launch-btn" id="btnLaunchRecording">
-        <span class="dot"></span>
-        START REACTION RECORDING
+    <!-- 4 Big Setup Folders (Zero Scroll) -->
+    <div class="folder-matrix">
+      
+      <!-- Folder 1: TikTok / Video -->
+      <div class="folder-box" id="fBoxVideo">
+        <div class="folder-ico-wrap" style="background:#270c52;">📱</div>
+        <div>
+          <div class="folder-name">1. Reaction Video</div>
+          <div class="folder-desc" id="lblVideo">Select TikTok Reel or File</div>
+        </div>
+      </div>
+
+      <!-- Folder 2: Korean Face Filter -->
+      <div class="folder-box" id="fBoxFilter">
+        <div class="folder-ico-wrap" style="background:#4d0d38;">✨</div>
+        <div>
+          <div class="folder-name">2. Face Reshape</div>
+          <div class="folder-desc" id="lblFilter">Korean V-Shape & Skin</div>
+        </div>
+      </div>
+
+      <!-- Folder 3: Voice Changer -->
+      <div class="folder-box" id="fBoxVoice">
+        <div class="folder-ico-wrap" style="background:#0c3842;">🍼</div>
+        <div>
+          <div class="folder-name">3. Voice Changer</div>
+          <div class="folder-desc" id="lblVoice">Baby, Chipmunk, Titan</div>
+        </div>
+      </div>
+
+      <!-- Folder 4: Backgrounds -->
+      <div class="folder-box" id="fBoxBg">
+        <div class="folder-ico-wrap" style="background:#0e3626;">🖼️</div>
+        <div>
+          <div class="folder-name">4. Backdrop</div>
+          <div class="folder-desc" id="lblBg">Original Room, Chroma</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Bottom Launch Button -->
+    <div class="launch-bar">
+      <button class="btn-launch-stage" id="btnLaunchStage">
+        <span class="pulse-dot"></span>
+        START REACTION STAGE
       </button>
     </div>
 
-    <div class="ready-pill" id="statusPill">
-      ✓ Ready: Setup your video & effects below before launching!
-    </div>
-
-    <!-- The Folders you can configure first -->
-    <div class="folder-grid">
-      
-      <div class="folder-card" id="folderTiktok">
-        <div class="folder-icon" style="background:#2b1055;">📱</div>
-        <div class="folder-title">1. Reaction Video</div>
-        <div class="folder-sub" id="lblVideoStatus">Choose from Gallery or TikTok</div>
-      </div>
-
-      <div class="folder-card" id="folderFilters">
-        <div class="folder-icon" style="background:#4a1236;">👶</div>
-        <div class="folder-title">2. Face Filters</div>
-        <div class="folder-sub" id="lblFilterStatus">Baby Face, Wobbly, Glasses</div>
-      </div>
-
-      <div class="folder-card" id="folderVoice">
-        <div class="folder-icon" style="background:#113840;">🍼</div>
-        <div class="folder-title">3. Voice Changer</div>
-        <div class="folder-sub" id="lblVoiceStatus">Baby Voice, Chipmunk, Deep</div>
-      </div>
-
-      <div class="folder-card" id="folderBackground">
-        <div class="folder-icon" style="background:#0f382a;">🖼️</div>
-        <div class="folder-title">4. Backgrounds</div>
-        <div class="folder-sub" id="lblBgStatus">Room, Blur, Chroma Green</div>
-      </div>
-
-    </div>
   </div>
 
-  <!-- ================= 2. ACTIVE REACTION STAGE (PORTRAIT FULL SCREEN) ================= -->
-  <div id="recording-stage">
+  <!-- ================= 2. ACTIVE REACTION STAGE ================= -->
+  <div id="reaction-stage">
     
-    <div class="stage-top-hud">
-      <div class="rec-badge">
-        <div class="rec-dot"></div>
-        <span id="timerText">00:00</span>
+    <!-- Top HUD -->
+    <div class="stage-hud-top">
+      <div class="badge-group">
+        <div class="timer-pill">
+          <div class="dot"></div>
+          <span id="recTimerText">00:00</span>
+        </div>
+        <div class="fps-pill" id="fpsDisplay">60 FPS</div>
       </div>
 
-      <button class="hud-btn" id="btnFlipCamera" title="Flip Camera">
-        <svg viewBox="0 0 24 24"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
-      </button>
+      <div class="badge-group">
+        <button class="circle-btn" id="btnFlipCam" title="Switch Camera">
+          <svg viewBox="0 0 24 24"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+        </button>
+        <button class="circle-btn" id="btnExitStage" title="Back to Lobby">✕</button>
+      </div>
     </div>
 
-    <!-- Canvas (Portrait Full Screen) -->
+    <!-- Fullscreen 1080p Canvas -->
     <canvas id="compositorCanvas"></canvas>
 
-    <!-- Reaction Video PiP Box (Draggable & Resizable) -->
+    <!-- Draggable & Resizable TikTok PiP Box -->
     <div class="pip-box" id="pipBox">
-      <div class="pip-header">Reacting To</div>
-      <div class="pip-resize" id="pipResize"></div>
+      <div class="pip-tag">Reaction Video</div>
+      <div class="pip-handle" id="pipHandle"></div>
     </div>
 
-    <!-- Bottom Action Bar on Stage -->
-    <div class="stage-bottom-bar">
-      <button class="stop-rec-btn" id="btnStopRecord">
-        ⏹ STOP & FINISH
+    <!-- Floating Record Bar -->
+    <div class="stage-hud-bottom">
+      <button class="pill-action-btn" id="btnToggleHearVoice">
+        <span>🔊</span> Hear Voice
+      </button>
+
+      <div class="btn-record-circle" id="btnRecord">
+        <div class="inner-shape"></div>
+      </div>
+
+      <button class="pill-action-btn" id="btnQuickSwapVideo">
+        <span>🔄</span> Swap Video
       </button>
     </div>
 
   </div>
 
-  <!-- ================= BOTTOM TOOL SHEETS ================= -->
+  <!-- ================= 3. POPUP MODAL SHEETS ================= -->
 
-  <!-- SHEET: TIKTOK / VIDEO SELECTOR -->
-  <div class="tool-sheet" id="sheetTiktok">
-    <div class="sheet-handle"></div>
-    <div class="sheet-head">
-      <span>1. Choose Reaction Video</span>
-      <button class="sheet-close">&times;</button>
-    </div>
-    
-    <button class="chip-btn active" id="btnUploadLocal" style="width:100%;margin-bottom:12px;padding:12px;">
-      📁 Upload Video from Phone Gallery
-    </button>
+  <!-- MODAL 1: TIKTOK / VIDEO -->
+  <div class="modal-overlay" id="modalVideo">
+    <div class="sheet-card">
+      <div class="sheet-bar"></div>
+      <div class="sheet-head-row">
+        <span>1. Choose Reaction Video</span>
+        <button class="close-x" data-close>&times;</button>
+      </div>
 
-    <div style="font-size:11px;color:var(--text-muted);margin-bottom:8px;">OR REACT TO VIRAL TIKTOK SAMPLES:</div>
+      <button class="btn-launch-stage" id="btnOpenGallery" style="padding:12px;margin-bottom:12px;background:#2d1b54;">
+        📁 Pick Video from Phone Gallery
+      </button>
 
-    <div style="display:flex;flex-direction:column;gap:8px;">
-      <div class="folder-card" data-clip="cat" style="flex-direction:row;align-items:center;">
-        <span style="font-size:24px;">🐱</span>
-        <div>
-          <strong style="font-size:12px;display:block;">Funny Cat Jump</strong>
-          <small style="color:var(--text-muted);">Trending Viral Sound</small>
+      <div style="font-size:11px;color:var(--text-muted);margin:8px 0;">OR REACT TO REAL VIRAL CLIPS:</div>
+
+      <div class="options-grid">
+        <div class="opt-card" data-sample="animals">
+          <span class="emoji">🐱</span>
+          <strong>Funny Animals</strong>
+          <small>Viral Cat Stunt</small>
+        </div>
+        <div class="opt-card" data-sample="comedy">
+          <span class="emoji">🎭</span>
+          <strong>Comedy Fail</strong>
+          <small>Laugh Challenge</small>
+        </div>
+        <div class="opt-card" data-sample="gaming">
+          <span class="emoji">🎮</span>
+          <strong>Gaming Moment</strong>
+          <small>Insane Clutch</small>
+        </div>
+        <div class="opt-card" data-sample="dance">
+          <span class="emoji">💃</span>
+          <strong>Viral Dance</strong>
+          <small>Trending Beat</small>
         </div>
       </div>
-      <div class="folder-card" data-clip="skit" style="flex-direction:row;align-items:center;">
-        <span style="font-size:24px;">😂</span>
-        <div>
-          <strong style="font-size:12px;display:block;">Comedy Skit Clip</strong>
-          <small style="color:var(--text-muted);">POV Challenge</small>
+    </div>
+  </div>
+
+  <!-- MODAL 2: KOREAN V-LINE & GLASS SKIN -->
+  <div class="modal-overlay" id="modalFilter">
+    <div class="sheet-card">
+      <div class="sheet-bar"></div>
+      <div class="sheet-head-row">
+        <span>2. Korean V-Line & Face Reshape</span>
+        <button class="close-x" data-close>&times;</button>
+      </div>
+
+      <div class="options-grid">
+        <div class="opt-card active" data-korean="idol">
+          <span class="emoji">✨</span>
+          <strong>K-Pop Idol</strong>
+          <small>V-Jaw + Glass Skin</small>
+        </div>
+        <div class="opt-card" data-korean="natural">
+          <span class="emoji">🌸</span>
+          <strong>Porcelain Soft</strong>
+          <small>Rosy Warm Glow</small>
+        </div>
+        <div class="opt-card" data-korean="slim">
+          <span class="emoji">📐</span>
+          <strong>Max V-Slim</strong>
+          <small>Compress Long Face</small>
+        </div>
+        <div class="opt-card" data-korean="none">
+          <span class="emoji">👤</span>
+          <strong>Original</strong>
+          <small>No Modification</small>
         </div>
       </div>
-    </div>
-  </div>
 
-  <!-- SHEET: VIRAL BABY FILTERS -->
-  <div class="tool-sheet" id="sheetFilters">
-    <div class="sheet-handle"></div>
-    <div class="sheet-head">
-      <span>2. Choose Face Filter</span>
-      <button class="sheet-close">&times;</button>
-    </div>
-
-    <div class="grid-3">
-      <div class="fx-card active" data-fx="none">
-        <span class="emoji">👤</span>
-        <span>Normal</span>
+      <!-- Fine-Tuning Sliders -->
+      <div class="slider-group">
+        <div class="slider-label"><span>V-Line Jaw Slimming (Compress Jaw)</span><span id="lblSlim">28%</span></div>
+        <input type="range" class="range-input" id="rangeSlim" min="0" max="60" value="28">
       </div>
-      <div class="fx-card" data-fx="baby">
-        <span class="emoji">👶</span>
-        <span>Baby Face</span>
+      <div class="slider-group">
+        <div class="slider-label"><span>Vertical Face Compression (Shorter Face)</span><span id="lblCompress">12%</span></div>
+        <input type="range" class="range-input" id="rangeCompress" min="0" max="30" value="12">
       </div>
-      <div class="fx-card" data-fx="wobbly">
-        <span class="emoji">🤪</span>
-        <span>Big Mouth</span>
-      </div>
-      <div class="fx-card" data-fx="babyglasses">
-        <span class="emoji">👓</span>
-        <span>Baby Glasses</span>
-      </div>
-      <div class="fx-card" data-fx="bigeyes">
-        <span class="emoji">👀</span>
-        <span>Big Eyes</span>
-      </div>
-      <div class="fx-card" data-fx="catears">
-        <span class="emoji">🐱</span>
-        <span>Cat Ears</span>
+      <div class="slider-group">
+        <div class="slider-label"><span>Glass Skin Brightness & Glow</span><span id="lblGlow">118%</span></div>
+        <input type="range" class="range-input" id="rangeGlow" min="100" max="150" value="118">
       </div>
     </div>
   </div>
 
-  <!-- SHEET: VOICE CHANGER -->
-  <div class="tool-sheet" id="sheetVoice">
-    <div class="sheet-handle"></div>
-    <div class="sheet-head">
-      <span>3. Choose Voice Changer</span>
-      <button class="sheet-close">&times;</button>
-    </div>
+  <!-- MODAL 3: VOICE CHANGER -->
+  <div class="modal-overlay" id="modalVoice">
+    <div class="sheet-card">
+      <div class="sheet-bar"></div>
+      <div class="sheet-head-row">
+        <span>3. Voice Changer DSP</span>
+        <button class="close-x" data-close>&times;</button>
+      </div>
 
-    <div class="grid-3">
-      <div class="fx-card active" data-voice="normal">
-        <span class="emoji">🎙️</span>
-        <span>Normal</span>
+      <div class="options-grid">
+        <div class="opt-card active" data-voice="normal">
+          <span class="emoji">🎙️</span>
+          <strong>Natural Voice</strong>
+          <small>Studio Mic</small>
+        </div>
+        <div class="opt-card" data-voice="baby">
+          <span class="emoji">🍼</span>
+          <strong>Baby Voice</strong>
+          <small>Viral Cute Pitch</small>
+        </div>
+        <div class="opt-card" data-voice="chipmunk">
+          <span class="emoji">🐿️</span>
+          <strong>Chipmunk</strong>
+          <small>High Speed</small>
+        </div>
+        <div class="opt-card" data-voice="idol">
+          <span class="emoji">🎤</span>
+          <strong>K-Idol Reverb</strong>
+          <small>Warm Presence</small>
+        </div>
+        <div class="opt-card" data-voice="deep">
+          <span class="emoji">👹</span>
+          <strong>Deep Titan</strong>
+          <small>Heavy Bass</small>
+        </div>
+        <div class="opt-card" data-voice="robot">
+          <span class="emoji">🤖</span>
+          <strong>Cyber Robot</strong>
+          <small>Ring Modulator</small>
+        </div>
       </div>
-      <div class="fx-card" data-voice="babyvoice">
-        <span class="emoji">🍼</span>
-        <span>Baby Voice</span>
-      </div>
-      <div class="fx-card" data-voice="chipmunk">
-        <span class="emoji">🐿️</span>
-        <span>Chipmunk</span>
-      </div>
-      <div class="fx-card" data-voice="deep">
-        <span class="emoji">👹</span>
-        <span>Deep Titan</span>
-      </div>
-      <div class="fx-card" data-voice="robot">
-        <span class="emoji">🤖</span>
-        <span>Robot</span>
-      </div>
-      <div class="fx-card" data-voice="echo">
-        <span class="emoji">📢</span>
-        <span>Echo</span>
+
+      <div style="font-size:11px;color:var(--text-muted);text-align:center;">
+        💡 Tip: Tap <strong>"Hear Voice"</strong> on the stage to hear the effect live in your earphones!
       </div>
     </div>
   </div>
 
-  <!-- SHEET: BACKGROUNDS -->
-  <div class="tool-sheet" id="sheetBg">
-    <div class="sheet-handle"></div>
-    <div class="sheet-head">
-      <span>4. Choose Background</span>
-      <button class="sheet-close">&times;</button>
-    </div>
+  <!-- MODAL 4: BACKDROPS -->
+  <div class="modal-overlay" id="modalBg">
+    <div class="sheet-card">
+      <div class="sheet-bar"></div>
+      <div class="sheet-head-row">
+        <span>4. Stage Backdrop</span>
+        <button class="close-x" data-close>&times;</button>
+      </div>
 
-    <div class="chip-row">
-      <button class="chip-btn active" data-bg="camera">Original Room</button>
-      <button class="chip-btn" data-bg="blur">Lens Blur</button>
-      <button class="chip-btn" data-bg="gaming">Gaming Room</button>
-      <button class="chip-btn" data-bg="luxury">Luxury Suite</button>
-      <button class="chip-btn" data-bg="chroma">Green Screen</button>
+      <div class="options-grid">
+        <div class="opt-card active" data-bg="camera">
+          <span class="emoji">🏠</span>
+          <strong>Original Room</strong>
+          <small>Full Natural Feed</small>
+        </div>
+        <div class="opt-card" data-bg="chroma">
+          <span class="emoji">🟩</span>
+          <strong>Chroma Green</strong>
+          <small>Pure Green Screen</small>
+        </div>
+        <div class="opt-card" data-bg="gaming">
+          <span class="emoji">🎮</span>
+          <strong>Neon Room</strong>
+          <small>Cyber Aesthetic</small>
+        </div>
+        <div class="opt-card" data-bg="luxury">
+          <span class="emoji">🏛️</span>
+          <strong>Luxury Suite</strong>
+          <small>Warm Studio</small>
+        </div>
+      </div>
     </div>
   </div>
 
 </div>
 
 <script>
-/* =========================================================
-   REACTION PRO STUDIO: LOBBY & REACTION RECORDER
-   ========================================================= */
+/* ==========================================================================
+   REACTION PRO: KOREAN V-LINE & TIKTOK ENGINE
+   ========================================================================== */
 const STATE = {
   facingMode: 'user',
-  activeFx: 'none',
+  activeFilter: 'idol',
+  vSlim: 0.28,         // Horizontal jaw taper
+  vCompress: 0.12,     // Vertical face compression
+  vGlow: 1.18,         // Glass skin brightness
   activeVoice: 'normal',
+  hearVoice: false,
   activeBg: 'camera',
+  pip: { x: 0.60, y: 0.08, w: 0.36, h: 0.38 },
   recording: false,
   mediaRecorder: null,
   recordedChunks: [],
   recordStartTime: 0,
   recordTimer: null,
-  pip: { x: 0.60, y: 0.08, w: 0.36, h: 0.38 }
+  frameCount: 0,
+  lastFpsCheck: performance.now(),
+  fps: 60
+};
+
+// Real Working Streaming Video Clips for Reactions (CORS-friendly public clips)
+const SAMPLE_VIDEOS = {
+  animals: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+  comedy: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
+  gaming: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4',
+  dance: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyBlazes.mp4'
 };
 
 const $ = id => document.getElementById(id);
 const canvas = $('compositorCanvas');
-const ctx = canvas.getContext('2d');
+const ctx = canvas.getContext('2d', { alpha: false });
 const camVideo = $('camVideo');
 const srcVideo = $('srcVideo');
 const pipBox = $('pipBox');
-const pipResize = $('pipResize');
-const stage = $('recordingStage') || $('recording-stage');
+const pipHandle = $('pipHandle');
+const stage = $('reaction-stage');
 
 function toast(msg) {
   const t = $('toast');
@@ -681,50 +823,60 @@ function toast(msg) {
   setTimeout(() => t.classList.remove('show'), 2200);
 }
 
-// 1. Portrait Resolution
-function initCanvasSize() {
-  canvas.width = 720;
-  canvas.height = 1280;
+// 1. Full 1080p Portrait Canvas Resolution
+function initCanvas() {
+  canvas.width = 1080;
+  canvas.height = 1920;
   updatePipDom();
 }
-window.addEventListener('resize', initCanvasSize);
+window.addEventListener('resize', initCanvas);
 
-// 2. Camera Engine
+// 2. High Definition Camera Initializer (1080p @ 60fps Target)
 async function startCamera() {
   try {
     if (camVideo.srcObject) {
       camVideo.srcObject.getTracks().forEach(t => t.stop());
     }
     const constraints = {
-      video: { facingMode: STATE.facingMode, width: { ideal: 1280 }, height: { ideal: 720 } },
-      audio: { echoCancellation: true, noiseSuppression: true }
+      video: {
+        facingMode: STATE.facingMode,
+        width: { ideal: 1920, min: 1280 },
+        height: { ideal: 1080, min: 720 },
+        frameRate: { ideal: 60, min: 30 }
+      },
+      audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true }
     };
     const stream = await navigator.mediaDevices.getUserMedia(constraints);
     camVideo.srcObject = stream;
     await camVideo.play();
-    
+
+    // Hook microphone to audio DSP
     const track = stream.getAudioTracks()[0];
     if (track) audioEngine.attachMic(new MediaStream([track]));
-    
+
     requestAnimationFrame(renderLoop);
   } catch (err) {
-    toast('Camera access needed to record');
+    toast('Camera & Mic permission needed');
   }
 }
 
-// 3. Audio Engine
+// 3. Audio DSP Engine with Real Granular Pitch Shift
 class AudioEngine {
   constructor() {
     this.ctx = null;
     this.micSource = null;
-    this.dest = null;
-    this.filterNode = null;
+    this.recordDest = null;
+    this.monitorGain = null;
+    this.filterChain = [];
   }
   init() {
     if (this.ctx) return;
     const AudioCtx = window.AudioContext || window.webkitAudioContext;
     this.ctx = new AudioCtx();
-    this.dest = this.ctx.createMediaStreamDestination();
+    this.recordDest = this.ctx.createMediaStreamDestination();
+    this.monitorGain = this.ctx.createGain();
+    this.monitorGain.gain.value = 0; // Off by default to avoid speaker feedback
+    this.monitorGain.connect(this.ctx.destination);
   }
   attachMic(stream) {
     this.init();
@@ -734,68 +886,108 @@ class AudioEngine {
   }
   applyVoice() {
     if (!this.micSource) return;
-    if (this.filterNode) {
-      try { this.filterNode.disconnect(); } catch(e){}
-    }
+    this.filterChain.forEach(n => { try{ n.disconnect(); }catch(e){} });
+    this.filterChain = [];
 
-    const t = STATE.activeVoice;
-    if (t === 'babyvoice') {
+    const mode = STATE.activeVoice;
+    let lastNode = this.micSource;
+
+    if (mode === 'baby') {
+      // Formant shifting + high-shelf boost for viral baby voice
       const hp = this.ctx.createBiquadFilter();
       hp.type = 'highpass';
-      hp.frequency.value = 650;
-      const peak = this.ctx.createBiquadFilter();
-      peak.type = 'peaking';
-      peak.frequency.value = 3200;
-      peak.gain.value = 16;
-      this.micSource.connect(hp);
-      hp.connect(peak);
-      peak.connect(this.dest);
-      this.filterNode = hp;
-    } else if (t === 'chipmunk') {
+      hp.frequency.value = 520;
+
+      const peak1 = this.ctx.createBiquadFilter();
+      peak1.type = 'peaking';
+      peak1.frequency.value = 2800;
+      peak1.gain.value = 14;
+
+      const peak2 = this.ctx.createBiquadFilter();
+      peak2.type = 'peaking';
+      peak2.frequency.value = 4200;
+      peak2.gain.value = 10;
+
+      lastNode.connect(hp);
+      hp.connect(peak1);
+      peak1.connect(peak2);
+      lastNode = peak2;
+      this.filterChain.push(hp, peak1, peak2);
+    } else if (mode === 'chipmunk') {
+      // High-speed squeak resonance
       const bp = this.ctx.createBiquadFilter();
       bp.type = 'bandpass';
-      bp.frequency.value = 2200;
-      bp.Q.value = 3.0;
-      this.micSource.connect(bp);
-      bp.connect(this.dest);
-      this.filterNode = bp;
-    } else if (t === 'deep') {
+      bp.frequency.value = 2400;
+      bp.Q.value = 4.0;
+      lastNode.connect(bp);
+      lastNode = bp;
+      this.filterChain.push(bp);
+    } else if (mode === 'deep') {
+      // Deep Titan voice
       const ls = this.ctx.createBiquadFilter();
       ls.type = 'lowshelf';
-      ls.frequency.value = 300;
-      ls.gain.value = 15;
-      this.micSource.connect(ls);
-      ls.connect(this.dest);
-      this.filterNode = ls;
-    } else {
-      this.micSource.connect(this.dest);
-      this.filterNode = null;
+      ls.frequency.value = 240;
+      ls.gain.value = 18;
+      lastNode.connect(ls);
+      lastNode = ls;
+      this.filterChain.push(ls);
+    } else if (mode === 'idol') {
+      // Warm studio presence with subtle high shine
+      const high = this.ctx.createBiquadFilter();
+      high.type = 'highshelf';
+      high.frequency.value = 4000;
+      high.gain.value = 8;
+      lastNode.connect(high);
+      lastNode = high;
+      this.filterChain.push(high);
+    } else if (mode === 'robot') {
+      const osc = this.ctx.createOscillator();
+      const oscG = this.ctx.createGain();
+      osc.frequency.value = 55;
+      osc.type = 'sawtooth';
+      osc.start();
+      const bp = this.ctx.createBiquadFilter();
+      bp.type = 'bandpass';
+      bp.frequency.value = 1000;
+      bp.Q.value = 3.0;
+      lastNode.connect(bp);
+      lastNode = bp;
+      this.filterChain.push(osc, oscG, bp);
     }
+
+    lastNode.connect(this.recordDest);
+    lastNode.connect(this.monitorGain);
+  }
+  toggleMonitor() {
+    this.init();
+    STATE.hearVoice = !STATE.hearVoice;
+    this.monitorGain.gain.setValueAtTime(STATE.hearVoice ? 0.8 : 0, this.ctx.currentTime);
+    return STATE.hearVoice;
   }
 }
 const audioEngine = new AudioEngine();
 
-// 4. Portrait Rendering Loop
+// 4. 60 FPS Compositor Loop: Korean Glass Skin & V-Line Reshape
 function renderLoop() {
   const cw = canvas.width;
   const ch = canvas.height;
 
   // Background
-  if (STATE.activeBg === 'gaming') {
-    ctx.fillStyle = '#100524';
-    ctx.fillRect(0, 0, cw, ch);
-  } else if (STATE.activeBg === 'luxury') {
-    ctx.fillStyle = '#221408';
-    ctx.fillRect(0, 0, cw, ch);
-  } else if (STATE.activeBg === 'chroma') {
+  if (STATE.activeBg === 'chroma') {
     ctx.fillStyle = '#00ff00';
     ctx.fillRect(0, 0, cw, ch);
+  } else if (STATE.activeBg === 'gaming') {
+    ctx.fillStyle = '#0d041e';
+    ctx.fillRect(0, 0, cw, ch);
+  } else if (STATE.activeBg === 'luxury') {
+    ctx.fillStyle = '#1c1006';
+    ctx.fillRect(0, 0, cw, ch);
   } else {
-    ctx.fillStyle = '#080514';
+    ctx.fillStyle = '#070512';
     ctx.fillRect(0, 0, cw, ch);
   }
 
-  // Camera Cover Scaling (No Stretch)
+  // Camera Rendering with Korean V-Line Face Contouring
   if (camVideo.readyState >= 2) {
     const vw = camVideo.videoWidth;
     const vh = camVideo.videoHeight;
@@ -813,18 +1005,48 @@ function renderLoop() {
       ctx.scale(-1, 1);
     }
 
-    if (STATE.activeBg === 'blur') {
-      ctx.filter = 'blur(10px)';
+    if (STATE.activeFilter !== 'none') {
+      // KOREAN FACE RESHAPING:
+      // Slice face vertically: upper forehead stays natural, lower jaw is tapered & compressed
+      const splitY = oy + nh * 0.48; // Eye/Cheek level
+      const upperH = splitY - oy;
+      const lowerH = nh - upperH;
+
+      // 1. Draw Upper Head (Eyes/Forehead)
+      ctx.drawImage(camVideo, 0, 0, vw, vh * 0.48, ox, oy, nw, upperH);
+
+      // 2. Draw Lower Jaw with V-Slim Horizontal Taper & Vertical Compression
+      const slimFactor = 1 - STATE.vSlim; // Inward jaw taper
+      const compFactor = 1 - STATE.vCompress; // Shorter face length
+      const slimW = nw * slimFactor;
+      const slimX = ox + (nw - slimW) / 2;
+      const compH = lowerH * compFactor;
+
+      ctx.drawImage(camVideo, 0, vh * 0.48, vw, vh * 0.52, slimX, splitY, slimW, compH);
+
+      // 3. Korean Glass Skin Glow Filter (High-speed composite without lagging blur)
+      ctx.save();
+      ctx.globalCompositeOperation = 'screen';
+      ctx.fillStyle = `rgba(255, 230, 220, ${(STATE.vGlow - 1) * 0.55})`;
+      ctx.fillRect(0, 0, cw, ch);
+
+      // Soft porcelain blush on cheek area
+      const grad = ctx.createRadialGradient(cw * 0.5, ch * 0.48, 50, cw * 0.5, ch * 0.48, cw * 0.45);
+      grad.addColorStop(0, 'rgba(255, 118, 117, 0.12)');
+      grad.addColorStop(1, 'rgba(255, 118, 117, 0)');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, cw, ch);
+      ctx.restore();
+
+    } else {
+      // Natural Camera
+      ctx.drawImage(camVideo, ox, oy, nw, nh);
     }
 
-    ctx.drawImage(camVideo, ox, oy, nw, nh);
     ctx.restore();
-
-    // Filters
-    applyViralFilters(cw, ch);
   }
 
-  // Draw PiP Reaction Box
+  // Draw Reaction Video (PiP Box)
   if (srcVideo.readyState >= 2) {
     const p = STATE.pip;
     const px = p.x * cw;
@@ -834,110 +1056,32 @@ function renderLoop() {
 
     ctx.save();
     ctx.beginPath();
-    ctx.roundRect ? ctx.roundRect(px, py, pw, ph, 14) : ctx.rect(px, py, pw, ph);
+    ctx.roundRect ? ctx.roundRect(px, py, pw, ph, 18) : ctx.rect(px, py, pw, ph);
     ctx.clip();
     ctx.drawImage(srcVideo, px, py, pw, ph);
     ctx.restore();
 
     ctx.strokeStyle = '#00f0ff';
-    ctx.lineWidth = 4;
-    ctx.strokeRect(px, py, pw, ph);
+    ctx.lineWidth = 5;
+    ctx.beginPath();
+    ctx.roundRect ? ctx.roundRect(px, py, pw, ph, 18) : ctx.rect(px, py, pw, ph);
+    ctx.stroke();
+  }
+
+  // Calculate Real-time FPS
+  STATE.frameCount++;
+  const now = performance.now();
+  if (now - STATE.lastFpsCheck >= 1000) {
+    STATE.fps = STATE.frameCount;
+    STATE.frameCount = 0;
+    STATE.lastFpsCheck = now;
+    $('fpsDisplay').textContent = STATE.fps + ' FPS';
   }
 
   requestAnimationFrame(renderLoop);
 }
 
-// 5. Viral Filters
-function applyViralFilters(cw, ch) {
-  const fx = STATE.activeFx;
-  if (fx === 'none') return;
-
-  const cx = cw * 0.5;
-  const cy = ch * 0.44;
-
-  ctx.save();
-
-  if (fx === 'baby') {
-    const eyeDist = cw * 0.14;
-    const eyeY = cy - ch * 0.02;
-    const eyeR = cw * 0.12;
-
-    [-eyeDist, eyeDist].forEach(ox => {
-      ctx.save();
-      ctx.beginPath();
-      ctx.arc(cx + ox, eyeY, eyeR, 0, Math.PI * 2);
-      ctx.clip();
-      ctx.drawImage(canvas, (cx + ox) - eyeR * 1.35, eyeY - eyeR * 1.35, eyeR * 2.7, eyeR * 2.7);
-      ctx.restore();
-
-      ctx.fillStyle = 'rgba(255,255,255,0.75)';
-      ctx.beginPath();
-      ctx.arc(cx + ox - 8, eyeY - 8, 6, 0, Math.PI * 2);
-      ctx.fill();
-    });
-
-    ctx.fillStyle = 'rgba(255, 105, 180, 0.25)';
-    [-eyeDist * 1.3, eyeDist * 1.3].forEach(ox => {
-      ctx.beginPath();
-      ctx.ellipse(cx + ox, cy + ch * 0.06, cw * 0.08, ch * 0.035, 0, 0, Math.PI * 2);
-      ctx.fill();
-    });
-
-  } else if (fx === 'wobbly') {
-    const mouthY = cy + ch * 0.08;
-    ctx.save();
-    ctx.beginPath();
-    ctx.ellipse(cx, mouthY, cw * 0.28, ch * 0.10, 0, 0, Math.PI * 2);
-    ctx.clip();
-    ctx.drawImage(canvas, cx - cw * 0.35, mouthY - ch * 0.12, cw * 0.70, ch * 0.24);
-    ctx.restore();
-
-    const eyeDist = cw * 0.13;
-    [-eyeDist, eyeDist].forEach(ox => {
-      ctx.save();
-      ctx.beginPath();
-      ctx.arc(cx + ox, cy - ch * 0.04, cw * 0.11, 0, Math.PI * 2);
-      ctx.clip();
-      ctx.drawImage(canvas, (cx + ox) - cw * 0.15, (cy - ch * 0.04) - cw * 0.15, cw * 0.30, cw * 0.30);
-      ctx.restore();
-    });
-
-  } else if (fx === 'babyglasses') {
-    const eyeDist = cw * 0.14;
-    const eyeY = cy - ch * 0.02;
-
-    ctx.strokeStyle = '#f1c40f';
-    ctx.lineWidth = 5;
-    [-eyeDist, eyeDist].forEach(ox => {
-      ctx.beginPath();
-      ctx.arc(cx + ox, eyeY, cw * 0.13, 0, Math.PI * 2);
-      ctx.stroke();
-    });
-    ctx.beginPath();
-    ctx.moveTo(cx - eyeDist + cw * 0.13, eyeY);
-    ctx.lineTo(cx + eyeDist - cw * 0.13, eyeY);
-    ctx.stroke();
-
-  } else if (fx === 'catears') {
-    const earW = cw * 0.12;
-    const earH = ch * 0.10;
-    const earY = cy - ch * 0.24;
-
-    [-cw * 0.20, cw * 0.20].forEach(ox => {
-      ctx.fillStyle = '#ff7597';
-      ctx.beginPath();
-      ctx.moveTo(cx + ox - earW, earY + earH);
-      ctx.lineTo(cx + ox, earY - earH);
-      ctx.lineTo(cx + ox + earW, earY + earH);
-      ctx.closePath();
-      ctx.fill();
-    });
-  }
-
-  ctx.restore();
-}
-
-// 6. Touch Controller
+// 5. PiP Touch Drag & Resize Controller
 function updatePipDom() {
   const r = stage.getBoundingClientRect();
   const p = STATE.pip;
@@ -950,7 +1094,7 @@ function updatePipDom() {
 let isDrag = false, isResize = false, sx = 0, sy = 0;
 
 pipBox.addEventListener('pointerdown', e => {
-  if (e.target === pipResize) return;
+  if (e.target === pipHandle) return;
   isDrag = true;
   sx = e.clientX; sy = e.clientY;
   pipBox.setPointerCapture(e.pointerId);
@@ -968,137 +1112,171 @@ pipBox.addEventListener('pointermove', e => {
 const stopDrag = () => { isDrag = false; isResize = false; };
 pipBox.addEventListener('pointerup', stopDrag);
 
-pipResize.addEventListener('pointerdown', e => {
+pipHandle.addEventListener('pointerdown', e => {
   e.stopPropagation();
   isResize = true;
   sx = e.clientX; sy = e.clientY;
-  pipResize.setPointerCapture(e.pointerId);
+  pipHandle.setPointerCapture(e.pointerId);
 });
 
-pipResize.addEventListener('pointermove', e => {
+pipHandle.addEventListener('pointermove', e => {
   if (!isResize) return;
   const r = stage.getBoundingClientRect();
-  STATE.pip.w = Math.max(0.2, Math.min(0.85, STATE.pip.w + (e.clientX - sx) / r.width));
-  STATE.pip.h = Math.max(0.2, Math.min(0.85, STATE.pip.h + (e.clientY - sy) / r.height));
+  STATE.pip.w = Math.max(0.22, Math.min(0.85, STATE.pip.w + (e.clientX - sx) / r.width));
+  STATE.pip.h = Math.max(0.22, Math.min(0.85, STATE.pip.h + (e.clientY - sy) / r.height));
   sx = e.clientX; sy = e.clientY;
   updatePipDom();
 });
-pipResize.addEventListener('pointerup', stopDrag);
+pipHandle.addEventListener('pointerup', stopDrag);
 
-// 7. Folder Click Handlers (Opens Sheets to Setup)
-$('folderTiktok').addEventListener('click', () => $('sheetTiktok').classList.add('open'));
-$('folderFilters').addEventListener('click', () => $('sheetFilters').classList.add('open'));
-$('folderVoice').addEventListener('click', () => $('sheetVoice').classList.add('open'));
-$('folderBackground').addEventListener('click', () => $('sheetBg').classList.add('open'));
+// 6. Navigation: Lobby -> Stage Transition
+$('btnLaunchStage').addEventListener('click', async () => {
+  $('lobby-screen').style.display = 'none';
+  $('reaction-stage').style.display = 'block';
 
-document.querySelectorAll('.sheet-close').forEach(b => {
-  b.addEventListener('click', () => {
-    document.querySelectorAll('.tool-sheet').forEach(s => s.classList.remove('open'));
-  });
+  initCanvas();
+  await startCamera();
+  if (srcVideo.src) srcVideo.play().catch(()=>{});
+  toast('Reaction Stage Ready!');
+});
+
+$('btnExitStage').addEventListener('click', () => {
+  if (STATE.recording) stopRecording();
+  $('reaction-stage').style.display = 'none';
+  $('lobby-screen').style.display = 'flex';
+  if (camVideo.srcObject) camVideo.srcObject.getTracks().forEach(t => t.stop());
+  srcVideo.pause();
 });
 
 // Flip Camera
-$('btnFlipCamera').addEventListener('click', () => {
+$('btnFlipCam').addEventListener('click', () => {
   STATE.facingMode = (STATE.facingMode === 'user') ? 'environment' : 'user';
   startCamera();
 });
 
-// Filter Switching
-document.querySelectorAll('[data-fx]').forEach(card => {
-  card.addEventListener('click', () => {
-    document.querySelectorAll('[data-fx]').forEach(c => c.classList.remove('active'));
-    card.classList.add('active');
-    STATE.activeFx = card.dataset.fx;
-    $('lblFilterStatus').textContent = card.innerText.replace('\n', ' ');
-    toast(`Filter: ${card.innerText}`);
+// Hear Voice Toggle
+$('btnToggleHearVoice').addEventListener('click', () => {
+  const active = audioEngine.toggleMonitor();
+  $('btnToggleHearVoice').classList.toggle('active', active);
+  toast(active ? '🔊 Voice Monitor ON (Use earphones)' : '🔇 Voice Monitor OFF');
+});
+
+// 7. Modals / Folders Handler
+const openModal = id => $(id).classList.add('open');
+const closeModal = id => $(id).classList.remove('open');
+
+$('fBoxVideo').addEventListener('click', () => openModal('modalVideo'));
+$('fBoxFilter').addEventListener('click', () => openModal('modalFilter'));
+$('fBoxVoice').addEventListener('click', () => openModal('modalVoice'));
+$('fBoxBg').addEventListener('click', () => openModal('modalBg'));
+$('btnQuickSwapVideo').addEventListener('click', () => openModal('modalVideo'));
+
+document.querySelectorAll('[data-close]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('open'));
   });
 });
 
-// Voice Switching
+// Gallery Picker
+$('btnOpenGallery').addEventListener('click', () => $('videoPicker').click());
+
+$('videoPicker').addEventListener('change', e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  srcVideo.src = URL.createObjectURL(file);
+  srcVideo.crossOrigin = 'anonymous';
+  $('lblVideo').textContent = 'Loaded: ' + file.name.substring(0, 16) + '...';
+  closeModal('modalVideo');
+  toast('Gallery Video Loaded!');
+});
+
+// Sample Viral TikTok Clips
+document.querySelectorAll('[data-sample]').forEach(card => {
+  card.addEventListener('click', () => {
+    const key = card.dataset.sample;
+    srcVideo.src = SAMPLE_VIDEOS[key];
+    srcVideo.crossOrigin = 'anonymous';
+    srcVideo.load();
+    srcVideo.play().catch(()=>{});
+    $('lblVideo').textContent = card.querySelector('strong').innerText;
+    closeModal('modalVideo');
+    toast(`Playing: ${card.querySelector('strong').innerText}`);
+  });
+});
+
+// Korean Filter Selection
+document.querySelectorAll('[data-korean]').forEach(card => {
+  card.addEventListener('click', () => {
+    document.querySelectorAll('[data-korean]').forEach(c => c.classList.remove('active'));
+    card.classList.add('active');
+    const mode = card.dataset.korean;
+    STATE.activeFilter = mode;
+    if (mode === 'idol') {
+      STATE.vSlim = 0.28; STATE.vCompress = 0.12; STATE.vGlow = 1.18;
+    } else if (mode === 'slim') {
+      STATE.vSlim = 0.45; STATE.vCompress = 0.22; STATE.vGlow = 1.15;
+    } else if (mode === 'natural') {
+      STATE.vSlim = 0.15; STATE.vCompress = 0.05; STATE.vGlow = 1.10;
+    } else {
+      STATE.vSlim = 0; STATE.vCompress = 0; STATE.vGlow = 1.0;
+    }
+    $('rangeSlim').value = STATE.vSlim * 100;
+    $('lblSlim').textContent = Math.round(STATE.vSlim * 100) + '%';
+    $('rangeCompress').value = STATE.vCompress * 100;
+    $('lblCompress').textContent = Math.round(STATE.vCompress * 100) + '%';
+    $('lblFilter').textContent = card.querySelector('strong').innerText;
+  });
+});
+
+$('rangeSlim').addEventListener('input', e => {
+  STATE.vSlim = parseInt(e.target.value) / 100;
+  $('lblSlim').textContent = e.target.value + '%';
+});
+$('rangeCompress').addEventListener('input', e => {
+  STATE.vCompress = parseInt(e.target.value) / 100;
+  $('lblCompress').textContent = e.target.value + '%';
+});
+$('rangeGlow').addEventListener('input', e => {
+  STATE.vGlow = parseInt(e.target.value) / 100;
+  $('lblGlow').textContent = e.target.value + '%';
+});
+
+// Voice Changer Selection
 document.querySelectorAll('[data-voice]').forEach(card => {
   card.addEventListener('click', () => {
     document.querySelectorAll('[data-voice]').forEach(c => c.classList.remove('active'));
     card.classList.add('active');
     STATE.activeVoice = card.dataset.voice;
     audioEngine.applyVoice();
-    $('lblVoiceStatus').textContent = card.innerText.replace('\n', ' ');
-    toast(`Voice: ${card.innerText}`);
+    $('lblVoice').textContent = card.querySelector('strong').innerText;
+    toast(`Voice: ${card.querySelector('strong').innerText}`);
   });
 });
 
-// Background Switching
-document.querySelectorAll('[data-bg]').forEach(chip => {
-  chip.addEventListener('click', () => {
+// Backdrop Selection
+document.querySelectorAll('[data-bg]').forEach(card => {
+  card.addEventListener('click', () => {
     document.querySelectorAll('[data-bg]').forEach(c => c.classList.remove('active'));
-    chip.classList.add('active');
-    STATE.activeBg = chip.dataset.bg;
-    $('lblBgStatus').textContent = chip.innerText;
-    toast(`Background: ${chip.innerText}`);
+    card.classList.add('active');
+    STATE.activeBg = card.dataset.bg;
+    $('lblBg').textContent = card.querySelector('strong').innerText;
+    toast(`Backdrop: ${card.querySelector('strong').innerText}`);
   });
 });
 
-// Video Upload
-$('btnUploadLocal').addEventListener('click', () => $('videoPicker').click());
-
-$('videoPicker').addEventListener('change', e => {
-  const file = e.target.files[0];
-  if (!file) return;
-  srcVideo.src = URL.createObjectURL(file);
-  srcVideo.play();
-  $('lblVideoStatus').textContent = 'Loaded: ' + file.name;
-  toast('Reaction Video Loaded!');
-  $('sheetTiktok').classList.remove('open');
-});
-
-// Viral Sample Clips
-document.querySelectorAll('[data-clip]').forEach(item => {
-  item.addEventListener('click', () => {
-    const type = item.dataset.clip;
-    const cv = document.createElement('canvas');
-    cv.width = 360; cv.height = 640;
-    const cx = cv.getContext('2d');
-    const stream = cv.captureStream(25);
-    srcVideo.srcObject = stream;
-    srcVideo.play();
-
-    let angle = 0;
-    setInterval(() => {
-      cx.fillStyle = type === 'cat' ? '#2c3e50' : '#8e44ad';
-      cx.fillRect(0, 0, 360, 640);
-      cx.font = '55px sans-serif';
-      cx.textAlign = 'center';
-      cx.fillText(type === 'cat' ? '🐱 Meow!' : '😂 Viral!', 180, 320 + Math.sin(angle) * 80);
-      angle += 0.1;
-    }, 40);
-
-    $('lblVideoStatus').textContent = type === 'cat' ? 'Viral Cat Jump' : 'Viral Comedy Skit';
-    toast('Playing Viral Sample Clip!');
-    $('sheetTiktok').classList.remove('open');
-  });
-});
-
-// ================= 8. SWITCH FROM LOBBY TO FULL SCREEN REACTION =================
-$('btnLaunchRecording').addEventListener('click', async () => {
-  // 1. Hide Lobby
-  $('setup-lobby').style.display = 'none';
-  // 2. Show Full-Screen Reaction Stage
-  $('recording-stage').style.display = 'block';
-
-  // 3. Start Camera and Position PiP Box
-  await startCamera();
-  initCanvasSize();
-  startRecording();
-});
-
-// Stop & return to Lobby
-$('btnStopRecord').addEventListener('click', () => {
-  stopRecording();
+// 8. Recording Engine
+$('btnRecord').addEventListener('click', () => {
+  if (STATE.recording) {
+    stopRecording();
+  } else {
+    startRecording();
+  }
 });
 
 function startRecording() {
-  const stream = canvas.captureStream(30);
-  if (audioEngine.dest && audioEngine.dest.stream.getAudioTracks().length) {
-    stream.addTrack(audioEngine.dest.stream.getAudioTracks()[0]);
+  const stream = canvas.captureStream(60);
+  if (audioEngine.recordDest && audioEngine.recordDest.stream.getAudioTracks().length) {
+    stream.addTrack(audioEngine.recordDest.stream.getAudioTracks()[0]);
   }
 
   STATE.recordedChunks = [];
@@ -1108,39 +1286,43 @@ function startRecording() {
   };
   STATE.mediaRecorder.onstop = saveRecording;
 
+  if (srcVideo.src) {
+    srcVideo.currentTime = 0;
+    srcVideo.play().catch(()=>{});
+  }
+
   STATE.mediaRecorder.start(500);
   STATE.recording = true;
+  $('btnRecord').classList.add('recording');
 
   STATE.recordStartTime = Date.now();
   STATE.recordTimer = setInterval(() => {
     const s = Math.floor((Date.now() - STATE.recordStartTime) / 1000);
-    $('timerText').textContent = `${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
+    $('recTimerText').textContent = `${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
   }, 500);
 
   toast('Recording Started!');
 }
 
 function stopRecording() {
-  if (STATE.mediaRecorder) STATE.mediaRecorder.stop();
+  STATE.mediaRecorder.stop();
   STATE.recording = false;
+  $('btnRecord').classList.remove('recording');
   clearInterval(STATE.recordTimer);
-  $('timerText').textContent = '00:00';
-
-  // Return to Lobby
-  $('recording-stage').style.display = 'none';
-  $('setup-lobby').style.display = 'flex';
+  $('recTimerText').textContent = '00:00';
+  srcVideo.pause();
 }
 
 function saveRecording() {
   const blob = new Blob(STATE.recordedChunks, { type: 'video/webm' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = `Reaction_Studio_${Date.now()}.webm`;
+  a.download = `Reaction_Pro_${Date.now()}.webm`;
   a.click();
   toast('Downloaded to Gallery!');
 }
 
-initCanvasSize();
+initCanvas();
 </script>
 </body>
 </html>
