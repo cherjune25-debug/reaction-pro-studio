@@ -14,7 +14,6 @@
   --neon-cyan: #00f0ff;
   --neon-purple: #9d4edd;
   --neon-pink: #ff007f;
-  --korean-peach: #ff7675;
   --text-muted: #9590b6;
   --border: rgba(157, 78, 221, 0.35);
   --danger: #ff3366;
@@ -470,14 +469,16 @@ html, body {
 }
 #toast.show { transform: translateX(-50%) translateY(0); }
 
-/* Hidden background engines */
-.aux-hidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  opacity: 0;
+/* Keep video element active on Android GPU without display:none/0px collapse */
+.video-keep-alive {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 160px;
+  height: 90px;
+  opacity: 0.001;
   pointer-events: none;
-  top: -9999px;
+  z-index: -100;
 }
 </style>
 </head>
@@ -487,10 +488,10 @@ html, body {
 
   <div id="toast">Notice</div>
 
-  <!-- Hidden Media Elements -->
-  <video id="camVideo" playsinline autoplay muted class="aux-hidden"></video>
-  <video id="srcVideo" playsinline loop class="aux-hidden"></video>
-  <input type="file" id="videoPicker" accept="video/*" class="aux-hidden">
+  <!-- Active Media Elements (Keeps Android Video Pipeline Awake) -->
+  <video id="camVideo" playsinline webkit-playsinline autoplay muted class="video-keep-alive"></video>
+  <video id="srcVideo" playsinline webkit-playsinline loop class="video-keep-alive"></video>
+  <input type="file" id="videoPicker" accept="video/*" style="display:none;">
 
   <!-- ================= 1. LOCKED PORTRAIT LOBBY ================= -->
   <div id="lobby-screen">
@@ -500,7 +501,7 @@ html, body {
         <div class="brand-title">REACTION PRO STUDIO</div>
         <small style="color:var(--text-muted);font-size:10px;">Korean V-Line & TikTok Studio</small>
       </div>
-      <span class="status-badge" id="cameraStatusBadge">1080p 60FPS</span>
+      <span class="status-badge" id="cameraStatusBadge">FRONT CAM READY</span>
     </div>
 
     <!-- 4 Big Setup Folders (Zero Scroll) -->
@@ -564,7 +565,7 @@ html, body {
           <div class="dot"></div>
           <span id="recTimerText">00:00</span>
         </div>
-        <div class="fps-pill" id="fpsDisplay">60 FPS</div>
+        <div class="fps-pill" id="fpsDisplay">30 FPS</div>
       </div>
 
       <div class="badge-group">
@@ -575,7 +576,7 @@ html, body {
       </div>
     </div>
 
-    <!-- Fullscreen 1080p Canvas -->
+    <!-- Fullscreen Portrait Canvas -->
     <canvas id="compositorCanvas"></canvas>
 
     <!-- Draggable & Resizable TikTok PiP Box -->
@@ -777,14 +778,14 @@ html, body {
 
 <script>
 /* ==========================================================================
-   REACTION PRO: KOREAN V-LINE & TIKTOK ENGINE
+   REACTION PRO: RESILIENT CAMERA & KOREAN V-LINE ENGINE
    ========================================================================== */
 const STATE = {
   facingMode: 'user',
   activeFilter: 'idol',
-  vSlim: 0.28,         // Horizontal jaw taper
-  vCompress: 0.12,     // Vertical face compression
-  vGlow: 1.18,         // Glass skin brightness
+  vSlim: 0.28,
+  vCompress: 0.12,
+  vGlow: 1.18,
   activeVoice: 'normal',
   hearVoice: false,
   activeBg: 'camera',
@@ -796,10 +797,10 @@ const STATE = {
   recordTimer: null,
   frameCount: 0,
   lastFpsCheck: performance.now(),
-  fps: 60
+  fps: 30
 };
 
-// Real Working Streaming Video Clips for Reactions (CORS-friendly public clips)
+// Reliable CDN Video Samples
 const SAMPLE_VIDEOS = {
   animals: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
   comedy: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
@@ -823,32 +824,70 @@ function toast(msg) {
   setTimeout(() => t.classList.remove('show'), 2200);
 }
 
-// 1. Full 1080p Portrait Canvas Resolution
+// 1. Dynamic Canvas Orientation Matching
 function initCanvas() {
-  canvas.width = 1080;
-  canvas.height = 1920;
+  const isPortrait = window.innerHeight >= window.innerWidth;
+  if (isPortrait) {
+    canvas.width = 720;
+    canvas.height = 1280;
+  } else {
+    canvas.width = 1280;
+    canvas.height = 720;
+  }
   updatePipDom();
 }
 window.addEventListener('resize', initCanvas);
+window.addEventListener('orientationchange', () => setTimeout(initCanvas, 300));
 
-// 2. High Definition Camera Initializer (1080p @ 60fps Target)
+// 2. Resilient Camera Engine: No "min" constraint crashes in portrait
 async function startCamera() {
   try {
     if (camVideo.srcObject) {
       camVideo.srcObject.getTracks().forEach(t => t.stop());
     }
+
+    // Adapt resolution request based on orientation without rigid "min" requirements
+    const isPortrait = window.innerHeight >= window.innerWidth;
     const constraints = {
       video: {
         facingMode: STATE.facingMode,
-        width: { ideal: 1920, min: 1280 },
-        height: { ideal: 1080, min: 720 },
-        frameRate: { ideal: 60, min: 30 }
+        width: { ideal: isPortrait ? 1080 : 1280 },
+        height: { ideal: isPortrait ? 1920 : 720 }
       },
-      audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true }
+      audio: {
+        echoCancellation: true,
+        noiseSuppression: true,
+        autoGainControl: true
+      }
     };
-    const stream = await navigator.mediaDevices.getUserMedia(constraints);
+
+    let stream;
+    try {
+      stream = await navigator.mediaDevices.getUserMedia(constraints);
+    } catch (fallbackErr) {
+      // Universal fallback for older front camera drivers
+      stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: STATE.facingMode },
+        audio: true
+      });
+    }
+
+    camVideo.muted = true;
+    camVideo.playsInline = true;
+    camVideo.setAttribute('playsinline', '');
+    camVideo.setAttribute('webkit-playsinline', '');
     camVideo.srcObject = stream;
-    await camVideo.play();
+
+    // Ensure metadata is fully ready before playing
+    await new Promise((resolve) => {
+      if (camVideo.readyState >= 1) return resolve();
+      camVideo.onloadedmetadata = () => resolve();
+      setTimeout(resolve, 600);
+    });
+
+    try {
+      await camVideo.play();
+    } catch(e) {}
 
     // Hook microphone to audio DSP
     const track = stream.getAudioTracks()[0];
@@ -856,11 +895,12 @@ async function startCamera() {
 
     requestAnimationFrame(renderLoop);
   } catch (err) {
-    toast('Camera & Mic permission needed');
+    console.error('Camera startup error:', err);
+    toast('Camera access required');
   }
 }
 
-// 3. Audio DSP Engine with Real Granular Pitch Shift
+// 3. Audio DSP Engine
 class AudioEngine {
   constructor() {
     this.ctx = null;
@@ -875,7 +915,7 @@ class AudioEngine {
     this.ctx = new AudioCtx();
     this.recordDest = this.ctx.createMediaStreamDestination();
     this.monitorGain = this.ctx.createGain();
-    this.monitorGain.gain.value = 0; // Off by default to avoid speaker feedback
+    this.monitorGain.gain.value = 0;
     this.monitorGain.connect(this.ctx.destination);
   }
   attachMic(stream) {
@@ -893,7 +933,6 @@ class AudioEngine {
     let lastNode = this.micSource;
 
     if (mode === 'baby') {
-      // Formant shifting + high-shelf boost for viral baby voice
       const hp = this.ctx.createBiquadFilter();
       hp.type = 'highpass';
       hp.frequency.value = 520;
@@ -914,7 +953,6 @@ class AudioEngine {
       lastNode = peak2;
       this.filterChain.push(hp, peak1, peak2);
     } else if (mode === 'chipmunk') {
-      // High-speed squeak resonance
       const bp = this.ctx.createBiquadFilter();
       bp.type = 'bandpass';
       bp.frequency.value = 2400;
@@ -923,7 +961,6 @@ class AudioEngine {
       lastNode = bp;
       this.filterChain.push(bp);
     } else if (mode === 'deep') {
-      // Deep Titan voice
       const ls = this.ctx.createBiquadFilter();
       ls.type = 'lowshelf';
       ls.frequency.value = 240;
@@ -932,7 +969,6 @@ class AudioEngine {
       lastNode = ls;
       this.filterChain.push(ls);
     } else if (mode === 'idol') {
-      // Warm studio presence with subtle high shine
       const high = this.ctx.createBiquadFilter();
       high.type = 'highshelf';
       high.frequency.value = 4000;
@@ -967,7 +1003,7 @@ class AudioEngine {
 }
 const audioEngine = new AudioEngine();
 
-// 4. 60 FPS Compositor Loop: Korean Glass Skin & V-Line Reshape
+// 4. Compositor Loop: Guaranteed Front Cam Draw & Korean V-Line
 function renderLoop() {
   const cw = canvas.width;
   const ch = canvas.height;
@@ -987,8 +1023,8 @@ function renderLoop() {
     ctx.fillRect(0, 0, cw, ch);
   }
 
-  // Camera Rendering with Korean V-Line Face Contouring
-  if (camVideo.readyState >= 2) {
+  // Camera Rendering
+  if (camVideo.readyState >= 2 && camVideo.videoWidth > 0) {
     const vw = camVideo.videoWidth;
     const vh = camVideo.videoHeight;
     const hRatio = cw / vw;
@@ -1005,41 +1041,31 @@ function renderLoop() {
       ctx.scale(-1, 1);
     }
 
-    if (STATE.activeFilter !== 'none') {
-      // KOREAN FACE RESHAPING:
-      // Slice face vertically: upper forehead stays natural, lower jaw is tapered & compressed
-      const splitY = oy + nh * 0.48; // Eye/Cheek level
-      const upperH = splitY - oy;
-      const lowerH = nh - upperH;
+    if (STATE.activeFilter !== 'none' && nw > 0 && nh > 0) {
+      // Korean V-Line Reshape
+      const splitY = oy + nh * 0.48;
+      const upperH = nh * 0.48;
+      const lowerH = nh * 0.52;
 
-      // 1. Draw Upper Head (Eyes/Forehead)
+      // 1. Draw Upper Head naturally
       ctx.drawImage(camVideo, 0, 0, vw, vh * 0.48, ox, oy, nw, upperH);
 
-      // 2. Draw Lower Jaw with V-Slim Horizontal Taper & Vertical Compression
-      const slimFactor = 1 - STATE.vSlim; // Inward jaw taper
-      const compFactor = 1 - STATE.vCompress; // Shorter face length
+      // 2. Draw Lower Jaw with horizontal V-Taper & vertical compression
+      const slimFactor = 1 - (STATE.vSlim || 0.28);
+      const compFactor = 1 - (STATE.vCompress || 0.12);
       const slimW = nw * slimFactor;
       const slimX = ox + (nw - slimW) / 2;
       const compH = lowerH * compFactor;
 
       ctx.drawImage(camVideo, 0, vh * 0.48, vw, vh * 0.52, slimX, splitY, slimW, compH);
 
-      // 3. Korean Glass Skin Glow Filter (High-speed composite without lagging blur)
+      // 3. Korean Glass Skin Glow Overlay
       ctx.save();
       ctx.globalCompositeOperation = 'screen';
-      ctx.fillStyle = `rgba(255, 230, 220, ${(STATE.vGlow - 1) * 0.55})`;
-      ctx.fillRect(0, 0, cw, ch);
-
-      // Soft porcelain blush on cheek area
-      const grad = ctx.createRadialGradient(cw * 0.5, ch * 0.48, 50, cw * 0.5, ch * 0.48, cw * 0.45);
-      grad.addColorStop(0, 'rgba(255, 118, 117, 0.12)');
-      grad.addColorStop(1, 'rgba(255, 118, 117, 0)');
-      ctx.fillStyle = grad;
+      ctx.fillStyle = `rgba(255, 230, 220, ${(STATE.vGlow - 1) * 0.5})`;
       ctx.fillRect(0, 0, cw, ch);
       ctx.restore();
-
     } else {
-      // Natural Camera
       ctx.drawImage(camVideo, ox, oy, nw, nh);
     }
 
@@ -1047,7 +1073,7 @@ function renderLoop() {
   }
 
   // Draw Reaction Video (PiP Box)
-  if (srcVideo.readyState >= 2) {
+  if (srcVideo.readyState >= 2 && srcVideo.videoWidth > 0) {
     const p = STATE.pip;
     const px = p.x * cw;
     const py = p.y * ch;
@@ -1056,19 +1082,19 @@ function renderLoop() {
 
     ctx.save();
     ctx.beginPath();
-    ctx.roundRect ? ctx.roundRect(px, py, pw, ph, 18) : ctx.rect(px, py, pw, ph);
+    ctx.roundRect ? ctx.roundRect(px, py, pw, ph, 16) : ctx.rect(px, py, pw, ph);
     ctx.clip();
     ctx.drawImage(srcVideo, px, py, pw, ph);
     ctx.restore();
 
     ctx.strokeStyle = '#00f0ff';
-    ctx.lineWidth = 5;
+    ctx.lineWidth = 4;
     ctx.beginPath();
-    ctx.roundRect ? ctx.roundRect(px, py, pw, ph, 18) : ctx.rect(px, py, pw, ph);
+    ctx.roundRect ? ctx.roundRect(px, py, pw, ph, 16) : ctx.rect(px, py, pw, ph);
     ctx.stroke();
   }
 
-  // Calculate Real-time FPS
+  // FPS Counter
   STATE.frameCount++;
   const now = performance.now();
   if (now - STATE.lastFpsCheck >= 1000) {
@@ -1081,7 +1107,7 @@ function renderLoop() {
   requestAnimationFrame(renderLoop);
 }
 
-// 5. PiP Touch Drag & Resize Controller
+// 5. PiP Touch Controller
 function updatePipDom() {
   const r = stage.getBoundingClientRect();
   const p = STATE.pip;
@@ -1129,7 +1155,7 @@ pipHandle.addEventListener('pointermove', e => {
 });
 pipHandle.addEventListener('pointerup', stopDrag);
 
-// 6. Navigation: Lobby -> Stage Transition
+// 6. Navigation
 $('btnLaunchStage').addEventListener('click', async () => {
   $('lobby-screen').style.display = 'none';
   $('reaction-stage').style.display = 'block';
@@ -1137,7 +1163,7 @@ $('btnLaunchStage').addEventListener('click', async () => {
   initCanvas();
   await startCamera();
   if (srcVideo.src) srcVideo.play().catch(()=>{});
-  toast('Reaction Stage Ready!');
+  toast('Reaction Stage Live!');
 });
 
 $('btnExitStage').addEventListener('click', () => {
@@ -1154,14 +1180,14 @@ $('btnFlipCam').addEventListener('click', () => {
   startCamera();
 });
 
-// Hear Voice Toggle
+// Hear Voice
 $('btnToggleHearVoice').addEventListener('click', () => {
   const active = audioEngine.toggleMonitor();
   $('btnToggleHearVoice').classList.toggle('active', active);
   toast(active ? '🔊 Voice Monitor ON (Use earphones)' : '🔇 Voice Monitor OFF');
 });
 
-// 7. Modals / Folders Handler
+// 7. Modals / Folders
 const openModal = id => $(id).classList.add('open');
 const closeModal = id => $(id).classList.remove('open');
 
@@ -1190,7 +1216,7 @@ $('videoPicker').addEventListener('change', e => {
   toast('Gallery Video Loaded!');
 });
 
-// Sample Viral TikTok Clips
+// Sample Clips
 document.querySelectorAll('[data-sample]').forEach(card => {
   card.addEventListener('click', () => {
     const key = card.dataset.sample;
@@ -1274,7 +1300,7 @@ $('btnRecord').addEventListener('click', () => {
 });
 
 function startRecording() {
-  const stream = canvas.captureStream(60);
+  const stream = canvas.captureStream(30);
   if (audioEngine.recordDest && audioEngine.recordDest.stream.getAudioTracks().length) {
     stream.addTrack(audioEngine.recordDest.stream.getAudioTracks()[0]);
   }
@@ -1305,7 +1331,7 @@ function startRecording() {
 }
 
 function stopRecording() {
-  STATE.mediaRecorder.stop();
+  if (STATE.mediaRecorder) STATE.mediaRecorder.stop();
   STATE.recording = false;
   $('btnRecord').classList.remove('recording');
   clearInterval(STATE.recordTimer);
